@@ -39,4 +39,5 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
-      port: 8006
+      ports:
+        port: 8006
