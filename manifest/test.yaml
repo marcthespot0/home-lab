@@ -35,9 +35,7 @@ spec:
     - dnsName: proxmox0.marcthespot.com
       recordType: A
       targets:
-        - 192.168.1.3
+        - 192.168.1.3:8006
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
-      ports:
-        port: 8006
