@@ -14,10 +14,10 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: test1.marcthespot.com
+    - dnsName: truenas.marcthespot.com
       recordType: A
       targets:
-        - 192.168.1.235
+        - 192.168.1.211
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
