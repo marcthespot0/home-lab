@@ -62,7 +62,7 @@ spec:
           masquerade: true
           hostLegacyRouting: true
         cluster:
-          name: home-cluster
+          name: home-lab
           id: 1
         containerRuntime:
           integration: containerd
