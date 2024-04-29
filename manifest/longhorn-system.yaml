@@ -51,7 +51,7 @@ spec:
               service:
                 name: longhorn-ui
                 port:
-                  number: 80
+                  number: 8000
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
