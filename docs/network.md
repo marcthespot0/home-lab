@@ -1,5 +1,5 @@
 # Networking
-Resources are exposed outside of the cluster through 4 methods.  This north/south traffic is managed via LoadBalancer, Ingress, Gateway, and Cloudflare Tunnels.
+Resources are exposed outside of the cluster through 3 methods.  This north/south traffic is managed via LoadBalancer, Ingress, Gateway, and Cloudflare Tunnels.
 
 ## Load Balancers
 This is exposed via Kubernetes service of type LoadBalancer that leverages the cluster load balancer capabilities.
