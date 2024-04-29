@@ -23,5 +23,5 @@ spec:
         persistence:
           defaultClass: true
           defaultClassReplicaCount: 3
-        PreUpgradeCheckerJob:
-          enabled: false
+        preUpgradeCheckerJob:
+          jobEnabled: false
