@@ -26,3 +26,8 @@ spec:
         preUpgradeChecker:
           jobEnabled: false
           upgradeVersionCheck: false
+syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
