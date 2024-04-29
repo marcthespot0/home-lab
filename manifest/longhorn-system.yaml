@@ -49,7 +49,7 @@ spec:
   rules:
   - backendRefs:
     - name: longhorn-ui
-      port: 8000
+      port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
