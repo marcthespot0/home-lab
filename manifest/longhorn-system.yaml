@@ -49,9 +49,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: longhorn-ui
+                name: longhorn-frontend
                 port:
-                  number: 8000
+                  number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -69,7 +69,7 @@ spec:
   - "lh.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: longhorn-ui
+    - name: longhorn-frontend
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
