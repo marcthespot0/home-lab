@@ -31,7 +31,12 @@ kubectl certificate approve csr-8j8gw
 ```sh
 kubectl create namespace argocd
 kubectl create secret generic stringreplacesecret --namespace argocd --from-literal domain=$domain --from-literal cloudflaretunnelid=$cloudflaretunnelid --from-literal ciliumipamcidr=$ciliumipamcidr
-```
+
+kubectl create namespace 1passwordconnect
+kubectl create secret generic 1passwordconnect --namespace 1passwordconnect --from-literal 1password-credentials.json="$onepasswordconnect_json"
+
+kubectl create namespace external-secrets
+kubectl create secret generic 1passwordconnect --namespace external-secrets --from-literal token=$externalsecrets_token```
 
 ```sh 
 export argocd_applicationyaml=$(curl -sL "https://raw.githubusercontent.com/marcthespot0/home-lab/main/manifest/argocd.yaml" | yq eval-all '. | select(.metadata.name == "argocd" and .kind == "Application")' -)
