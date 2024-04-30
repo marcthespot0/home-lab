@@ -139,9 +139,9 @@ spec:
   - name: internal
     namespace: gateway
     sectionName: https
-  - name: external
-    namespace: gateway
-    sectionName: https
+  # - name: external
+  #   namespace: gateway
+  #   sectionName: https
   hostnames:
   - "auth.<path:stringreplacesecret#domain>"
   rules:
