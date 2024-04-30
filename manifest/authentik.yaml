@@ -1,0 +1,300 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: authentik
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: authentik-configsecrets
+  namespace: authentik
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: bootstrap_password
+      remoteRef:
+        key: authentik
+        property: bootstrap_password
+    - secretKey: bootstrap_token
+      remoteRef:
+        key: authentik
+        property: bootstrap_token
+    - secretKey: bootstrap_email
+      remoteRef:
+        key: authentik
+        property: bootstrap_email
+    - secretKey: secret_key
+      remoteRef:
+        key: authentik
+        property: secret_key
+    - secretKey: postgrespassword
+      remoteRef:
+        key: postgres.cluster01.authentik.owner
+        property: password
+    - secretKey: postgresuser
+      remoteRef:
+        key: postgres.cluster01.authentik.owner
+        property: username
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  destination:
+    namespace: authentik
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: authentik
+    repoURL: https://charts.goauthentik.io
+    targetRevision: 2024.4.1
+    helm:
+      valuesObject:
+        server: 
+          ingress:
+            enabled: false
+        authentik:
+          postgresql:
+            host: "cluster01.postgres"
+            name: "authentik"
+        redis:
+          enabled: true
+          master:
+            persistence:
+              enabled: false
+        global:
+          env:
+            - name: AUTHENTIK_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: secret_key
+                  name: authentik-configsecrets
+            - name: AUTHENTIK_BOOTSTRAP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: bootstrap_password
+                  name: authentik-configsecrets
+            - name: AUTHENTIK_BOOTSTRAP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: bootstrap_token
+                  name: authentik-configsecrets
+            - name: AUTHENTIK_BOOTSTRAP_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  key: bootstrap_email
+                  name: authentik-configsecrets
+            - name: AUTHENTIK_POSTGRESQL__USER
+              valueFrom:
+                secretKeyRef:
+                  key: postgresuser
+                  name: authentik-configsecrets
+            - name: AUTHENTIK_POSTGRESQL__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: postgrespassword
+                  name: authentik-configsecrets
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: auth
+  namespace: authentik
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+    - host: auth.<path:stringreplacesecret#domain>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: authentik-server
+                port:
+                  number: 80
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: authentik
+  namespace: authentik
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  - name: external
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "auth.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: authentik-server
+      port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: authentik
+  namespace: authentik
+  annotations:
+    external-dns.custom/type: private
+spec:
+  endpoints:
+    - dnsName: auth.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - extgw.<path:stringreplacesecret#domain>
+      # targets:
+      #   - intgw.<path:stringreplacesecret#domain>
+      # providerSpecific:
+      #   - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+      #     value: "false"
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: authentik-providerconfig
+  namespace: authentik
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: token
+      remoteRef:
+        key: authentik
+        property: bootstrap_token
+---
+apiVersion: tf.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: authentik-config
+spec:
+  credentials:
+    - source: Secret
+      filename: token
+      secretRef:
+        namespace: authentik
+        name: authentik-providerconfig
+        key: token
+  configuration: |
+    provider "authentik" {
+      url   = "https://auth.<path:stringreplacesecret#domain>"
+      token = file("${path.module}/token")
+    }
+
+    terraform {
+      required_providers {
+        authentik = {
+          source = "goauthentik/authentik"
+          version = "2024.4.0"
+        }
+      }
+      backend "kubernetes" {
+        secret_suffix     = "authentik-provider"
+        namespace         = "authentik"
+        in_cluster_config = true
+      }
+    }
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: sso
+  namespace: authentik
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      data:
+        sso.tfvars: |
+          argocd_client_id = "{{ .argocd_client_id | toString }}"
+          argocd_client_secret = "{{ .argocd_client_secret | toString }}"
+          grafana_client_id = "{{ .grafana_client_id | toString }}"
+          grafana_client_secret = "{{ .grafana_client_secret | toString }}"
+          miniflux_client_id = "{{ .miniflux_client_id | toString }}"
+          miniflux_client_secret = "{{ .miniflux_client_secret | toString }}"
+          ryot_client_id = "{{ .ryot_client_id | toString }}"
+          ryot_client_secret = "{{ .ryot_client_secret | toString }}"
+          vikunja_client_id = "{{ .vikunja_client_id | toString }}"
+          vikunja_client_secret = "{{ .vikunja_client_secret | toString }}"
+          federation_google_client_id = "{{ .federation_google_client_id | toString }}"
+          federation_google_client_secret = "{{ .federation_google_client_secret | toString }}"
+  data:
+    - secretKey: argocd_client_id
+      remoteRef:
+        key: sso
+        property: argocd_client_id
+    - secretKey: argocd_client_secret
+      remoteRef:
+        key: sso
+        property: argocd_client_secret
+    - secretKey: grafana_client_id
+      remoteRef:
+        key: sso
+        property: grafana_client_id
+    - secretKey: grafana_client_secret
+      remoteRef:
+        key: sso
+        property: grafana_client_secret
+    - secretKey: miniflux_client_id
+      remoteRef:
+        key: sso
+        property: miniflux_client_id
+    - secretKey: miniflux_client_secret
+      remoteRef:
+        key: sso
+        property: miniflux_client_secret
+    - secretKey: ryot_client_id
+      remoteRef:
+        key: sso
+        property: ryot_client_id
+    - secretKey: ryot_client_secret
+      remoteRef:
+        key: sso
+        property: ryot_client_secret
+    - secretKey: vikunja_client_id
+      remoteRef:
+        key: sso
+        property: vikunja_client_id
+    - secretKey: vikunja_client_secret
+      remoteRef:
+        key: sso
+        property: vikunja_client_secret
+    - secretKey: federation_google_client_id
+      remoteRef:
+        key: sso
+        property: federation_google_client_id
+    - secretKey: federation_google_client_secret
+      remoteRef:
+        key: sso
+        property: federation_google_client_secret
