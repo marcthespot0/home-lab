@@ -161,12 +161,11 @@ spec:
     - dnsName: auth.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - intin.<path:stringreplacesecret#domain>
-      # targets:
-      #   - intgw.<path:stringreplacesecret#domain>
-      # providerSpecific:
-      #   - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-      #     value: "false"
+       targets:
+         - intgw.<path:stringreplacesecret#domain>
+       providerSpecific:
+         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+           value: "false"
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
