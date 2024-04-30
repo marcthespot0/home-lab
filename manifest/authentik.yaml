@@ -161,7 +161,7 @@ spec:
     - dnsName: auth.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - extgw.<path:stringreplacesecret#domain>
+        - intin.<path:stringreplacesecret#domain>
       # targets:
       #   - intgw.<path:stringreplacesecret#domain>
       # providerSpecific:
