@@ -297,3 +297,227 @@ spec:
       remoteRef:
         key: sso
         property: federation_google_client_secret
+---
+apiVersion: tf.upbound.io/v1beta1
+kind: Workspace
+metadata:
+  name: authentik-sso
+spec:
+  providerConfigRef:
+    name: authentik-config
+  forProvider:
+    varFiles:
+      - source: SecretKey
+        secretKeyRef:
+          key: sso.tfvars
+          name: sso
+          namespace: authentik
+    source: Inline
+    module: |
+      variable "argocd_client_id" {}
+      variable "argocd_client_secret" {}
+      variable "grafana_client_id" {}
+      variable "grafana_client_secret" {}
+      variable "miniflux_client_id" {}
+      variable "miniflux_client_secret" {}
+      variable "ryot_client_id" {}
+      variable "ryot_client_secret" {}
+      variable "vikunja_client_id" {}
+      variable "vikunja_client_secret" {}
+      variable "federation_google_client_id" {}
+      variable "federation_google_client_secret" {}
+
+      data "authentik_certificate_key_pair" "generated" {
+        name = "authentik Self-signed Certificate"
+      }
+
+      data "authentik_flow" "default-authorization-flow" {
+        slug = "default-provider-authorization-explicit-consent"
+      }
+
+      data "authentik_flow" "default-source-authentication" {
+        slug = "default-source-authentication"
+      }
+
+      data "authentik_flow" "default-source-enrollment" {
+        slug = "default-source-enrollment"
+      }
+
+      data "authentik_scope_mapping" "email" {
+        managed = "goauthentik.io/providers/oauth2/scope-email"
+      }
+
+      data "authentik_scope_mapping" "offline_access" {
+        managed = "goauthentik.io/providers/oauth2/scope-offline_access"
+      }
+
+      data "authentik_scope_mapping" "openid" {
+        managed = "goauthentik.io/providers/oauth2/scope-openid"
+      }
+
+      data "authentik_scope_mapping" "profile" {
+        managed = "goauthentik.io/providers/oauth2/scope-profile"
+      }
+
+      data "authentik_stage" "default-authentication-identification" {
+        name = "default-authentication-identification"
+      }
+
+      resource "authentik_group" "argocd_admin" {
+        name         = "ArgoCD Admin"
+        is_superuser = false
+      }
+
+      resource "authentik_provider_oauth2" "argocd_ouath2" {
+        name      = "argocd"
+        client_id = var.argocd_client_id
+        client_secret = var.argocd_client_secret
+        authorization_flow = data.authentik_flow.default-authorization-flow.id
+        access_code_validity = "minutes=10"
+        redirect_uris = [ "https://argocd.<path:stringreplacesecret#domain>/api/dex/callback","http://localhost:8085/auth/callback"]
+        signing_key = data.authentik_certificate_key_pair.generated.id
+        property_mappings = [
+          data.authentik_scope_mapping.openid.id,
+          data.authentik_scope_mapping.email.id,
+          data.authentik_scope_mapping.profile.id
+        ]
+      }
+
+      resource "authentik_application" "argocd_application" {
+        name = authentik_provider_oauth2.argocd_ouath2.name
+        slug = authentik_provider_oauth2.argocd_ouath2.name
+        protocol_provider = authentik_provider_oauth2.argocd_ouath2.id
+        meta_icon = "https://argo-cd.readthedocs.io/en/stable/assets/logo.png"
+        meta_launch_url = "https://argocd.<path:stringreplacesecret#domain>/auth/login"
+        policy_engine_mode = "all"
+      }
+
+      resource "authentik_group" "grafana_admin" {
+        name         = "Grafana Admin"
+        is_superuser = false
+      }
+
+      resource "authentik_provider_oauth2" "grafana_ouath2" {
+        name      = "grafana"
+        client_id = var.grafana_client_id
+        client_secret = var.grafana_client_secret
+        authorization_flow = data.authentik_flow.default-authorization-flow.id
+        access_code_validity = "minutes=10"
+        redirect_uris = [ "https://grafana.<path:stringreplacesecret#domain>/login/generic_oauth"]
+        signing_key = data.authentik_certificate_key_pair.generated.id
+        property_mappings = [
+          data.authentik_scope_mapping.openid.id,
+          data.authentik_scope_mapping.email.id,
+          data.authentik_scope_mapping.profile.id,
+          data.authentik_scope_mapping.offline_access.id
+        ]
+      }
+
+      resource "authentik_application" "grafana_application" {
+        name = authentik_provider_oauth2.grafana_ouath2.name
+        slug = authentik_provider_oauth2.grafana_ouath2.name
+        protocol_provider = authentik_provider_oauth2.grafana_ouath2.id
+        meta_icon = "https://grafana.com/static/img/menu/grafana2.svg"
+        meta_launch_url = "https://grafana.<path:stringreplacesecret#domain>/login/generic_oauth"
+        policy_engine_mode = "all"
+      }
+
+      resource "authentik_group" "miniflux_admin" {
+        name         = "Miniflux Admin"
+        is_superuser = false
+      }
+
+      resource "authentik_provider_oauth2" "miniflux_ouath2" {
+        name      = "miniflux"
+        client_id = var.miniflux_client_id
+        client_secret = var.miniflux_client_secret
+        authorization_flow = data.authentik_flow.default-authorization-flow.id
+        access_code_validity = "minutes=10"
+        redirect_uris = [ "https://rss.<path:stringreplacesecret#domain>/oauth2/oidc/callback"]
+        signing_key = data.authentik_certificate_key_pair.generated.id
+        property_mappings = [
+          data.authentik_scope_mapping.openid.id,
+          data.authentik_scope_mapping.email.id,
+          data.authentik_scope_mapping.profile.id
+        ]
+      }
+
+      resource "authentik_application" "miniflux_application" {
+        name = authentik_provider_oauth2.miniflux_ouath2.name
+        slug = authentik_provider_oauth2.miniflux_ouath2.name
+        protocol_provider = authentik_provider_oauth2.miniflux_ouath2.id
+        meta_icon = "https://raw.githubusercontent.com/miniflux/logo/master/icon.svg"
+        meta_launch_url = "https://rss.<path:stringreplacesecret#domain>/oauth2/oidc/redirect"
+        policy_engine_mode = "all"
+      }
+
+      resource "authentik_group" "ryot_admin" {
+        name         = "ryot Admin"
+        is_superuser = false
+      }
+
+      resource "authentik_provider_oauth2" "ryot_ouath2" {
+        name      = "ryot"
+        client_id = var.ryot_client_id
+        client_secret = var.ryot_client_secret
+        authorization_flow = data.authentik_flow.default-authorization-flow.id
+        access_code_validity = "minutes=10"
+        redirect_uris = [ "https://ryot.<path:stringreplacesecret#domain>/api/auth"]
+        signing_key = data.authentik_certificate_key_pair.generated.id
+        property_mappings = [
+          data.authentik_scope_mapping.openid.id,
+          data.authentik_scope_mapping.email.id,
+          data.authentik_scope_mapping.profile.id
+        ]
+      }
+
+      resource "authentik_application" "ryot_application" {
+        name = authentik_provider_oauth2.ryot_ouath2.name
+        slug = authentik_provider_oauth2.ryot_ouath2.name
+        protocol_provider = authentik_provider_oauth2.ryot_ouath2.id
+        meta_icon = "https://github.com/IgnisDa/ryot/blob/main/docs/logo.png?raw=true"
+        meta_launch_url = "https://ryot.<path:stringreplacesecret#domain>/?redirectToProvider=true"
+        policy_engine_mode = "all"
+      }
+
+      resource "authentik_group" "vikunja_admin" {
+        name         = "Vikunja Admin"
+        is_superuser = false
+      }
+
+      resource "authentik_provider_oauth2" "vikunja_ouath2" {
+        name      = "vikunja"
+        client_id = var.vikunja_client_id
+        client_secret = var.vikunja_client_secret
+        authorization_flow = data.authentik_flow.default-authorization-flow.id
+        access_code_validity = "minutes=10"
+        redirect_uris = [ "https://tasks.<path:stringreplacesecret#domain>/auth/openid/authentik"]
+        signing_key = data.authentik_certificate_key_pair.generated.id
+        property_mappings = [
+          data.authentik_scope_mapping.openid.id,
+          data.authentik_scope_mapping.email.id,
+          data.authentik_scope_mapping.profile.id
+        ]
+      }
+
+      resource "authentik_application" "vikunja_application" {
+        name = authentik_provider_oauth2.vikunja_ouath2.name
+        slug = authentik_provider_oauth2.vikunja_ouath2.name
+        protocol_provider = authentik_provider_oauth2.vikunja_ouath2.id
+        meta_icon = "https://kolaente.dev/avatars/dd73c49581a6904336c5d40fb66ef950?size=280"
+        meta_launch_url = "https://tasks.<path:stringreplacesecret#domain>/?redirectToProvider=true"
+        policy_engine_mode = "all"
+      }
+
+      resource "authentik_source_oauth" "google" {
+        name                = "google"
+        slug                = "google"
+        authentication_flow = data.authentik_flow.default-source-authentication.id
+        enrollment_flow     = data.authentik_flow.default-source-enrollment.id
+
+        provider_type   = "google"
+        consumer_key    = var.federation_google_client_id
+        consumer_secret = var.federation_google_client_secret
+        
+        user_matching_mode = "email_link"
+      }
