@@ -77,10 +77,10 @@ kind: Ingress
 metadata:
   name: open-webui-ingress
   namespace: open-webui
-  #annotations:
-    # Use appropriate annotations for your Ingress controller, e.g., for NGINX:
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
+  ingressClassName: ingress-nginx-internal
   rules:
   - host: open-webui.marcthespot.com
     http:
