@@ -269,6 +269,8 @@ kind: HTTPRoute
 metadata:
   name: vikunja
   namespace: vikunja
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
