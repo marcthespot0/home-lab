@@ -68,7 +68,7 @@ spec:
   ports:
     - protocol: TCP
       port: 8080
-      targetPort: 8080
+      targetPort: 80
       # If using NodePort, you can optionally specify the nodePort:
       # nodePort: 30000
 ---
