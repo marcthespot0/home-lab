@@ -80,7 +80,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: ollama.marcthespot.com
+  - host: ollama.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
