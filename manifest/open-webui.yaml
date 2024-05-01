@@ -82,7 +82,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: ollama.<path:stringreplacesecret#domain>
+  - host: ollama.marcthespot.com
     http:
       paths:
       - path: /
@@ -91,7 +91,7 @@ spec:
           service:
             name: open-webui-service
             port:
-              number: 8080
+              number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
