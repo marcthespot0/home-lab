@@ -82,7 +82,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: open-webui.<stringreplacesecret#domain>
+  - host: open-webui.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
