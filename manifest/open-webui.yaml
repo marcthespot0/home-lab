@@ -59,7 +59,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: open-webui-service
+  name: open-webui
   namespace: open-webui
 spec:
   type: ClusterIP
@@ -87,7 +87,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: open-webui-service
+            name: open-webui
             port:
               number: 8080
 ---
@@ -107,7 +107,7 @@ spec:
   - "ollama.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: open-webui-frontend
+    - name: open-webui
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
