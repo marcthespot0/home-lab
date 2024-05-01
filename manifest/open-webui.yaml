@@ -67,7 +67,7 @@ spec:
     app: open-webui
   ports:
     - protocol: TCP
-      port: 8080
+      port: 80
       targetPort: 8080
 ---
 apiVersion: networking.k8s.io/v1
