@@ -2,7 +2,7 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: open-webui-deployment
+  name: open-webui
 ---
 apiVersion: apps/v1
 kind: Deployment
