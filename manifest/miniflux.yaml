@@ -194,6 +194,7 @@ metadata:
   namespace: miniflux
   annotations:
     external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: rss.<path:stringreplacesecret#domain>
