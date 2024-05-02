@@ -2,7 +2,7 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: test
+  name: storage
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Deployment
