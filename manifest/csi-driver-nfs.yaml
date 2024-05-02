@@ -1,0 +1,33 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: config-nfs
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 192.168.1.235
+  share: /mnt/truenas/kubernetes/config
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.2
+  - nconnect=8
+  - hard
+  - noatime
+
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: media-nfs
+provisioner: nfs.csi.k8s.io
+parameters:
+  server: 192.168.1.235
+  share: /mnt/truenas/kubernetes/media
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+mountOptions:
+  - nfsvers=4.2
+  - nconnect=8
+  - hard
+  - noatime
