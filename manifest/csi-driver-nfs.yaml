@@ -1,4 +1,24 @@
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: nfs-configsecrets
+  namespace: kube-system
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: nfs-ip
+      remoteRef:
+        key: nfs
+        property: nfs-ip
+---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
