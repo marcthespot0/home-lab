@@ -8,7 +8,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Deployment
 metadata:
   name: csi-driver-nfs
-  namespace:storage
+  namespace: storage
 spec:
   interval: 30m
   chart:
