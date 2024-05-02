@@ -8,28 +8,26 @@ apiVersion: argoproj.io/v1alpha1
 kind: Deployment
 metadata:
   name: csi-driver-nfs
-  namespace: storage
+  namespace:storage
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: csi-drivers-nfs
-  template:
-    metadata: 
-      labels:
-        app: csi-driver-nfs
+  interval: 30m
+  chart:
     spec:
-      containers: 
-      - name: csi-driver-nfs
-        image: ghcr.io/kubernetes-csi/csi-driver-nfs
-        version: v4.6.0
-    install:
-      createNamespace: true
-      remediation:
-        retries: 5
-    upgrade:
-      remediation:
-        retries: 5
-    values:
-      externalSnapshotter:
-        enabled: false
+      chart: csi-driver-nfs
+      version: v4.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: csi-driver-nfs
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    externalSnapshotter:
+      enabled: false
