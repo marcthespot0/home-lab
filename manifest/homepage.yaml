@@ -205,7 +205,7 @@ spec:
               name: homepage-config
               subPath: widgets.yaml
             - mountPath: /app/config/logs
-              name: logs
+              name: homepage-config
       volumes:
       - name: homepage-config
         persistentVolumeClaim:
