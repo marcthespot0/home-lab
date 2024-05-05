@@ -206,11 +206,22 @@ spec:
             - mountPath: /app/config/logs
               name: logs
       volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage
-        - name: logs
-          emptyDir: {}
+      - name: homepage-volume
+        persistentVolumeClaim:
+          claimName: homepage-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: homepage
+  name: homepage-pvc
+  namespace: homepage
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
