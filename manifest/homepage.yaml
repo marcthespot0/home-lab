@@ -15,9 +15,10 @@ data:
   kubernetes.yaml: |
     mode: cluster
   settings.yaml: ""
-    # providers:
-    #   longhorn:
-    #     url: https://longhorn.my.network
+  #settings.yaml: |
+  #  providers:
+  #    longhorn:
+  #      url: https://longhorn.my.network
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
