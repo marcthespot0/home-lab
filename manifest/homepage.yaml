@@ -207,7 +207,7 @@ spec:
             - mountPath: /app/config/logs
               name: logs
       volumes:
-      - name: homepage-volume
+      - name: homepage-config
         persistentVolumeClaim:
           claimName: homepage-pvc
 ---
