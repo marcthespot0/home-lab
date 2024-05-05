@@ -133,6 +133,8 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 3000
+  selector:
+    app.kubernetes.io/name: homepage
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -215,8 +217,15 @@ kind: Ingress
 metadata:
   name: homepage
   namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    gethomepage.dev/description: Dynamically Detected Homepage
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/group: Cluster Management
+    gethomepage.dev/icon: homepage.png
+    gethomepage.dev/name: Homepage
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
