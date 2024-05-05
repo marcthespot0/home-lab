@@ -88,8 +88,7 @@ rules:
     verbs:
       - get
       - list
-  - apiGroups:
-      - traefik.containo.us
+  - apiGroups: [""]
     resources:
       - ingressroutes
     verbs:
