@@ -450,9 +450,12 @@ spec:
               name: homepage-config
               subPath: widgets.yaml
             - mountPath: /app/config/logs
-              name: homepage-config
+              name: logs
       volumes:
       - name: homepage-config
+        persistentVolumeClaim:
+          claimName: homepage-pvc
+      - name: logs
         persistentVolumeClaim:
           claimName: homepage-pvc
 ---
