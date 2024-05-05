@@ -137,6 +137,16 @@ spec:
   selector:
     app.kubernetes.io/name: homepage
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+secrets:
+  - name: homepage
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
