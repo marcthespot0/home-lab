@@ -457,7 +457,7 @@ spec:
           claimName: homepage-pvc
       - name: logs
         persistentVolumeClaim:
-          claimName: homepage-pvc
+          claimName: homepage-logs
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -465,6 +465,19 @@ metadata:
   labels:
     app: homepage
   name: homepage-pvc
+  namespace: homepage
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: homepage
+  name: homepage-logs
   namespace: homepage
 spec:
   accessModes: ["ReadWriteOnce"]
