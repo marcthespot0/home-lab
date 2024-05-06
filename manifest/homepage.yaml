@@ -15,35 +15,27 @@ spec:
     repoURL: http://jameswynn.github.io/helm-charts
     targetRevision: 1.2.3
     helm:
-      objectValues:
+      valueObject:
         image:
           repository: ghcr.io/gethomepage/homepage
-          tag: v0.8.9
+          tag: v0.8.13
 
-        controller:
-          strategy: RollingUpdate
-          rollingUpdate:
-            maxSurge: 25%
-            maxUnavailable: 25%
-
-        envFrom:
-          - secretRef:
-              name: app-keys
-          - secretRef:
-              name: homepage-secret
-
-        # Enable RBAC. RBAC is necessary to use Kubernetes integration
-        enableRbac: true
+        enableRbac: false
 
         serviceAccount:
           # Specify a different service account name
           name: homepage
           # Create service account. Needed when RBAC is enabled.
-          create: true
+          create: false
 
         service:
           main:
             ports:
               http:
                 port: 3000
-      releaseName: homepage
+
+        controller:
+          strategy: RollingUpdate
+          rollingUpdate:
+            maxSurge: 25%
+            maxUnavailable: 25%
