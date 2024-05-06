@@ -264,7 +264,6 @@ spec:
   hostnames:
   - "home.<path:stringreplacesecret#domain>"
   rules:
-  - matches:
     - path:
       type: PathPrefix
       value: /
