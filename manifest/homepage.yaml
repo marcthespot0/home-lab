@@ -182,10 +182,10 @@ spec:
         - name: homepage
           image: "ghcr.io/gethomepage/homepage:latest"
           imagePullPolicy: Always
-          # ports:
-          #   - name: http
-          #     containerPort: 3000
-          #     protocol: TCP
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
           volumeMounts:
             - mountPath: /app/config/custom.js
               name: homepage-config
@@ -264,7 +264,7 @@ spec:
   - "homepage.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: homepage
+    - name: http
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
