@@ -152,7 +152,7 @@ spec:
       port: 80
       targetPort: 3000
   selector:
-    app.kubernetes.io/name: homepage
+    # app.kubernetes.io/name: homepage
     app: homepage
 ---
 apiVersion: apps/v1
