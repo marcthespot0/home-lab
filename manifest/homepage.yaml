@@ -267,6 +267,8 @@ spec:
   - backendRefs:
     - name: homepage
       port: 80
+      selector:
+        app.kubernetes.io/name: homepage
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
