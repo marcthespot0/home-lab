@@ -241,7 +241,7 @@ spec:
           service:
             name: homepage
             port:
-              number: 3000
+              number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
