@@ -238,7 +238,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-    - host: homepage.<path:stringreplacesecret#domain>
+    - host: home.<path:stringreplacesecret#domain>
       http:
         paths:
           - path: "/"
@@ -256,18 +256,13 @@ metadata:
   namespace: homepage
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    gethomepage.dev/description: Dynamically Detected Homepage
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
-    gethomepage.dev/icon: homepage.png
-    gethomepage.dev/name: Homepage
 spec:
   parentRefs:
   - name: internal
     namespace: gateway
     sectionName: https
   hostnames:
-  - "homepage.<path:stringreplacesecret#domain>"
+  - "home.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: homepage
@@ -281,14 +276,8 @@ metadata:
   annotations:
     external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-    gethomepage.dev/description: Dynamically Detected Homepage
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
-    gethomepage.dev/icon: homepage.png
-    gethomepage.dev/name: Homepage
-spec:
   endpoints:
-    - dnsName: homepage.<path:stringreplacesecret#domain>
+    - dnsName: home.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
         - intgw.<path:stringreplacesecret#domain>
