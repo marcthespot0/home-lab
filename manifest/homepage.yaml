@@ -140,12 +140,12 @@ spec:
     app: homepage
   ports:
     - port: 3000
-  #     targetPort: http
-  #     protocol: TCP
-  #     name: http
-  # selector:
-  #   app.kubernetes.io/name: homepage
----
+      targetPort: http
+      protocol: TCP
+      name: http
+#   selector:
+#     app.kubernetes.io/name: homepage
+# ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
