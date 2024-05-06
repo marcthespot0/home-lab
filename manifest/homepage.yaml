@@ -237,7 +237,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-    - host: "home.marcthespot.com"
+    - host: "home.<path:stringreplacesecret#domain>"
       http:
         paths:
           - path: "/"
