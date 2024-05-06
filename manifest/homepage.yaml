@@ -153,6 +153,7 @@ spec:
       targetPort: 3000
   selector:
     app.kubernetes.io/name: homepage
+    app: homepage
 ---
 apiVersion: apps/v1
 kind: Deployment
