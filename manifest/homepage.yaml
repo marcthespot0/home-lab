@@ -50,17 +50,3 @@ spec:
               http:
                 port: 3000
       releaseName: homepage
-  - repoURL: https://github.com/clearlybaffled/homelab
-    path: cluster/apps/services/homepage
-    targetRevision: main
-    ref: repo
-  destination:
-    name: in-cluster
-    namespace: homepage
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-    - CreateNamespace=true
-    - ServerSideApply=true
