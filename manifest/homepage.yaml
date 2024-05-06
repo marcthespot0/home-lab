@@ -137,11 +137,12 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
-      targetPort: 3000
+    - port: 3000
+      targetPort: http
       protocol: TCP
-   selector:
-     app.kubernetes.io/name: homepage
+      name: http
+  selector:
+    app.kubernetes.io/name: homepage
 ---
 apiVersion: v1
 kind: ServiceAccount
