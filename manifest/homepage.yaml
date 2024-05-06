@@ -4,284 +4,63 @@ apiVersion: v1
 metadata:
   name: homepage
 ---
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-secrets:
-  - name: homepage
----
-apiVersion: v1
-kind: Secret
-type: kubernetes.io/service-account-token
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-  annotations:
-    kubernetes.io/service-account.name: homepage
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-data:
-  kubernetes.yaml: |
-    mode: cluster
-  settings.yaml: ""
-  #settings.yaml: |
-  #  providers:
-  #    longhorn:
-  #      url: https://longhorn.my.network
-  custom.css: ""
-  custom.js: ""
-  bookmarks.yaml: |
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
-  services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  sources:
+  - chart: homepage
+    repoURL: http://jameswynn.github.io/helm-charts
+    targetRevision: 1.2.3
+    helm:
+      valueObject:
+        image:
+          repository: ghcr.io/gethomepage/homepage
+          tag: v0.8.9
 
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
+        controller:
+          strategy: RollingUpdate
+          rollingUpdate:
+            maxSurge: 25%
+            maxUnavailable: 25%
 
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
-  widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-    - search:
-        provider: duckduckgo
-        target: _blank
-  docker.yaml: ""
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: homepage
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - namespaces
-      - pods
-      - nodes
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - extensions
-      - networking.k8s.io
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - metrics.k8s.io
-    resources:
-      - nodes
-      - pods
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - apiextensions.k8s.io
-    resources:
-      - customresourcedefinitions/status
-    verbs:
-      - get
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: homepage
-subjects:
-  - kind: ServiceAccount
-    name: homepage
+        envFrom:
+          - secretRef:
+              name: app-keys
+          - secretRef:
+              name: homepage-secret
+
+        # Enable RBAC. RBAC is necessary to use Kubernetes integration
+        enableRbac: true
+
+        serviceAccount:
+          # Specify a different service account name
+          name: homepage
+          # Create service account. Needed when RBAC is enabled.
+          create: true
+
+        service:
+          main:
+            ports:
+              http:
+                port: 3000
+      releaseName: homepage
+  - repoURL: https://github.com/clearlybaffled/homelab
+    path: cluster/apps/services/homepage
+    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
     namespace: homepage
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: homepage
-  namespace: default
-  labels:
-    app.kubernetes.io/name: homepage
-  annotations:
-spec:
-  type: ClusterIP
-  ports:
-    - port: 3000
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    app.kubernetes.io/name: homepage
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-spec:
-  revisionHistoryLimit: 3
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: homepage
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: homepage
-    spec:
-      serviceAccountName: homepage
-      automountServiceAccountToken: true
-      dnsPolicy: ClusterFirst
-      enableServiceLinks: true
-      containers:
-        - name: homepage
-          image: "ghcr.io/gethomepage/homepage:latest"
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 3000
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /app/config/custom.js
-              name: homepage-config
-              subPath: custom.js
-            - mountPath: /app/config/custom.css
-              name: homepage-config
-              subPath: custom.css
-            - mountPath: /app/config/bookmarks.yaml
-              name: homepage-config
-              subPath: bookmarks.yaml
-            - mountPath: /app/config/docker.yaml
-              name: homepage-config
-              subPath: docker.yaml
-            - mountPath: /app/config/kubernetes.yaml
-              name: homepage-config
-              subPath: kubernetes.yaml
-            - mountPath: /app/config/services.yaml
-              name: homepage-config
-              subPath: services.yaml
-            - mountPath: /app/config/settings.yaml
-              name: homepage-config
-              subPath: settings.yaml
-            - mountPath: /app/config/widgets.yaml
-              name: homepage-config
-              subPath: widgets.yaml
-            - mountPath: /app/config/logs
-              name: logs
-      volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage
-        - name: logs
-          emptyDir: {}
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    gethomepage.dev/description: Dynamically Detected Homepage
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
-    gethomepage.dev/icon: homepage.png
-    gethomepage.dev/name: Homepage
-spec:
-  ingressClassName: ingress-nginx-internal
-  rules:
-    - host: home.<path:stringreplacesecret#domain>
-      http:
-        paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: homepage
-                port:
-                  number: 3000
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: homepage
-  namespace: homepage
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  parentRefs:
-  - name: internal
-    namespace: gateway
-    sectionName: https
-  hostnames:
-  - "home.<path:stringreplacesecret#domain>"
-  rules:
-  - backendRefs:
-    - name: homepage
-      port: 80
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
-  name: homepage
-  namespace: homepage
-  annotations:
-    external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  endpoints:
-    - dnsName: home.<path:stringreplacesecret#domain>
-      recordType: CNAME
-      targets:
-        - intgw.<path:stringreplacesecret#domain>
-      providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "false"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true
