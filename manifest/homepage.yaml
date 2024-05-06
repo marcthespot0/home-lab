@@ -136,6 +136,8 @@ metadata:
   annotations:
 spec:
   type: ClusterIP
+  selector:
+    app: homepage
   ports:
     - port: 80
       targetPort: 3000
