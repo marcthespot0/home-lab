@@ -9,8 +9,6 @@ kind: Application
 metadata:
   name: homepage
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
   sources:
