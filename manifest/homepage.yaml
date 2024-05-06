@@ -145,7 +145,7 @@ spec:
       name: http
 #   selector:
 #     app.kubernetes.io/name: homepage
-# ---
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
