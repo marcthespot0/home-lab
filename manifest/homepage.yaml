@@ -139,10 +139,9 @@ spec:
   selector:
     app: homepage
   ports:
-    - port: 3000
-      targetPort: http
+    - port: 80
+      targetPort: 3000
       protocol: TCP
-      name: http
   selector:
     app.kubernetes.io/name: homepage
 ---
