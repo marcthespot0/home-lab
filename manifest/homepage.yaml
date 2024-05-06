@@ -10,6 +10,9 @@ metadata:
   name: homepage
   namespace: argocd
 spec:
+  destination: 
+    namespace: homepage
+    server: https://kubernetes.default.svc
   sources:
   - chart: homepage
     repoURL: http://jameswynn.github.io/helm-charts
@@ -17,25 +20,24 @@ spec:
     helm:
       valueObject:
         image:
-          repository: ghcr.io/gethomepage/homepage
-          tag: v0.8.13
-
-        enableRbac: false
-
+          repository: ghcr.io/jameswynn/homepage
+          tag: kubernetes
+          pullPolicy: Always
+        enableRbac: true
         serviceAccount:
-          # Specify a different service account name
-          name: homepage
-          # Create service account. Needed when RBAC is enabled.
-          create: false
-
+          create: true
+          name: homepage-test
+        config:
+          kubernetes:
+            mode: cluster
+          widgets:
+            - resources:
+                backend: kubernetes
+                expanded: true
+                cpu: true
+                memory: true
         service:
           main:
             ports:
               http:
                 port: 3000
-
-        controller:
-          strategy: RollingUpdate
-          rollingUpdate:
-            maxSurge: 25%
-            maxUnavailable: 25%
