@@ -256,6 +256,7 @@ metadata:
   namespace: homepage
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
   parentRefs:
   - name: internal
     namespace: gateway
