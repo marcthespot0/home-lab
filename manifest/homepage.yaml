@@ -129,11 +129,13 @@ metadata:
   annotations:
 spec:
   type: ClusterIP
+  selector:
+    app: homepage
   ports:
-    - port: 3000
-      targetPort: http
-      protocol: TCP
-      name: http
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+
   selector:
     app.kubernetes.io/name: homepage
 ---
