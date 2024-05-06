@@ -83,13 +83,15 @@ rules:
   - apiGroups:
       - extensions
       - networking.k8s.io
+      - gateway.networking.k8s.io/v1
+      - externaldns.k8s.io/v1alpha1
     resources:
       - ingresses
     verbs:
       - get
       - list
-  # - apiGroups:
-  #     - traefik.containo.us
+  - apiGroups:
+      - traefik.containo.us
     resources:
       - ingressroutes
     verbs:
