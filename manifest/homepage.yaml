@@ -110,7 +110,7 @@ rules:
       - get
       - list
   - apiGroups:
-      - traefik.containo.us
+      - gateway.networking.k8s.io/v1
     resources:
       - ingressroutes
     verbs:
