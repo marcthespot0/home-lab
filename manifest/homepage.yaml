@@ -33,18 +33,18 @@ metadata:
   labels:
     app.kubernetes.io/name: homepage
 data:
-  kubernetes.yaml: 
-    mode: cluster
-  settings.yaml: 
-    title: Sushi Home!
-    theme: dark
-    color: slate
-    disableCollapse: true
-    useEqualHeights: true
-    statusStyle: dot
-    hideErrors: false
-    favicon: https://i.imgur.com/yz12Vtt.png
-    background: https://i.imgur.com/kvBtiYD.png
+  # kubernetes.yaml: 
+  #   mode: cluster
+  # settings.yaml: 
+  #   title: Sushi Home!
+  #   theme: dark
+  #   color: slate
+  #   disableCollapse: true
+  #   useEqualHeights: true
+  #   statusStyle: dot
+  #   hideErrors: false
+  #   favicon: https://i.imgur.com/yz12Vtt.png
+  #   background: https://i.imgur.com/kvBtiYD.png
     cardBlur: sm
     layout:
       Servers:
