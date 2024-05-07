@@ -151,10 +151,13 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 80
+    - protocol: TCP
+      port: 80
       targetPort: 3000
-      protocol: TCP
-      name: http
+    # - port: 80
+    #   targetPort: 3000
+    #   protocol: TCP
+    #   name: http
   selector:
     app.kubernetes.io/name: homepage
 ---
