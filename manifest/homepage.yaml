@@ -4,222 +4,160 @@ apiVersion: v1
 metadata:
   name: homepage
 ---
-apiVersion: v1
-kind: ServiceAccount
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
   name: homepage
   namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-secrets:
-  - name: homepage
----
-apiVersion: v1
-kind: Secret
-type: kubernetes.io/service-account-token
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
   annotations:
-    kubernetes.io/service-account.name: homepage
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-data:
-  kubernetes.yaml: |
-    mode: cluster
-  # settings.yaml: ""
-  settings.yaml: |
-    providers:
-      longhorn:
-        url: https://lh.marcthespot.com
-  custom.css: ""
-  custom.js: ""
-  bookmarks.yaml: |
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
-  services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
-
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
-  widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-    - search:
-        provider: duckduckgo
-        target: _blank
-  docker.yaml: ""
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: homepage
-rules:
-  - apiGroups:
-      - ""
-    resources:
-      - namespaces
-      - pods
-      - nodes
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - extensions
-      - networking.k8s.io
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - metrics.k8s.io
-    resources:
-      - nodes
-      - pods
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - apiextensions.k8s.io
-    resources:
-      - customresourcedefinitions/status
-    verbs:
-      - get
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: homepage
-subjects:
-  - kind: ServiceAccount
-    name: homepage
-    namespace: homepage
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  type: ClusterIP
-  ports:
-    - port: 3000
-      targetPort: http
-      protocol: TCP
-      name: http
-  selector:
-    app.kubernetes.io/name: homepage
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-spec:
-  revisionHistoryLimit: 3
-  replicas: 1
-  strategy:
-    type: RollingUpdate
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: homepage
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: homepage
-    spec:
-      serviceAccountName: homepage
-      automountServiceAccountToken: true
-      dnsPolicy: ClusterFirst
-      enableServiceLinks: true
-      containers:
-        - name: homepage
-          image: "ghcr.io/gethomepage/homepage:latest"
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 3000
-              protocol: TCP
-          volumeMounts:
-            - mountPath: /app/config/custom.js
-              name: homepage-config
-              subPath: custom.js
-            - mountPath: /app/config/custom.css
-              name: homepage-config
-              subPath: custom.css
-            - mountPath: /app/config/bookmarks.yaml
-              name: homepage-config
-              subPath: bookmarks.yaml
-            - mountPath: /app/config/docker.yaml
-              name: homepage-config
-              subPath: docker.yaml
-            - mountPath: /app/config/kubernetes.yaml
-              name: homepage-config
-              subPath: kubernetes.yaml
-            - mountPath: /app/config/services.yaml
-              name: homepage-config
-              subPath: services.yaml
-            - mountPath: /app/config/settings.yaml
-              name: homepage-config
-              subPath: settings.yaml
-            - mountPath: /app/config/widgets.yaml
-              name: homepage-config
-              subPath: widgets.yaml
-            - mountPath: /app/config/logs
-              name: logs
-      volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage
-        - name: logs
-          emptyDir: {}
+  project: homepage
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
+  destination:
+    name: in-cluster
+    namespace: apps
+  source:
+    repoURL: https://bjw-s.github.io/helm-charts 
+    chart: app-template
+    targetRevision: 2.6.0
+    helm:
+      releaseName: homepage
+      values: |
+        serviceAccount:
+          create: true
+          name: "homepage"
+        controllers:
+          main:
+            replicas: 1
+            containers:
+              main:
+                image:
+                  repository: ghcr.io/gethomepage/homepage
+                  tag: v0.8.4
+        service:
+          main:
+            ports:
+              http:
+                port: 3000
+                protocol: HTTP
+        persistence:
+          config:
+            enabled: true
+            type: configMap
+            name: homepage-config
+            globalMounts:
+              - path: /app/config/settings.yaml
+                subPath: settings.yaml
+              - path: /app/config/widgets.yaml
+                subPath: widgets.yaml
+              - path: /app/config/services.yaml
+                subPath: services.yaml
+              - path: /app/config/bookmarks.yaml
+                subPath: bookmarks.yaml
+              - path: /app/config/kubernetes.yaml
+                subPath: kubernetes.yaml
+        configMaps:
+          config:
+            enabled: true
+            data:
+              kubernetes.yaml: |
+                mode: cluster 
+              settings.yaml: |
+                title: Index
+                background: https://imagedelivery.net/34xh1sPWPAwO1lv63pW2Eg/992fd3c9-33f9-461e-6894-7210ef7a1500/public
+                cardBlur: md
+                theme: dark
+                headerStyle: boxed
+                hideVersion: true
+              widgets.yaml: |
+                - search:
+                    provider: google
+                    target: _blank
+                - kubernetes:
+                    cluster:
+                      show: false
+                    nodes:
+                      show: true
+                      cpu: true
+                      memory: true
+                      showLabel: true
+              services.yaml: |
+                - Entertainment: 
+                  - Matrix:
+                      href: https://chat.{{ .Values.global.domain }}
+                      description: Chat client
+                      icon: element.svg
+                  - Jellyfin:
+                      href: https://jellyfin.{{ .Values.global.domain }}
+                      description: Media system (movies, music, etc.)
+                      icon: jellyfin.svg
+                  - Jellyseerr:
+                      href: https://jellyseerr.{{ .Values.global.domain }}
+                      description: Request media
+                      icon: jellyseerr.svg
+                - Management:
+                  - Transmission:
+                      href: https://transmission.{{ .Values.global.domain }}
+                      description: Bittorrent client
+                      icon: transmission.svg
+                  - Prowlarr:
+                      href: https://prowlarr.{{ .Values.global.domain }}
+                      description: Indexer manager
+                      icon: prowlarr.svg
+                  - Radarr:
+                      href: https://radarr.{{ .Values.global.domain }}
+                      description: Movie manager
+                      icon: radarr.svg
+                  - Sonarr:
+                      href: https://sonarr.{{ .Values.global.domain }}
+                      description: TV show manager
+                      icon: sonarr.svg
+                  - Kanidm:
+                      href: https://auth.{{ .Values.global.domain }}
+                      description: Identity management
+                      icon: https://auth.{{ .Values.global.domain }}/pkg/img/logo-square.svg
+                - Development:
+                  - ArgoCD:
+                      href: https://argocd.{{ .Values.global.domain }}
+                      description: Continuous deployment
+                      icon: argocd.svg
+                  - Grafana:
+                      href: https://grafana.{{ .Values.global.domain }}
+                      description: Observability dashboards
+                      icon: grafana.svg
+                  - Longhorn:
+                      href: https://longhorn.{{ .Values.global.domain }}
+                      description: Distributed block storage
+                      icon: longhorn.svg
+                - Utilities:
+                  - Excalidraw:
+                      href: https://draw.{{ .Values.global.domain }}
+                      description: Virtual whiteboard
+                      icon: excalidraw.svg
+                  - Speedtest:
+                      href: https://speedtest.{{ .Values.global.domain }}
+                      description: Internal network speed test
+                      icon: openspeedtest.png
+              bookmarks.yaml: |
+                - Homelab:
+                  - Documentation:
+                    - href: https://humble.{{ .Values.global.domain }}
+                      icon: google-docs.svg
+                  - Public repository:
+                    - href: https://github.com/locmai/humble
+                      icon: github.svg
+                - Managed services:
+                  - Cloudflare:
+                    - href: https://dash.cloudflare.com
+                      icon: cloudflare.svg
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
