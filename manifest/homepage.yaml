@@ -28,6 +28,7 @@ spec:
         ports:
         - containerPort: 3000
         securityContext:
+        resources:
           requests:
             cpu: "100m"
             memory: "100Mi"
