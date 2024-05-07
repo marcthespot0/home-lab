@@ -33,9 +33,9 @@ metadata:
   labels:
     app.kubernetes.io/name: homepage
 data:
-  kubernetes.yaml: |
+  kubernetes.yaml: 
     mode: cluster
-  settings.yaml: |
+  settings.yaml: 
     title: Sushi Home!
     theme: dark
     color: slate
