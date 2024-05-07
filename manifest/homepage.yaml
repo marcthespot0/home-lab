@@ -4,89 +4,293 @@ apiVersion: v1
 metadata:
   name: homepage
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: homepage
-  labels:
-    app: homepage
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: homepage
-  template:
-    metadata:
-      labels:
-        app: homepage
-    spec:
-      serviceAccountName: homepage
-      volumes:
-        - name: homepage-config
-          persistentVolumeClaim:
-            claimName: homepage-config-pvc
-      containers:
-        - name: homepage
-          image: "ghcr.io/gethomepage/homepage:latest"
-          ports:
-            - containerPort: 3000
-              protocol: TCP
-          resources:
-            requests:
-              memory: "128Mi"
-              cpu: "100m"
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
-          volumeMounts:
-            - name: homepage-config
-              mountPath: /app/config
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: homepage-config-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: local-path
-  resources:
-    requests:
-      storage: 2Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: homepage
-  labels:
-    app: homepage
-spec:
-  ports:
-    - protocol: TCP
-      port: 3000
-      targetPort: 3000
-  selector:
-    app: homepage
-  type: ClusterIP
----
 kind: ServiceAccount
-apiVersion: v1
 metadata:
   name: homepage
-  namespace: homelab
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+secrets:
+  - name: homepage
 ---
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
   name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
   annotations:
     kubernetes.io/service-account.name: homepage
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: Sushi Home!
+    theme: dark
+    color: slate
+    disableCollapse: true
+    useEqualHeights: true
+    statusStyle: dot
+    hideErrors: false
+    favicon: https://i.imgur.com/yz12Vtt.png
+    background: https://i.imgur.com/kvBtiYD.png
+    cardBlur: sm
+    layout:
+      Servers:
+        style: row
+        columns: 2
+      Services:
+      Media:
+      VPN:
+        style: row
+        columns: 3
+  custom.css: ""
+  custom.js: ""
+  bookmarks.yaml: ""
+  services.yaml: |
+      - Servers:
+        - Cluster:
+            icon: https://i.imgur.com/lZu0emg.png
+            ping: 10.0.0.10
+            widget:
+              type: customapi
+              url: http://10.0.0.10:61208/api/3/all
+              refreshInterval: 10000
+              method: GET
+              mappings:
+                - field: 
+                    cpu: total
+                  label: CPU
+                  type: float
+                - field: uptime
+                  label: Uptime
+                - field: 
+                    mem: percent
+                  label: Memory
+                  type: float
+                - field: 
+                    sensors:
+                      2: value
+                  label: Temp
+                  type: number
+        - Truenas:
+            icon: truenas.png
+            href: https://nas.sushiraccoon.com/ui/sessions/signin
+            ping: 10.0.0.20
+            widget:
+              type: truenas
+              url: http://10.0.0.20
+              key: 
+
+      - Services:
+        - Technitium:
+            icon: https://avatars.githubusercontent.com/u/12230362?s=280&v=4
+            href: http://dns.sushiraccoon.com
+            widget:
+              type: customapi
+              url: http://10.0.0.101:80/api/dashboard/stats/get?token=&type=LastDay&utc=true
+              method: GET
+              mappings:
+                - field: 
+                    response:
+                      stats: totalQueries
+                  label: Queries
+                  type: number
+                - field: 
+                    response:
+                      stats: totalServerFailure
+                  label: Server Failure
+                  type: number
+                - field: 
+                    response:
+                      stats: totalNxDomain
+                  label: NX Domain
+                  type: number
+                - field: 
+                    response:
+                      stats: totalBlocked
+                  label: Blocked
+                  type: number
+        - Gitea:
+            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Gitea_Logo.svg/640px-Gitea_Logo.svg.png
+            href: http://git.sushiraccoon.com
+            widget:
+              type: customapi
+              url: http://10.0.0.121/api/v1/version
+              method: GET
+              mappings:
+                - field: version
+                  label: Version
+        - Recipes:
+            icon: https://avatars.githubusercontent.com/u/86065214?s=280&v=4
+            href: http://food.sushiraccoon.com
+            widget:
+              type: customapi
+              url: http://10.0.0.112/api/space/
+              method: GET
+              headers:
+                Authorization: 
+              mappings:
+                - field: 
+                    0: name
+                  label: List
+                - field: 
+                    0: recipe_count
+                  label: Recipes
+        - Qbittorrent:
+            icon: qbittorrent.png
+            href: http://torrent.sushiraccoon.com
+            widget:
+              type: qbittorrent
+              url: http://10.0.0.122
+              username: admin
+              password: lR|xl-c`mZU?8=:8niQ,maHNNb<p7~
+        - Speedtest:
+            icon: speedtest-tracker.png
+            href: http://speedtest.sushiraccoon.com
+            widget:
+              type: speedtest
+              url: http://10.0.0.124
+
+      - Media:
+        - Emby:
+            icon: emby.png
+            href: http://media.sushiraccoon.com
+            widget:
+              type: emby
+              url: http://10.0.0.111
+              key: 
+              enableBlocks: true # optional, defaults to false
+              enableNowPlaying: true # optional, defaults to true
+        - Immich:
+            icon: immich.png
+            href: http://10.0.0.20:30041
+            widget:
+              type: immich
+              url: http://10.0.0.20:30041
+              key: 
+        - Minecraft:
+            icon: minecraft.png
+            href: http://10.0.0.10:8181/minecraft
+            widget:
+              type: minecraft
+              url: udp://10.0.0.10:25565
+
+      - VPN:
+        - Wireguard:
+            icon: https://i.imgur.com/Npgm4jf.png
+            href: http://10.0.0.20:51821
+            widget:
+              type: customapi
+              url: http://10.0.0.20:51821/api/wireguard/client
+              method: GET
+              mappings:
+                - field:
+                    0: name
+                  label: Client
+                - field:
+                    0: latestHandshakeAt
+                  label: Last Seen
+                  format: relativeDate
+                - field:
+                    0: transferTx
+                  label: Bytes Tx
+                  format: bytes
+                - field:
+                    0: transferRx
+                  label: Bytes Rx
+                  format: bytes
+        - Wireguard:
+            icon: https://i.imgur.com/Npgm4jf.png
+            href: http://10.0.0.20:51821
+            widget:
+              type: customapi
+              url: http://10.0.0.20:51821/api/wireguard/client
+              method: GET
+              mappings:
+                - field:
+                    1: name
+                  label: Client
+                - field:
+                    1: latestHandshakeAt
+                  label: Last Seen
+                  format: relativeDate
+                - field:
+                    1: transferTx
+                  label: Bytes Tx
+                  format: bytes
+                - field:
+                    1: transferRx
+                  label: Bytes Rx
+                  format: bytes
+        - Wireguard:
+            icon: https://i.imgur.com/Npgm4jf.png
+            href: http://10.0.0.20:51821
+            widget:
+              type: customapi
+              url: http://10.0.0.20:51821/api/wireguard/client
+              method: GET
+              mappings:
+                - field:
+                    2: name
+                  label: Client
+                - field:
+                    2: latestHandshakeAt
+                  label: Last Seen
+                  format: relativeDate
+                - field:
+                    2: transferTx
+                  label: Bytes Tx
+                  format: bytes
+                - field:
+                    2: transferRx
+                  label: Bytes Rx
+                  format: bytes
+  widgets.yaml: |
+    - openmeteo:
+        label: Arad # optional
+        latitude: 46.1833
+        longitude: 21.3167
+        timezone: Europe/Bucharest # optional
+        units: metric # or imperial
+        cache: 5 # Time in minutes to cache API responses, to stay within limits
+    - openmeteo:
+        label: Cuneo # optional
+        latitude: 44.3907
+        longitude: 7.5483
+        timezone: Europe/Rome # optional
+        units: metric # or imperial
+        cache: 5 # Time in minutes to cache API responses, to stay within limits
+    - openmeteo:
+        label: Torino # optional
+        latitude: 45.0705
+        longitude: 7.6868
+        timezone: Europe/Rome # optional
+        units: metric # or imperial
+        cache: 5 # Time in minutes to cache API responses, to stay within limits
+    - search:
+        provider: google
+        target: _blank
+  docker.yaml: ""
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: homepage
+  labels:
+    app.kubernetes.io/name: homepage
 rules:
   - apiGroups:
       - ""
@@ -107,7 +311,6 @@ rules:
       - list
   - apiGroups:
       - traefik.containo.us
-      - traefik.io
     resources:
       - ingressroutes
     verbs:
@@ -121,17 +324,13 @@ rules:
     verbs:
       - get
       - list
-  - apiGroups:
-      - apiextensions.k8s.io
-    resources:
-      - customresourcedefinitions/status
-    verbs:
-      - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: homepage
+  labels:
+    app.kubernetes.io/name: homepage
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -139,18 +338,92 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: homepage
-    namespace: homelab
+    namespace: homepage
 ---
 apiVersion: v1
-kind: Secret
-type: kubernetes.io/service-account-token
+kind: Service
 metadata:
   name: homepage
   namespace: homepage
   labels:
     app.kubernetes.io/name: homepage
   annotations:
-    kubernetes.io/service-account.name: homepage
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.0.0.110
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: homepage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  namespace: homepage
+  labels:
+    app.kubernetes.io/name: homepage
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: homepage
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: homepage
+    spec:
+      serviceAccountName: homepage
+      automountServiceAccountToken: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        - name: homepage
+          image: "ghcr.io/gethomepage/homepage:latest"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config/custom.js
+              name: homepage-pvc
+              subPath: custom.js
+            - mountPath: /app/config/custom.css
+              name: homepage-pvc
+              subPath: custom.css
+            - mountPath: /app/config/bookmarks.yaml
+              name: homepage-pvc
+              subPath: bookmarks.yaml
+            - mountPath: /app/config/docker.yaml
+              name: homepage-pvc
+              subPath: docker.yaml
+            - mountPath: /app/config/kubernetes.yaml
+              name: homepage-pvc
+              subPath: kubernetes.yaml
+            - mountPath: /app/config/services.yaml
+              name: homepage-pvc
+              subPath: services.yaml
+            - mountPath: /app/config/settings.yaml
+              name: homepage-pvc
+              subPath: settings.yaml
+            - mountPath: /app/config/widgets.yaml
+              name: homepage-pvc
+              subPath: widgets.yaml
+            - mountPath: /app/config/logs
+              name: homepage-pvc
+      volumes:
+        - name: homepage-pvc
+          configMap:
+            name: homepage
+        - name: logs
+          emptyDir: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
