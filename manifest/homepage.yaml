@@ -29,258 +29,59 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: homepage
-  namespace: homepage
+  namespace: default
   labels:
     app.kubernetes.io/name: homepage
 data:
-  # kubernetes.yaml: 
-  #   mode: cluster
-  # settings.yaml: 
-  #   title: Sushi Home!
-  #   theme: dark
-  #   color: slate
-  #   disableCollapse: true
-  #   useEqualHeights: true
-  #   statusStyle: dot
-  #   hideErrors: false
-  #   favicon: https://i.imgur.com/yz12Vtt.png
-  #   background: https://i.imgur.com/kvBtiYD.png
-    cardBlur: sm
-    layout:
-      Servers:
-        style: row
-        columns: 2
-      Services:
-      Media:
-      VPN:
-        style: row
-        columns: 3
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: ""
+  #settings.yaml: |
+  #  providers:
+  #    longhorn:
+  #      url: https://longhorn.my.network
   custom.css: ""
   custom.js: ""
-  bookmarks.yaml: ""
+  bookmarks.yaml: |
+    - Developer:
+        - Github:
+            - abbr: GH
+              href: https://github.com/
   services.yaml: |
-      - Servers:
-        - Cluster:
-            icon: https://i.imgur.com/lZu0emg.png
-            ping: 10.0.0.10
-            widget:
-              type: customapi
-              url: http://10.0.0.10:61208/api/3/all
-              refreshInterval: 10000
-              method: GET
-              mappings:
-                - field: 
-                    cpu: total
-                  label: CPU
-                  type: float
-                - field: uptime
-                  label: Uptime
-                - field: 
-                    mem: percent
-                  label: Memory
-                  type: float
-                - field: 
-                    sensors:
-                      2: value
-                  label: Temp
-                  type: number
-        - Truenas:
-            icon: truenas.png
-            href: https://nas.sushiraccoon.com/ui/sessions/signin
-            ping: 10.0.0.20
-            widget:
-              type: truenas
-              url: http://10.0.0.20
-              key: 
+    - My First Group:
+        - My First Service:
+            href: http://localhost/
+            description: Homepage is awesome
 
-      - Services:
-        - Technitium:
-            icon: https://avatars.githubusercontent.com/u/12230362?s=280&v=4
-            href: http://dns.sushiraccoon.com
-            widget:
-              type: customapi
-              url: http://10.0.0.101:80/api/dashboard/stats/get?token=&type=LastDay&utc=true
-              method: GET
-              mappings:
-                - field: 
-                    response:
-                      stats: totalQueries
-                  label: Queries
-                  type: number
-                - field: 
-                    response:
-                      stats: totalServerFailure
-                  label: Server Failure
-                  type: number
-                - field: 
-                    response:
-                      stats: totalNxDomain
-                  label: NX Domain
-                  type: number
-                - field: 
-                    response:
-                      stats: totalBlocked
-                  label: Blocked
-                  type: number
-        - Gitea:
-            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Gitea_Logo.svg/640px-Gitea_Logo.svg.png
-            href: http://git.sushiraccoon.com
-            widget:
-              type: customapi
-              url: http://10.0.0.121/api/v1/version
-              method: GET
-              mappings:
-                - field: version
-                  label: Version
-        - Recipes:
-            icon: https://avatars.githubusercontent.com/u/86065214?s=280&v=4
-            href: http://food.sushiraccoon.com
-            widget:
-              type: customapi
-              url: http://10.0.0.112/api/space/
-              method: GET
-              headers:
-                Authorization: 
-              mappings:
-                - field: 
-                    0: name
-                  label: List
-                - field: 
-                    0: recipe_count
-                  label: Recipes
-        - Qbittorrent:
-            icon: qbittorrent.png
-            href: http://torrent.sushiraccoon.com
-            widget:
-              type: qbittorrent
-              url: http://10.0.0.122
-              username: admin
-              password: lR|xl-c`mZU?8=:8niQ,maHNNb<p7~
-        - Speedtest:
-            icon: speedtest-tracker.png
-            href: http://speedtest.sushiraccoon.com
-            widget:
-              type: speedtest
-              url: http://10.0.0.124
+    - My Second Group:
+        - My Second Service:
+            href: http://localhost/
+            description: Homepage is the best
 
-      - Media:
-        - Emby:
-            icon: emby.png
-            href: http://media.sushiraccoon.com
-            widget:
-              type: emby
-              url: http://10.0.0.111
-              key: 
-              enableBlocks: true # optional, defaults to false
-              enableNowPlaying: true # optional, defaults to true
-        - Immich:
-            icon: immich.png
-            href: http://10.0.0.20:30041
-            widget:
-              type: immich
-              url: http://10.0.0.20:30041
-              key: 
-        - Minecraft:
-            icon: minecraft.png
-            href: http://10.0.0.10:8181/minecraft
-            widget:
-              type: minecraft
-              url: udp://10.0.0.10:25565
-
-      - VPN:
-        - Wireguard:
-            icon: https://i.imgur.com/Npgm4jf.png
-            href: http://10.0.0.20:51821
-            widget:
-              type: customapi
-              url: http://10.0.0.20:51821/api/wireguard/client
-              method: GET
-              mappings:
-                - field:
-                    0: name
-                  label: Client
-                - field:
-                    0: latestHandshakeAt
-                  label: Last Seen
-                  format: relativeDate
-                - field:
-                    0: transferTx
-                  label: Bytes Tx
-                  format: bytes
-                - field:
-                    0: transferRx
-                  label: Bytes Rx
-                  format: bytes
-        - Wireguard:
-            icon: https://i.imgur.com/Npgm4jf.png
-            href: http://10.0.0.20:51821
-            widget:
-              type: customapi
-              url: http://10.0.0.20:51821/api/wireguard/client
-              method: GET
-              mappings:
-                - field:
-                    1: name
-                  label: Client
-                - field:
-                    1: latestHandshakeAt
-                  label: Last Seen
-                  format: relativeDate
-                - field:
-                    1: transferTx
-                  label: Bytes Tx
-                  format: bytes
-                - field:
-                    1: transferRx
-                  label: Bytes Rx
-                  format: bytes
-        - Wireguard:
-            icon: https://i.imgur.com/Npgm4jf.png
-            href: http://10.0.0.20:51821
-            widget:
-              type: customapi
-              url: http://10.0.0.20:51821/api/wireguard/client
-              method: GET
-              mappings:
-                - field:
-                    2: name
-                  label: Client
-                - field:
-                    2: latestHandshakeAt
-                  label: Last Seen
-                  format: relativeDate
-                - field:
-                    2: transferTx
-                  label: Bytes Tx
-                  format: bytes
-                - field:
-                    2: transferRx
-                  label: Bytes Rx
-                  format: bytes
+    - My Third Group:
+        - My Third Service:
+            href: http://localhost/
+            description: Homepage is 😎
   widgets.yaml: |
-    - openmeteo:
-        label: Arad # optional
-        latitude: 46.1833
-        longitude: 21.3167
-        timezone: Europe/Bucharest # optional
-        units: metric # or imperial
-        cache: 5 # Time in minutes to cache API responses, to stay within limits
-    - openmeteo:
-        label: Cuneo # optional
-        latitude: 44.3907
-        longitude: 7.5483
-        timezone: Europe/Rome # optional
-        units: metric # or imperial
-        cache: 5 # Time in minutes to cache API responses, to stay within limits
-    - openmeteo:
-        label: Torino # optional
-        latitude: 45.0705
-        longitude: 7.6868
-        timezone: Europe/Rome # optional
-        units: metric # or imperial
-        cache: 5 # Time in minutes to cache API responses, to stay within limits
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+    - resources:
+        backend: resources
+        expanded: true
+        cpu: true
+        memory: true
     - search:
-        provider: google
+        provider: duckduckgo
         target: _blank
   docker.yaml: ""
 ---
