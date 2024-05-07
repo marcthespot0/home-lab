@@ -11,8 +11,6 @@ metadata:
   namespace: homepage
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   project: homepage
   syncPolicy:
