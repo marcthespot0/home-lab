@@ -143,7 +143,7 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: homepage-svc
+  name: homepage
   namespace: homepage
   labels:
     app.kubernetes.io/name: homepage
@@ -246,7 +246,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homepage-svc
+                name: homepage
                 port:
                   number: 3000
 ---
@@ -266,7 +266,7 @@ spec:
   - "home.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: homepage-svc
+    - name: homepage
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
