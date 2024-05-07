@@ -8,160 +8,80 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homepage
-  namespace: homepage
+  labels:
+    app: homepage
 spec:
-  revisionHistoryLimit: 3
   replicas: 1
-  strategy:
-    type: RollingUpdate
   selector:
     matchLabels:
-      app.kubernetes.io/name: homepage
+      app: homepage
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: homepage
+        app: homepage
     spec:
       serviceAccountName: homepage
-      automountServiceAccountToken: true
-      dnsPolicy: ClusterFirst
-      enableServiceLinks: true
+      volumes:
+        - name: homepage-config
+          persistentVolumeClaim:
+            claimName: homepage-config-pvc
       containers:
         - name: homepage
           image: "ghcr.io/gethomepage/homepage:latest"
-          imagePullPolicy: Always
           ports:
-            - name: http
-              containerPort: 3000
+            - containerPort: 3000
               protocol: TCP
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
           volumeMounts:
-            - mountPath: /app/config/custom.js
-              name: homepage-config
-              subPath: custom.js
-            - mountPath: /app/config/custom.css
-              name: homepage-config
-              subPath: custom.css
-            - mountPath: /app/config/bookmarks.yaml
-              name: homepage-config
-              subPath: bookmarks.yaml
-            - mountPath: /app/config/docker.yaml
-              name: homepage-config
-              subPath: docker.yaml
-            - mountPath: /app/config/kubernetes.yaml
-              name: homepage-config
-              subPath: kubernetes.yaml
-            - mountPath: /app/config/services.yaml
-              name: homepage-config
-              subPath: services.yaml
-            - mountPath: /app/config/settings.yaml
-              name: homepage-config
-              subPath: settings.yaml
-            - mountPath: /app/config/widgets.yaml
-              name: homepage-config
-              subPath: widgets.yaml
-            - mountPath: /app/config/logs
-              name: logs
-      volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage
-        - name: logs
-          emptyDir: {}
+            - name: homepage-config
+              mountPath: /app/config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homepage-config-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: homepage-svc
-  namespace: homepage
+  name: homepage
+  labels:
+    app: homepage
 spec:
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
   selector:
     app: homepage
   type: ClusterIP
-  ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 3000
 ---
-apiVersion: v1
 kind: ServiceAccount
+apiVersion: v1
 metadata:
   name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-secrets:
-  - name: homepage
+  namespace: homelab
 ---
 apiVersion: v1
 kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
   name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
   annotations:
     kubernetes.io/service-account.name: homepage
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: homepage
-  namespace: homepage
-  labels:
-    app.kubernetes.io/name: homepage
-data:
-  kubernetes.yaml: |
-    mode: cluster
-  settings.yaml: ""
-  #settings.yaml: |
-  #  providers:
-  #    longhorn:
-  #      url: https://longhorn.my.network
-  custom.css: ""
-  custom.js: ""
-  bookmarks.yaml: |
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
-  services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
-
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
-  widgets.yaml: |
-    - kubernetes:
-        cluster:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-          label: "cluster"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-    - search:
-        provider: duckduckgo
-        target: _blank
-  docker.yaml: ""
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -182,6 +102,14 @@ rules:
       - networking.k8s.io
     resources:
       - ingresses
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - traefik.containo.us
+      - traefik.io
+    resources:
+      - ingressroutes
     verbs:
       - get
       - list
@@ -211,7 +139,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: homepage
-    namespace: homepage
+    namespace: homelab
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -222,11 +150,6 @@ metadata:
     app.kubernetes.io/name: homepage
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 20M
-    gethomepage.dev/description: Dynamically Detected Homepage
-    gethomepage.dev/enabled: "true"
-    gethomepage.dev/group: Cluster Management
-    gethomepage.dev/icon: homepage.png
-    gethomepage.dev/name: Homepage
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
