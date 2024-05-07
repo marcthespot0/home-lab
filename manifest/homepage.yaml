@@ -120,7 +120,7 @@ rules:
   - apiGroups:
       - gateway.networking.k8s.io
     resources:
-      - Gateway
+      - httproute
     verbs:
       - get
       - list
