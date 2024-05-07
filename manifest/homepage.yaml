@@ -106,15 +106,6 @@ rules:
       - networking.k8s.io
     resources:
       - ingresses
-      - Gateway
-      - HTTPRoute
-    verbs:
-      - get
-      - list
-  - apiGroups:
-      - gateway.networking.k8s.io
-    resources:
-      - ingressroutes
     verbs:
       - get
       - list
@@ -123,6 +114,13 @@ rules:
     resources:
       - nodes
       - pods
+    verbs:
+      - get
+      - list
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions/status
     verbs:
       - get
       - list
