@@ -110,7 +110,7 @@ rules:
       - get
       - list
   - apiGroups:
-      - gateway.networking.k8s.io/v1
+      - gateway.networking.k8s.io
     resources:
       - ingressroutes
     verbs:
