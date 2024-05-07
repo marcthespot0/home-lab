@@ -342,7 +342,7 @@ subjects:
 apiVersion: v1
 kind: Service
 metadata:
-  name: homepage
+  name: homepage-svc
   namespace: homepage
   labels:
     app.kubernetes.io/name: homepage
@@ -442,7 +442,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: homepage
+                name: homepage-svc
                 port:
                   number: 3000
 ---
