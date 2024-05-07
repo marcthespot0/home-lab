@@ -29,8 +29,7 @@ spec:
     chart: app-template
     targetRevision: 2.6.0
     helm:
-      releaseName: homepage
-      values: |
+      valuesObject: 
         serviceAccount:
           create: true
           name: "homepage"
