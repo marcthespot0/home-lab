@@ -432,7 +432,7 @@ metadata:
   labels:
     app.kubernetes.io/name: homepage
   annotations:
-    nginx.ingress.kubernetes.io/proxy-body-size: 20M
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
