@@ -21,7 +21,7 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: weather_api
+    - secretKey: weather
       remoteRef:
         key: homepage-configsecrets
         property: weather_api
