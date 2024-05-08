@@ -4,6 +4,29 @@ apiVersion: v1
 metadata:
   name: homepage
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: homepage-configsecrets
+  namespace: homepage
+  labels:
+    app.kubernetes.io/part-of: homepage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: weather_api
+      remoteRef:
+        key: homepage-configsecrets
+        property: weather_api
+
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -84,7 +107,7 @@ data:
         longitude: 73.4115
         units: imperial # 
         provider: openweathermap
-        apiKey: 57da43e81bc4ea9f9c091694d9e801e3 
+        apiKey: $homepage-configsecrets:weather_api #57da43e81bc4ea9f9c091694d9e801e3 
         cache: 5 
         format: # optional, Intl.NumberFormat options
           maximumFractionDigits: 1
