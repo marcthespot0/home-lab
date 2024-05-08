@@ -25,7 +25,6 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: weather_api
-
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -107,7 +106,7 @@ data:
         longitude: 73.4115
         units: imperial # 
         provider: openweathermap
-        apiKey: <homepage-configsecrets#weather>
+        apiKey: ${WEATHER}
         cache: 5 
         format: # optional, Intl.NumberFormat options
           maximumFractionDigits: 1
