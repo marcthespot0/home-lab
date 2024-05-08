@@ -319,7 +319,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "home.<path:stringreplacesecret#domain>"
+  - home.<path:stringreplacesecret#domain>
   rules:
   - backendRefs:
     - name: homepage
