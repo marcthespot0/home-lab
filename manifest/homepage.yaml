@@ -75,19 +75,15 @@ data:
           cpu: true
           memory: true
           showLabel: true
+    - search:
+        provider: duckduckgo
+        target: _blank
     - datetime:
         text_size: l
         format:
           timeStyle: short
           dateStyle: short
           hourCycle: h23
-    - unifi_console:
-        url: https://192.168.1.1:443
-        username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
-        password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
-    - search:
-        provider: duckduckgo
-        target: _blank
   docker.yaml: ""
 ---
 ---
