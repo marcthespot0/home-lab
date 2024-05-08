@@ -107,9 +107,7 @@ data:
         longitude: 73.4115
         units: imperial # 
         provider: openweathermap
-        apiKey: weather_api
-          secret:
-            secretName:homepage-configsecrets
+        apiKey: <path:homepage-configsecrets#weather_api>
         cache: 5 
         format: # optional, Intl.NumberFormat options
           maximumFractionDigits: 1
