@@ -289,7 +289,7 @@ metadata:
   name: homepage
   namespace: homepage
   labels:
-    app.kubernetes.io/name: homepage
+    # app.kubernetes.io/name: homepage
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
