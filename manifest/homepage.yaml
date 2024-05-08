@@ -69,18 +69,22 @@ data:
           cpu: true
           memory: true
           showLabel: true
-          label: "cluster"
+          label: "Kubernetes"
         nodes:
           show: true
           cpu: true
           memory: true
           showLabel: true
-    - resources:
-        backend: resources
-        expanded: true
-        cpu: true
-        memory: true
-        showLabel: true
+    - datetime:
+        text_size: l
+        format:
+          timeStyle: short
+          dateStyle: short
+          hourCycle: h23
+    - unifi_console:
+        url: https://192.168.1.1:443
+        username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+        password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - search:
         provider: duckduckgo
         target: _blank
