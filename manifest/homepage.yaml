@@ -78,6 +78,16 @@ data:
     - search:
         provider: duckduckgo
         target: _blank
+    - openweathermap:
+        label: South Huntington #optional
+        latitude: 40.8534
+        longitude: 73.4115
+        units: imperial # 
+        provider: openweathermap
+        apiKey: 57da43e81bc4ea9f9c091694d9e801e3 
+        cache: 5 
+        format: # optional, Intl.NumberFormat options
+          maximumFractionDigits: 1
     - datetime:
         text_size: l
         format:
