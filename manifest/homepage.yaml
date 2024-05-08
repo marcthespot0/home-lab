@@ -295,7 +295,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-    - host: "home.<path:stringreplacesecret#domain>"
+    - host: "homepage.<path:stringreplacesecret#domain>"
       http:
         paths:
           - path: "/"
@@ -319,7 +319,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "home.<path:stringreplacesecret#domain>"
+  - "homepage.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: homepage
@@ -335,7 +335,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: home.<path:stringreplacesecret#domain>
+    - dnsName: homepage.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
         - intgw.<path:stringreplacesecret#domain>
