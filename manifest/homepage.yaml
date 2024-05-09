@@ -89,6 +89,8 @@ data:
             href: http://localhost/
             description: Homepage is 😎
   widgets.yaml: |
+    - logo:
+        icon: https://p7.hiclipart.com/preview/552/60/848/madison-square-garden-new-york-rangers-iphone-5s-national-hockey-league-logo-new-york.jpg
     - kubernetes:
         cluster:
           show: true
