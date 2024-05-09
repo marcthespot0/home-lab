@@ -89,8 +89,11 @@ data:
             href: http://localhost/
             description: Homepage is 😎
   widgets.yaml: |
-    - logo:
-        icon: https://www.google.com/imgres?q=new%20york%20rangers%20logos%20png&imgurl=https%3A%2F%2Fcdn.imgbin.com%2F10%2F5%2F2%2Fimgbin-logo-new-york-rangers-brand-line-bret-hart-JEpbKHteacrVGaad3GsMbES5j.jpg&imgrefurl=https%3A%2F%2Fimgbin.com%2Fpng%2FKcr2FuQd%2Flogo-new-york-rangers-brand-line-png&docid=MkdwelZTnraL2M&tbnid=4SLKWPHUrfp2VM&vet=12ahUKEwiG06Sytv-FAxXYk4kEHcGoAto4ChAzegQILxAA..i&w=728&h=724&hcb=2&ved=2ahUKEwiG06Sytv-FAxXYk4kEHcGoAto4ChAzegQILxAA
+    - longhorn
+        expanded: true
+        total: true
+        labels: true
+        nodes: true
     - kubernetes:  
         cluster:
           show: true
