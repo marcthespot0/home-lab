@@ -93,7 +93,7 @@ data:
         expanded: true
         total: true
         labels: true
-        nodes: true
+        nodes: false
     - kubernetes:  
         cluster:
           show: true
