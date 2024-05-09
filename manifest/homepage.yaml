@@ -90,7 +90,7 @@ data:
             description: Homepage is 😎
   widgets.yaml: |
     - logo:
-        icon: https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hiclipart.com%2Fsearch%3Fclipart%3DNew%2BYork%2BRangers&psig=AOvVaw3TcMNqviC_Ll1kAJrJxSHa&ust=1715304659223000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCNju-_i1_4UDFQAAAAAdAAAAABAE
+        icon: https://www.google.com/imgres?q=new%20york%20rangers%20logos%20png&imgurl=https%3A%2F%2Fcdn.imgbin.com%2F10%2F5%2F2%2Fimgbin-logo-new-york-rangers-brand-line-bret-hart-JEpbKHteacrVGaad3GsMbES5j.jpg&imgrefurl=https%3A%2F%2Fimgbin.com%2Fpng%2FKcr2FuQd%2Flogo-new-york-rangers-brand-line-png&docid=MkdwelZTnraL2M&tbnid=4SLKWPHUrfp2VM&vet=12ahUKEwiG06Sytv-FAxXYk4kEHcGoAto4ChAzegQILxAA..i&w=728&h=724&hcb=2&ved=2ahUKEwiG06Sytv-FAxXYk4kEHcGoAto4ChAzegQILxAA
     - kubernetes:  
         cluster:
           show: true
