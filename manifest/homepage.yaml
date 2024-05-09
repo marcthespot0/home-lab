@@ -21,6 +21,8 @@ spec:
   target:
     creationPolicy: Owner
   data:
+    HOMEPAGE_VAR_WEATHER_API: "{{ .weather_api }}"
+  data:
     - secretKey: WEATHER
       remoteRef:
         key: homepage-configsecrets
