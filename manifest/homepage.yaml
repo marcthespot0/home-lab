@@ -89,9 +89,7 @@ data:
             href: http://localhost/
             description: Homepage is 😎
   widgets.yaml: |
-    - logo:
-        icon: https://www.google.com/imgres?q=new%20york%20rangers%20logo%20transparent%20background&imgurl=https%3A%2F%2Fwww.clipartmax.com%2Fpng%2Fmiddle%2F236-2365355_logo-new-york-rangers-new-york-rangers-logo-png.png&imgrefurl=https%3A%2F%2Fwww.clipartmax.com%2Fmiddle%2Fm2H7K9i8G6i8N4b1_logo-new-york-rangers-new-york-rangers-logo-png%2F&docid=hbZWb7RZ7e-LbM&tbnid=k4aSdYULmjsfwM&vet=12ahUKEwjJ1O_Ms_-FAxUCmYkEHc_JBX8QM3oECFQQAA..i&w=840&h=467&hcb=2&ved=2ahUKEwjJ1O_Ms_-FAxUCmYkEHc_JBX8QM3oECFQQAA
-      - kubernetes:
+    - kubernetes:  
         cluster:
           show: true
           cpu: true
