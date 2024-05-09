@@ -20,13 +20,15 @@ spec:
     name: 1password
   target:
     creationPolicy: Owner
-  data:
-    HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
-  data:
-    - secretKey: weather
-      remoteRef:
-        key: homepage-configsecrets
-        property: weather_api
+    template:
+      engineVersion: v2
+      data:
+        HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
+    data:
+      - secretKey: weather
+        remoteRef:
+          key: homepage-configsecrets
+          property: weather_api
 ---
 apiVersion: v1
 kind: ServiceAccount
