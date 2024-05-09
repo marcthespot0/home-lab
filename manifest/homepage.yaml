@@ -21,10 +21,10 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: weather_api
+    - secretKey: weather
       remoteRef:
         key: homepage-configsecrets
-        property: weather
+        property: weather_api
 ---
 apiVersion: v1
 kind: ServiceAccount
