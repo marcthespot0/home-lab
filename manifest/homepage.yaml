@@ -89,7 +89,7 @@ data:
             href: http://localhost/
             description: Homepage is 😎
   widgets.yaml: |
-    - longhorn
+    - longhorn:
         expanded: true
         total: true
         labels: true
