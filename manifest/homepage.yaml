@@ -63,9 +63,9 @@ data:
     mode: cluster
   settings.yaml: ""
   #settings.yaml: |
-  #  providers:
-  #    longhorn:
-  #      url: https://longhorn.my.network
+    providers:
+      longhorn:
+        url: https://lh.<path:stringreplacesecret#domain>
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
