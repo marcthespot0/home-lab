@@ -24,11 +24,22 @@ spec:
       engineVersion: v2
       data:
         HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
+        HOMEPAGE_VAR_WEATHER_LATITUDEL: "{{ .latitude }}"
+        HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
   data:
     - secretKey: weather
       remoteRef:
         key: homepage-configsecrets
         property: weather_api
+    - secretKey: latitude
+      remoteRef:
+        key: homepage-configsecrets
+        property: weather_latitude
+    - secretKey: longitude
+      remoteRef:
+        key: homepage-configsecrets
+        property: weather_longitude
+      
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -110,9 +121,8 @@ data:
         provider: duckduckgo
         target: _blank
     - openweathermap:
-        label: South Huntington #optional
-        latitude: 40.8534
-        longitude: 73.4115
+        latitude: {{HOMEPAGE_VAR_WEATHER_LATITUDE}}
+        longitude: {{HOMEPAGE_VAR_WEATHER_LONGITUDE}}
         units: imperial # 
         provider: openweathermap
         apiKey: {{HOMEPAGE_VAR_WEATHER_API}}
