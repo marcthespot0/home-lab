@@ -24,7 +24,7 @@ spec:
       engineVersion: v2
       data:
         HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
-        HOMEPAGE_VAR_WEATHER_LATITUDEL: "{{ .latitude }}"
+        HOMEPAGE_VAR_WEATHER_LATITUDE: "{{ .latitude }}"
         HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
   data:
     - secretKey: weather
