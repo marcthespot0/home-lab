@@ -26,8 +26,8 @@ spec:
         HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
         HOMEPAGE_VAR_WEATHER_LATITUDE: "{{ .latitude }}"
         HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
-        HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID: "{{ .cloudflare_tunnel_id }}"
-        HOMEPAGE_VAR_CLOUDFLARE_TOKEN: "{{ .cloudflare_token_id }}"
+        # HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID: "{{ .cloudflare_tunnel_id }}"
+        # HOMEPAGE_VAR_CLOUDFLARE_TOKEN: "{{ .cloudflare_token_id }}"
         # HOMEPAGE_VAR_HASS_TOKEN: "{{ .hass }}"
         # HOMEPAGE_VAR_PROXMOX_TOKEN_ID: "{{ .proxmox_token_id_00 }}"
         # HOMEPAGE_VAR_PROXMOX_PASSWORD: "{{ .proxmox_password_00 }}"
@@ -47,14 +47,14 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: weather_longitude
-    - secretKey: cloudflare_tunnel_id
-      remoteRef:
-      key: homepage-configsecrets
-      property: cloudflare_tunnelid 
-    - secretKey: cloudflare_token_id
-      remoteRef:
-      key: homepage-configsecrets
-      property: cloudflare_token
+    # - secretKey: cloudflare_tunnel_id
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: cloudflare_tunnelid 
+    # - secretKey: cloudflare_token_id
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: cloudflare_token
     # - secretKey: hass 
     #   remoteRef:
     #   key: homepage-configsecrets
