@@ -28,7 +28,7 @@ spec:
         HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
         # HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID: "{{ .cloudflare_tunnel_id }}"
         # HOMEPAGE_VAR_CLOUDFLARE_TOKEN: "{{ .cloudflare_token_id }}"
-        # HOMEPAGE_VAR_HASS_TOKEN: "{{ .hass }}"
+        HOMEPAGE_VAR_HASS_TOKEN: "{{ .hass }}"
         # HOMEPAGE_VAR_PROXMOX_TOKEN_ID: "{{ .proxmox_token_id_00 }}"
         # HOMEPAGE_VAR_PROXMOX_PASSWORD: "{{ .proxmox_password_00 }}"
         # HOMEPAGE_VAR_UNIFI_USERNAME:  "{{ .unifi_user }}"
@@ -55,10 +55,10 @@ spec:
     #   remoteRef:
     #   key: homepage-configsecrets
     #   property: cloudflare_token
-    # - secretKey: hass 
-    #   remoteRef:
-    #   key: homepage-configsecrets
-    #   property: home-assistant
+    - secretKey: hass 
+      remoteRef:
+      key: homepage-configsecrets
+      property: home-assistant
     # - secretKey: proxmox_token_id_00
     #   remoteRef:
     #   key: homepage-configsecrets
