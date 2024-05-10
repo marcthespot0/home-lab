@@ -167,12 +167,12 @@ data:
               url: https://truenas.<path:stringreplacesecret#domain>
               key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
         - Proxmox:
-            href: https://proxmox.<path:stringreplacesecret#domain>
+            href: https://proxmox00.<path:stringreplacesecret#domain>:8006
             icon: proxmox.png
             description: Hypervisor
             widget:
               type: proxmox
-              url: https://proxmox.<path:stringreplacesecret#domain>
+              url: https://proxmox00.<path:stringreplacesecret#domain>:8006
               username: {{HOMEPAGE_VAR_PROXMOX_TOKEN_ID}}
               password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
   widgets.yaml: |
