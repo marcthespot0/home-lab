@@ -53,32 +53,32 @@ spec:
       property: cloudflare_tunnelid 
     - secretKey: cloudflare_token_id
       remoteRef:
-      key: homepage-configsecrets
-      property: cloudflare_token
-    - secretKey: hass 
-      remoteRef:
-      key: homepage-configsecrets
-      property: home-assistant
-    - secretKey: proxmox_token_id_00
-      remoteRef:
-      key: homepage-configsecrets
-      property: proxmox_token
-    - secretKey: proxmox_password_00
-      remoteRef:
-      key: homepage-configsecrets
-      property: proxmox_password
-    - secretKey: truenas_token
-      remoteRef:
-      key: homepage-configsecrets
-      property: TRUENAS_TOKEN
-    - secretKey: unifi_user
-      remoteRef:
-      key: homepage-configsecrets
-      property: UNIFI_USER
-    - secretKey: unifi_pass
-      remoteRef:
-      key: homepage-configsecrets
-      property: UNIFI_PASS
+    #   key: homepage-configsecrets
+    #   property: cloudflare_token
+    # - secretKey: hass 
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: home-assistant
+    # - secretKey: proxmox_token_id_00
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: proxmox_token
+    # - secretKey: proxmox_password_00
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: proxmox_password
+    # - secretKey: truenas_token
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: TRUENAS_TOKEN
+    # - secretKey: unifi_user
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: UNIFI_USER
+    # - secretKey: unifi_pass
+    #   remoteRef:
+    #   key: homepage-configsecrets
+    #   property: UNIFI_PASS
 ---
 apiVersion: v1
 kind: ServiceAccount
