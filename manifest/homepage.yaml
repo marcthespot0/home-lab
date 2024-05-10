@@ -53,8 +53,8 @@ spec:
       property: cloudflare_tunnelid 
     - secretKey: cloudflare_token_id
       remoteRef:
-    #   key: homepage-configsecrets
-    #   property: cloudflare_token
+      key: homepage-configsecrets
+      property: cloudflare_token
     # - secretKey: hass 
     #   remoteRef:
     #   key: homepage-configsecrets
