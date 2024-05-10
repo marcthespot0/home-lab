@@ -1,0 +1,26 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: test
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pihole
+  namespace: test1
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "pihole.<path:stringreplacesecret#domain>"
+  rules:
+  - backend:
+      serviceName: 192.168.1.211
+      servicePort: 80
+    path: /admin
+---
