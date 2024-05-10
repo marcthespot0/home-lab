@@ -26,6 +26,14 @@ spec:
         HOMEPAGE_VAR_WEATHER_API: "{{ .weather }}"
         HOMEPAGE_VAR_WEATHER_LATITUDE: "{{ .latitude }}"
         HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
+        HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID: "{{ .cloudflare_tunnel_id }}"
+        HOMEPAGE_VAR_CLOUDFLARE_TOKEN: "{{ .cloudflare_token_id }}"
+        HOMEPAGE_VAR_HASS_TOKEN: "{{ .hass }}"
+        HOMEPAGE_VAR_PROXMOX_TOKEN_ID: "{{ .proxmox_token_id_00 }}"
+        HOMEPAGE_VAR_PROXMOX_PASSWORD: "{{ .proxmox_password_00 }}"
+        HOMEPAGE_VAR_UNIFI_USERNAME:  "{{ .unifi_user }}"
+        HOMEPAGE_VAR_UNIFI_PASSWORD:  "{{ .unifi_pass }}"
+        HOMEPAGE_VAR_TRUENAS_TOKEN: "{{ .truenas_token }}"
   data:
     - secretKey: weather
       remoteRef:
@@ -39,7 +47,38 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: weather_longitude
-      
+    - secretKey: cloudflare_tunnel_id
+      remoteRef:
+      key: homepage-configsecrets
+      property: cloudflare_tunnelid 
+    - secretKey: cloudflare_token_id
+      remoteRef:
+      key: homepage-configsecrets
+      property: cloudflare_token
+    - secretKey: hass 
+      remoteRef:
+      key: homepage-configsecrets
+      property: home-assistant
+    - secretKey: proxmox_token_id_00
+      remoteRef:
+      key: homepage-configsecrets
+      property: proxmox_token
+    - secretKey: proxmox_password_00
+      remoteRef:
+      key: homepage-configsecrets
+      property: proxmox_password
+    - secretKey: truenas_token
+      remoteRef:
+      key: homepage-configsecrets
+      property: TRUENAS_TOKEN
+    - secretKey: unifi_user
+      remoteRef:
+      key: homepage-configsecrets
+      property: UNIFI_USER
+    - secretKey: unifi_pass
+      remoteRef:
+      key: homepage-configsecrets
+      property: UNIFI_PASS
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -85,20 +124,57 @@ data:
             - abbr: GH
               href: https://github.com/
   services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
-
-    - My Second Group:
-        - My Second Service:
-            href: http://localhost/
-            description: Homepage is the best
-
-    - My Third Group:
-        - My Third Service:
-            href: http://localhost/
-            description: Homepage is 😎
+    - Calendar:
+        - Agenda:
+            widget:
+              type: calendar
+              view: agenda # optional - possible values monthly, agenda
+              maxEvents: 20 # optional - defaults to 10
+              integrations: # optional
+                - type: sonarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
+                  service_group: Downloads # group name where widget exists
+                  service_name: Sonarr # service name for that widget
+                - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
+                  service_group: Downloads # group name where widget exists
+                  service_name: Radarr # service name for that widget
+                - type: readarr # active widget type that is currently enabled on homepage - possible values: radarr, sonar>
+                  service_group: Downloads # group name where widget exists
+                  service_name: Readarr # service name for that widget
+    - Automation:
+        - Home Assistant:
+            href: https://homeassistant.<path:stringreplacesecret#domain>
+            icon: home-assistant.svg
+            widget:
+              type: homeassistant
+              url: http://<path:stringreplacesecret#domain>:8123
+              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
+    - Infrastructure:
+        - Unifi:
+            href: https://unifi.<path:stringreplacesecret#domain>
+            icon: unifi.png
+            description: Unifi Dashboard
+            widget:
+              type: unifi
+              url: https://unifi.<path:stringreplacesecret#domain>
+              username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+              password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+        - TrueNAS:
+            href: https://truenas.<path:stringreplacesecret#domain>
+            icon: truenas.png
+            description: NAS
+            widget:
+              type: truenas
+              url: https://truenas.<path:stringreplacesecret#domain>
+              key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
+        - Proxmox:
+            href: https://proxmox.<path:stringreplacesecret#domain>
+            icon: proxmox.png
+            description: Hypervisor
+            widget:
+              type: proxmox
+              url: https://proxmox.<path:stringreplacesecret#domain>
+              username: {{HOMEPAGE_VAR_PROXMOX_TOKEN_ID}}
+              password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
   widgets.yaml: |
     - kubernetes:  
         cluster:
