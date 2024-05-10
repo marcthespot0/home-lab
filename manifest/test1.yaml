@@ -20,6 +20,6 @@ spec:
   - "pihole.<path:stringreplacesecret#domain>"
   rules:
   - backend:
-      serviceName: 192.168.1.211
-      servicePort: 80
+      serviceName: 192.168.1.104
+      servicePort: 8006
     path: "/"
