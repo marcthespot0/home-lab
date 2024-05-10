@@ -146,7 +146,7 @@ data:
             icon: home-assistant.svg
             widget:
               type: homeassistant
-              url: http://<path:stringreplacesecret#domain>:8123
+              url: http://homeassistant.<path:stringreplacesecret#domain>:8123
               key: {{HOMEPAGE_VAR_HASS_TOKEN}}
     - Infrastructure:
         - Unifi:
