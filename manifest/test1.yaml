@@ -23,4 +23,3 @@ spec:
       serviceName: 192.168.1.211
       servicePort: 80
     path: "/"
----
