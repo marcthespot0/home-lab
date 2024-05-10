@@ -142,7 +142,7 @@ data:
                   service_name: Readarr # service name for that widget
     - Automation:
         - Home Assistant:
-            href: https://homeassistant.<path:stringreplacesecret#domain>
+            href: https://homeassistant.<path:stringreplacesecret#domain>:8123
             icon: home-assistant.svg
             widget:
               type: homeassistant
