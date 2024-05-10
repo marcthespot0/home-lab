@@ -19,7 +19,7 @@ spec:
   hostnames:
   - "pihole.<path:stringreplacesecret#domain>"
   rules:
-  - backend:
-      name: 192.168.1.104
+  - backendRefs:
+    - name: 192.168.1.104
       port: 8006
     path: "/"
