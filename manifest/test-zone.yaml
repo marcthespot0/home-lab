@@ -46,7 +46,7 @@ spec:
           service:
             name: echo
             port:
-              number: echo
+              number: 80
 ---
 apiVersion: v1
 kind: Service
