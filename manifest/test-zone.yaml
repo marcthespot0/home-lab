@@ -26,6 +26,28 @@ spec:
           ports:
             - containerPort: 80
 ---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: open-webui-ingress
+  namespace: open-webui
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    external-dns.alpha.kubernetes.io/hostname: echo.<path:stringreplacesecret#domain>
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: echo.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: echo
+            port:
+              number: echo
+---
 apiVersion: v1
 kind: Service
 metadata:
