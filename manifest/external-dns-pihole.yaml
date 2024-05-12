@@ -60,6 +60,7 @@ spec:
                 name: external-dns-pihole
                 key: pihole-password
         fullnameOverride: external-dns
+        annotationFilter: "external-dns.custom/type in (private)"
         logLevel: info
         policy: upsert-only
         provider: pihole
