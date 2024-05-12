@@ -122,6 +122,7 @@ spec:
         # - secretRef:
         #     # Change this if you gave the secret a different name
         #     name: {{ .pi_hole_password }}
+        annotationFilter: "external-dns.custom/type in (private)"
         args:
         - --source=service
         - --source=ingress
