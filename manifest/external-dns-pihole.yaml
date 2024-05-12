@@ -26,9 +26,9 @@ spec:
         txtOwnerId: kubernetes
         crd:
           create: true
-        # sources:
-        #   - service
-        #   - ingress
+        sources:
+          - service
+          - ingress
         #   - crd
         provider: pihole
         pihole:
