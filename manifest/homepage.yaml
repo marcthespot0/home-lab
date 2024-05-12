@@ -373,7 +373,6 @@ metadata:
     # app.kubernetes.io/name: homepage
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    external-dns.alpha.kubernetes.io/hostname: homepage.<path:stringreplacesecret#domain>
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
