@@ -33,7 +33,7 @@ spec:
           # - crd
         provider: pihole
         pihole:
-          server: "https://kubernetes.default.svc"
+          server: "http://kubernetes.default.svc"
         annotationFilter: "external-dns.custom/type in (private)"
         podSecurityContext.fsGroup: 65534
   syncPolicy:
