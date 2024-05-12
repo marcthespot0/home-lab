@@ -31,7 +31,6 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 443
-      path: /admin
 ---
 apiVersion: v1
 kind: Service
