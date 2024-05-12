@@ -19,6 +19,8 @@ spec:
   target:
     creationPolicy: Owner
   data:
+  EXTERNALDNS_VAR_PIHOLE_PASSWORD: "{{ .pi_hole_password }}"
+  data:
     - secretKey: cloudflare_api_token
       remoteRef:
         key: external-dns
@@ -123,7 +125,7 @@ spec:
         envFrom:
         - secretRef:
             # Change this if you gave the secret a different name
-            name: pihole-password
+            name: {{ .pi_hole_password }}
         args:
         - --source=service
         - --source=ingress
