@@ -24,41 +24,41 @@ spec:
         key: external-dns
         property: token
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: external-dns
-  namespace: argocd
-spec:
-  destination:
-    namespace: external-dns
-    server: https://kubernetes.default.svc
-  project: homelab
-  source:
-    chart: external-dns
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 7.2.0
-    helm:
-      valuesObject:
-        fullnameOverride: external-dns
-        policy: sync
-        txtSuffix: .external-dns
-        txtOwnerId: kubernetes
-        crd:
-          create: true
-        sources:
-          - service
-          - ingress
-          - crd
-        provider: cloudflare
-        cloudflare:
-          secretName: external-dns
-        annotationFilter: "external-dns.custom/type in (public)"
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: external-dns
+#   namespace: argocd
+# spec:
+#   destination:
+#     namespace: external-dns
+#     server: https://kubernetes.default.svc
+#   project: homelab
+#   source:
+#     chart: external-dns
+#     repoURL: https://charts.bitnami.com/bitnami
+#     targetRevision: 7.2.0
+#     helm:
+#       valuesObject:
+#         fullnameOverride: external-dns
+#         policy: sync
+#         txtSuffix: .external-dns
+#         txtOwnerId: kubernetes
+#         crd:
+#           create: true
+#         sources:
+#           - service
+#           - ingress
+#           - crd
+#         provider: cloudflare
+#         cloudflare:
+#           secretName: external-dns
+#         annotationFilter: "external-dns.custom/type in (public)"
+#   syncPolicy:
+#     automated:
+#       allowEmpty: true
+#       prune: true
+#       selfHeal: true
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -77,6 +77,7 @@ spec:
     helm:
       valuesObject:
         fullnameOverride: external-dns-pihole
+        fullnameOverride: external-dns
         policy: sync
         txtSuffix: .external-dns
         txtOwnerId: kubernetes
