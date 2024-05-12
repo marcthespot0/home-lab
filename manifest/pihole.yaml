@@ -27,7 +27,6 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-      path: /admin
     - name: https
       protocol: TCP
       port: 443
