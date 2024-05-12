@@ -32,7 +32,7 @@ spec:
           - crd
         provider: pihole
         pihole:
-          server: "http://192.168.1.164"
+          server: "http://pihole.marcthespot.com"
         annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
