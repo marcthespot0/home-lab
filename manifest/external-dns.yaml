@@ -101,6 +101,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: external-dns-pihole
+  annotation: "external-dns.custom/type in (private)"
 spec:
   strategy:
     type: Recreate
