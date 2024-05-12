@@ -92,6 +92,9 @@ spec:
           value: "false"
         - name: VIRTUAL_HOST
           value: pihole
+        service:
+            annotations:
+              io.cilium/lb-ipam-ips: 192.168.1.164
         ports:
           - name: http
             containerPort: 80
@@ -151,24 +154,24 @@ spec:
   resources:
     requests:
       storage: 20M
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: internal
-  namespace: pihole
-spec:
-  gatewayClassName: cilium
-  infrastructure:
-    annotations:
-      io.cilium/lb-ipam-ips: 192.168.1.164
-  listeners:
-  - protocol: DNS
-    port: 53
-    name: dbs
-    allowedRoutes:
-      namespaces:
-        from: Same
+# ---
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: Gateway
+# metadata:
+#   name: internal
+#   namespace: pihole
+# spec:
+#   gatewayClassName: cilium
+#   infrastructure:
+#     annotations:
+#       io.cilium/lb-ipam-ips: 192.168.1.164
+#   listeners:
+#   - protocol: DNS
+#     port: 53
+#     name: dns
+#     allowedRoutes:
+#       namespaces:
+#         from: Same
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
