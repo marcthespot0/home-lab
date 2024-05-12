@@ -63,6 +63,9 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: pihole
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 192.168.1.165
   revisionHistoryLimit: 1
   template:
     metadata:
