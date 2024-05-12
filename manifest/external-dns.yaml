@@ -4,63 +4,26 @@ apiVersion: v1
 metadata:
   name: external-dns
 ---
-# apiVersion: external-secrets.io/v1beta1
-# kind: ExternalSecret
-# metadata:
-#   name: external-dns
-#   namespace: external-dns
-#   annotations:
-#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-# spec:
-#   refreshInterval: "5m"
-#   secretStoreRef:
-#     kind: ClusterSecretStore
-#     name: 1password
-#   target:
-#     creationPolicy: Owner
-#   # data:
-#   # EXTERNALDNS_VAR_PIHOLE_PASSWORD: "{{ .pi_hole_password }}"
-#   data:
-#     - secretKey: cloudflare_api_token
-#       remoteRef:
-#         key: external-dns
-#         property: token
-# ---
-# # apiVersion: argoproj.io/v1alpha1
-# # kind: Application
-# # metadata:
-# #   name: external-dns
-# #   namespace: argocd
-# # spec:
-# #   destination:
-# #     namespace: external-dns
-# #     server: https://kubernetes.default.svc
-# #   project: homelab
-# #   source:
-# #     chart: external-dns
-# #     repoURL: https://charts.bitnami.com/bitnami
-# #     targetRevision: 7.2.0
-# #     helm:
-# #       valuesObject:
-# #         fullnameOverride: external-dns
-# #         policy: sync
-# #         txtSuffix: .external-dns
-# #         txtOwnerId: kubernetes
-# #         crd:
-# #           create: true
-# #         sources:
-# #           - service
-# #           - ingress
-# #           - crd
-# #         provider: cloudflare
-# #         cloudflare:
-# #           secretName: external-dns
-# #         annotationFilter: "external-dns.custom/type in (public, private)"
-# #   syncPolicy:
-# #     automated:
-# #       allowEmpty: true
-# #       prune: true
-# #       selfHeal: true
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: external-dns
+  namespace: external-dns
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: cloudflare_api_token
+      remoteRef:
+        key: external-dns
+        property: token
+---
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
 # metadata:
@@ -90,53 +53,44 @@ metadata:
 #         provider: cloudflare
 #         cloudflare:
 #           secretName: external-dns
-#         annotationFilter: "external-dns.custom/type in (public)"
+#         annotationFilter: "external-dns.custom/type in (public, private)"
 #   syncPolicy:
 #     automated:
 #       allowEmpty: true
 #       prune: true
 #       selfHeal: true
----
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: external-dns-pihole
+  name: external-dns
+  namespace: argocd
 spec:
-  strategy:
-    type: Recreate
-  selector:
-    matchLabels:
-      app: external-dns-pihole
-  template:
-    metadata:
-      annotations:
-        external-dns.custom/type: "private"
-      labels:
-        app: external-dns-pihole
-    spec:
-      # serviceAccountName: external-dns
-      containers:
-      - name: external-dns
-        image: registry.k8s.io/external-dns/external-dns:v0.14.1
-        # If authentication is disabled and/or you didn't create
-        # a secret, you can remove this block.
-        # envFrom:
-        # - secretRef:
-        #     # Change this if you gave the secret a different name
-        #     name: {{ .pi_hole_password }}
-        # annotationFilter: "external-dns.custom/type in (private)"
-        args:
-        - --source=service
-        - --source=ingress
-        # Pihole only supports A/AAAA/CNAME records so there is no mechanism to track ownership.
-        # You don't need to set this flag, but if you leave it unset, you will receive warning
-        # logs when ExternalDNS attempts to create TXT records.
-        - --registry=noop
-        # IMPORTANT: If you have records that you manage manually in Pi-hole, set
-        # the policy to upsert-only so they do not get deleted.
-        - --policy=upsert-only
-        - --provider=pihole
-        # Change this to the actual address of your Pi-hole web server
-        - --pihole-server=http://192.168.1.211
-      securityContext:
-        fsGroup: 65534 # For ExternalDNS to be able to read Kubernetes token files
+  destination:
+    namespace: external-dns
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: external-dns
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 7.2.0
+    helm:
+      valuesObject:
+        fullnameOverride: external-dns
+        policy: sync
+        txtSuffix: .external-dns
+        txtOwnerId: kubernetes
+        crd:
+          create: true
+        sources:
+          - service
+          - ingress
+          - crd
+        provider: cloudflare
+        cloudflare:
+          secretName: external-dns
+        annotationFilter: "external-dns.custom/type in (public)"
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
