@@ -34,7 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: pihole-dns
-   annotations:
+  annotations:
     io.cilium/lb-ipam-ips: 192.168.1.165
   labels:
     app.kubernetes.io/name: pihole
