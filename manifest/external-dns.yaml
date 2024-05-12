@@ -64,7 +64,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: external-dns-pihole
-  namespace: external-dns
+  namespace: external-dns-pihole
 spec:
   destination:
     namespace: external-dns-pihole
