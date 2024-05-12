@@ -151,24 +151,27 @@ spec:
   resources:
     requests:
       storage: 20M
-# ---
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: Gateway
-# metadata:
-#   name: internal
-#   namespace: pihole
-# spec:
-#   gatewayClassName: cilium
-#   infrastructure:
-#     annotations:
-#       io.cilium/lb-ipam-ips: 192.168.1.164
-#   listeners:
-#   - protocol: DNS
-#     port: 53
-#     name: dns
-#     allowedRoutes:
-#       namespaces:
-#         from: Same
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pihole
+  namespace: pihole
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: pihole.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /admin
+        pathType: Prefix
+        backend:
+          service:
+            name: pihole-ui
+            port:
+              number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
