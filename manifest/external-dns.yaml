@@ -67,7 +67,7 @@ metadata:
   namespace: external-dns
 spec:
   destination:
-    namespace: external-dns
+    namespace: external-dns-pihole
     server: https://kubernetes.default.svc
   project: homelab
   source:
