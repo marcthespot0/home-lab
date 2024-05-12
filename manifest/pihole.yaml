@@ -28,10 +28,12 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
+      path: /admin
     - name: https
       protocol: TCP
       port: 443
       targetPort: 443
+      path: /admin
 ---
 apiVersion: v1
 kind: Service
@@ -169,8 +171,8 @@ spec:
   - host: pihole.<path:stringreplacesecret#domain>
     http:
       paths:
-      - path: /admin
-        # pathType: Prefix
+      - path: /
+        pathType: Prefix
         backend:
           service:
             name: pihole-ui
