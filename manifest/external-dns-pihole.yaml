@@ -74,7 +74,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns
+    namespace: external-dns-pihole
     server: https://kubernetes.default.svc
   project: homelab
   source:
