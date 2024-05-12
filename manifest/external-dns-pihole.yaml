@@ -7,11 +7,11 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: external-dns-pihole
   namespace: argocd
 spec:
   destination:
-    namespace: external-dns
+    namespace: external-dns-pihole
     server: https://kubernetes.default.svc
   project: homelab
   source:
@@ -20,20 +20,19 @@ spec:
     targetRevision: 7.2.0
     helm:
       valuesObject:
-        fullnameOverride: external-dns
+        fullnameOverride: external-dns-pihole
         policy: sync
-        txtSuffix: .external-dns
-        # txtOwnerId: kubernetes
+        txtSuffix: .external-dns-pihole
+        txtOwnerId: kubernetes
         crd:
           create: true
         sources:
           - service
           - ingress
           - crd
-        provider: cloudflare
-        cloudflare:
-          secretName: external-dns
-        annotationFilter: "external-dns.custom/type in (public)"
+        provider: pihole
+        pihole.server: http://192.168.1.211
+        annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
       allowEmpty: true
