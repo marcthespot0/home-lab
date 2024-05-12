@@ -23,7 +23,7 @@ spec:
         fullnameOverride: external-dns
         policy: sync
         txtSuffix: .external-dns
-        txtOwnerId: kubernetes
+        # txtOwnerId: kubernetes
         crd:
           create: true
         sources:
