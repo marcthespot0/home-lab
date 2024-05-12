@@ -25,10 +25,6 @@ spec:
       remoteRef:
         key: external-dns
         property: token
-    - secretKey: pi_hole_password
-      remoteRef:
-        key: pi-hole
-        property: pihole-password
 ---
 # apiVersion: argoproj.io/v1alpha1
 # kind: Application
