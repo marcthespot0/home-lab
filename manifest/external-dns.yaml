@@ -54,11 +54,7 @@ metadata:
 #         cloudflare:
 #           secretName: external-dns
 #         annotationFilter: "external-dns.custom/type in (public)"
-#   syncPolicy:
-#     automated:
-#       allowEmpty: true
-#       prune: true
-#       selfHeal: true
+
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -89,3 +85,8 @@ spec:
         provider: pihole
         pihole.server: http://192.168.1.211
         annotationFilter: "external-dns.custom/type in (private)"
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
