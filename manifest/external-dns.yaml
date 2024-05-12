@@ -122,10 +122,11 @@ spec:
         # - secretRef:
         #     # Change this if you gave the secret a different name
         #     name: {{ .pi_hole_password }}
-        annotationFilter: "external-dns.custom/type in (private)"
+        # annotationFilter: "external-dns.custom/type in (private)"
         args:
         - --source=service
         - --source=ingress
+        - --source=private
         # Pihole only supports A/AAAA/CNAME records so there is no mechanism to track ownership.
         # You don't need to set this flag, but if you leave it unset, you will receive warning
         # logs when ExternalDNS attempts to create TXT records.
