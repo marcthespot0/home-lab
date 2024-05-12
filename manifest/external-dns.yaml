@@ -63,11 +63,11 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns-pihole
-  namespace: external-dns-pihole
+  name: external-dns
+  namespace: external-dns
 spec:
   destination:
-    namespace: external-dns-pihole
+    namespace: external-dns
     server: https://kubernetes.default.svc
   project: homelab
   source:
@@ -76,7 +76,6 @@ spec:
     targetRevision: 7.2.0
     helm:
       valuesObject:
-        fullnameOverride: external-dns-pihole
         fullnameOverride: external-dns
         policy: sync
         txtSuffix: .external-dns
