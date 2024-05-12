@@ -8,7 +8,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: external-dns-pihole
-  namespace: argocd
+  namespace: external-dns-pihole
 spec:
   destination:
     namespace: external-dns-pihole
@@ -33,7 +33,7 @@ spec:
           # - crd
         provider: pihole
         pihole:
-          server: "http://192.168.1.164"
+          server: "http://192.168.1.165"
         annotationFilter: "external-dns.custom/type in (private)"
         podSecurityContext.fsGroup: 65534
   syncPolicy:
