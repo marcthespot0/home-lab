@@ -64,7 +64,7 @@ spec:
       targets:
         - "192.168.1.162"
       providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+        - name: external-dns.alpha.kubernetes.io/pihole
           value: "false"
 ---
 apiVersion: gateway.networking.k8s.io/v1
