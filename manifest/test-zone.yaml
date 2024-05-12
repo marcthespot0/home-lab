@@ -32,8 +32,7 @@ metadata:
   name: echo
   namespace: test-zone
   annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    external-dns.alpha.kubernetes.io/hostname: echo.<path:stringreplacesecret#domain>
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"    
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
@@ -53,6 +52,8 @@ kind: Service
 metadata:
   name: echo
   namespace: test-zone
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: echo.<path:stringreplacesecret#domain>
 spec:
   ports:
     - port: 80
