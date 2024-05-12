@@ -27,12 +27,12 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 80
-      path: "/admin"
+      path: /admin
     - name: https
       protocol: TCP
       port: 443
       targetPort: 443
-      path: "/admin"
+      path: /admin
 ---
 apiVersion: v1
 kind: Service
