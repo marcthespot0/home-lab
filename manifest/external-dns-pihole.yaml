@@ -33,7 +33,6 @@ spec:
         provider: pihole
         pihole:
           server: "http://192.168.1.164"
-          tlsSkipVerify: "true"
         annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
