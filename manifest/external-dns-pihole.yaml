@@ -25,8 +25,8 @@ spec:
         registry: noop
         txtSuffix: .external-dns-pihole
         txtOwnerId: kubernetes
-        crd:
-          create: true
+        # crd:
+        #   create: true
         sources:
           - service
           - ingress
