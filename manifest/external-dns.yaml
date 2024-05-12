@@ -18,8 +18,8 @@ spec:
     name: 1password
   target:
     creationPolicy: Owner
-  data:
-  EXTERNALDNS_VAR_PIHOLE_PASSWORD: "{{ .pi_hole_password }}"
+  # data:
+  # EXTERNALDNS_VAR_PIHOLE_PASSWORD: "{{ .pi_hole_password }}"
   data:
     - secretKey: cloudflare_api_token
       remoteRef:
