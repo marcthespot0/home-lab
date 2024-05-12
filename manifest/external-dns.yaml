@@ -80,12 +80,12 @@ spec:
         policy: sync
         txtSuffix: .external-dns
         txtOwnerId: kubernetes
-        # crd:
-        #   create: true
-        # sources:
-        #   - service
-        #   - ingress
-        #   - crd
+        crd:
+          create: true
+        sources:
+          - service
+          - ingress
+          - crd
         provider: pihole
         pihole.server: http://192.168.1.211
         annotationFilter: "external-dns.custom/type in (public)"
