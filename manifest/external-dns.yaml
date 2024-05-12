@@ -109,6 +109,8 @@ spec:
       app: external-dns-pihole
   template:
     metadata:
+      annotations:
+        external-dns.custom/type: "private"
       labels:
         app: external-dns-pihole
     spec:
