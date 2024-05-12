@@ -127,7 +127,6 @@ spec:
           - 127.0.0.1
           - 1.1.1.1
 ---
----
 # PiHole -- /etc/pihole
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -171,7 +170,7 @@ spec:
     http:
       paths:
       - path: /admin
-        pathType: Prefix
+        # pathType: Prefix
         backend:
           service:
             name: pihole-ui
