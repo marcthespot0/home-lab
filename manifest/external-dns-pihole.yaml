@@ -31,7 +31,7 @@ spec:
           - ingress
           - crd
         provider: pihole
-        pihole.server: "192.168.1.165"
+        pihole.server: "10.96.220.73"
         annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
