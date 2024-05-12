@@ -32,7 +32,7 @@ spec:
           - crd
         provider: pihole
         pihole:
-          server: "http://10.69.0.94"
+          server: "http://10.69.0.94/admin"
           tlsSkipVerify: "true"
         annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
