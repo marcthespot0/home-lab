@@ -34,6 +34,7 @@ spec:
         pihole:
           server: "http://192.168.1.165"
         annotationFilter: "external-dns.custom/type in (private)"
+        containerSecurityContext.enabled: "true"
   syncPolicy:
     automated:
       allowEmpty: true
