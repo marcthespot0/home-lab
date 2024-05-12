@@ -285,7 +285,6 @@ metadata:
   labels:
     app.kubernetes.io/name: homepage
   annotations:
-     external-dns.alpha.kubernetes.io/hostname: homepage.<path:stringreplacesecret#domain>
 spec:
   type: ClusterIP
   ports:
