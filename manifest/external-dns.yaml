@@ -4,34 +4,14 @@ apiVersion: v1
 metadata:
   name: external-dns
 ---
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: external-dns
-  namespace: external-dns
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-  data:
-    - secretKey: cloudflare_api_token
-      remoteRef:
-        key: external-dns
-        property: token
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns
+  name: external-dns-pihole
   namespace: argocd
 spec:
   destination:
-    namespace: external-dns
+    namespace: external-dns-pihole
     server: https://kubernetes.default.svc
   project: homelab
   source:
@@ -40,9 +20,9 @@ spec:
     targetRevision: 7.2.0
     helm:
       valuesObject:
-        fullnameOverride: external-dns
+        fullnameOverride: external-dns-pihole
         policy: sync
-        txtSuffix: .external-dns
+        txtSuffix: .external-dns-pihole
         txtOwnerId: kubernetes
         crd:
           create: true
@@ -50,10 +30,9 @@ spec:
           - service
           - ingress
           - crd
-        provider: cloudflare
-        cloudflare:
-          secretName: external-dns
-        annotationFilter: "external-dns.custom/type in (public)"
+        provider: pihole
+        pihole.server: http://192.168.1.211
+        annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
       allowEmpty: true
