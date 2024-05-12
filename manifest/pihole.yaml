@@ -29,26 +29,26 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 443
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: pihole-dns
-#   labels:
-#     app.kubernetes.io/name: pihole
-# spec:
-#   selector:
-#     app.kubernetes.io/name: pihole
-#   ports:
-#     - port: 53
-#       targetPort: 53
-#       name: dns-tcp
-#       protocol: TCP
-#     - port: 53
-#       targetPort: 53
-#       name: dns-udp
-#       protocol: UDP
-#   type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pihole-dns
+  labels:
+    app.kubernetes.io/name: pihole
+spec:
+  selector:
+    app.kubernetes.io/name: pihole
+  ports:
+    - port: 53
+      targetPort: 53
+      name: dns-tcp
+      protocol: TCP
+    - port: 53
+      targetPort: 53
+      name: dns-udp
+      protocol: UDP
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -92,9 +92,6 @@ spec:
           value: "false"
         - name: VIRTUAL_HOST
           value: pihole
-        service:
-            annotations:
-              io.cilium/lb-ipam-ips: 192.168.1.164
         ports:
           - name: http
             containerPort: 80
@@ -154,24 +151,24 @@ spec:
   resources:
     requests:
       storage: 20M
-# ---
-# apiVersion: gateway.networking.k8s.io/v1
-# kind: Gateway
-# metadata:
-#   name: internal
-#   namespace: pihole
-# spec:
-#   gatewayClassName: cilium
-#   infrastructure:
-#     annotations:
-#       io.cilium/lb-ipam-ips: 192.168.1.164
-#   listeners:
-#   - protocol: DNS
-#     port: 53
-#     name: dns
-#     allowedRoutes:
-#       namespaces:
-#         from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  namespace: pihole
+spec:
+  gatewayClassName: cilium
+  infrastructure:
+    annotations:
+      io.cilium/lb-ipam-ips: 192.168.1.164
+  listeners:
+  - protocol: DNS
+    port: 53
+    name: dns
+    allowedRoutes:
+      namespaces:
+        from: Same
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
