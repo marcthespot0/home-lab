@@ -88,4 +88,4 @@ spec:
           - crd
         provider: pihole
         pihole.server: http://192.168.1.211
-        annotationFilter: "external-dns.custom/type in (public)"
+        annotationFilter: "external-dns.custom/type in (private)"
