@@ -135,7 +135,7 @@ data:
               timezone: America/New_York 
               integrations: 
                 - type: ical 
-                  url: https://calendar.google.com/calendar/ical/kskckdptluqnmpcd2l9bv1i7oljgbjga%40import.calendar.google.com/public/basic.ics
+                  url: https://calendar.google.com/calendar/ical/mp2281%40gmail.com/public/basic.ics
                   name: My Events
                   color: zinc
                   params:
