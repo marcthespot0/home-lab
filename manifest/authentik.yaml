@@ -104,6 +104,11 @@ spec:
                 secretKeyRef:
                   key: postgrespassword
                   name: authentik-configsecrets
+    syncPolicy:
+      automated:
+        prune: true
+        allowEmpty: true
+        selfHeal: true
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
