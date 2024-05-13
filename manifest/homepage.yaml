@@ -132,7 +132,7 @@ data:
               view: monthly # optional - possible values monthly, agenda
               maxEvents: 10 # optional - defaults to 10
               showTime: true # optional - show time for event happening today - defaults to false
-              timezone: America/New_York# optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
+              timezone: America/New_York # optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
               integrations: # optional
                 - type: ical # Show calendar events from another service
                   url: http://timelyapp.time.ly/api/calendars/54703260/export?format=ics&categories=677430876&no_html=true # URL with calendar events
