@@ -125,24 +125,22 @@ data:
               href: https://github.com/
   services.yaml: |
     - Calendar:
-        - Agenda:
-            widget:
-              type: calendar
-              view: agenda # optional - possible values monthly, agenda
-              maxEvents: 20 # optional - defaults to 10
-              integrations: # optional
-                - type: sonarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
-                  service_group: Downloads # group name where widget exists
-                  service_name: Sonarr # service name for that widget
-                - type: radarr # active widget type that is currently enabled on homepage - possible values: radarr, sonarr>
-                  service_group: Downloads # group name where widget exists
-                  service_name: Radarr # service name for that widget
-                - type: readarr # active widget type that is currently enabled on homepage - possible values: radarr, sonar>
-                  service_group: Downloads # group name where widget exists
-                  service_name: Readarr # service name for that widget
+        firstDayInWeek: sunday # optional - defaults to monday
+        view: monthly # optional - possible values monthly, agenda
+        maxEvents: 10 # optional - defaults to 10
+        showTime: true # optional - show time for event happening today - defaults to false
+        timezone: America/New_York# optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
+        integrations: # optional
+          - type: ical # Show calendar events from another service
+            url: http://timelyapp.time.ly/api/calendars/54703260/export?format=ics&categories=677430876&no_html=true # URL with calendar events
+            name: My Events # required - name for these calendar events
+            color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
+            params: # optional - additional params for the service
+              showName: true # optional - show name before event title in event line - defaults to false
+
     - Automation:
         - Home Assistant:
-            href: https://homeassistant.<path:stringreplacesecret#domain>:8123
+            href: http://homeassistant.<path:stringreplacesecret#domain>:8123
             icon: home-assistant.svg
             widget:
               type: homeassistant
