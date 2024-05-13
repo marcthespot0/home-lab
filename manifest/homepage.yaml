@@ -135,7 +135,7 @@ data:
               timezone: America/New_York # optional and only when timezone is not detected properly (slightly slower performance) - force timezone for ical events (if it's the same - no change, if missing or different in ical - will be converted to this timezone)
               integrations: # optional
                 - type: ical # Show calendar events from another service
-                  url: http://timelyapp.time.ly/api/calendars/54703260/export?format=ics&categories=677430876&no_html=true # URL with calendar events
+                  url: https://calendar.google.com/calendar/ical/kskckdptluqnmpcd2l9bv1i7oljgbjga%40import.calendar.google.com/public/basic.ics # URL with calendar events
                   name: My Events # required - name for these calendar events
                   color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
                   params: # optional - additional params for the service
