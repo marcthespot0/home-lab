@@ -138,8 +138,8 @@ data:
                   url: https://calendar.google.com/calendar/ical/kskckdptluqnmpcd2l9bv1i7oljgbjga%40import.calendar.google.com/public/basic.ics # URL with calendar events
                   name: My Events # required - name for these calendar events
                   color: zinc # optional - defaults to pre-defined color for the service (zinc for ical)
-                  params: # optional - additional params for the service
-                    showName: true # optional - show name before event title in event line - defaults to false
+                  # params: # optional - additional params for the service
+                  #   showName: true # optional - show name before event title in event line - defaults to false
     - Automation:
         - Home Assistant:
             href: http://homeassistant.<path:stringreplacesecret#domain>:8123
