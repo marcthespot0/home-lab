@@ -1,14 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    ":dependencyDashboard",
-    "schedule:weekly"
+    "config:base"
   ],
-  "enabledManagers": [
-    "dockerfile",
-    "docker-compose",
-    "kubernetes",
-    "gitlabci"
-  ]
+  "prHourlyLimit": 3,
+  "argocd": {
+    "fileMatch": [
+      "manifest/.+\\.yaml$"
+    ]
+  },
+  "kubernetes": {
+    "fileMatch": [
+      "manifest/.+\\.yaml$"
+    ]
+  }
 }
