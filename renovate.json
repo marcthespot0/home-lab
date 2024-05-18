@@ -1,8 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":dependencyDashboard"],
-  "prHourlyLimit": 3,
+  "enabled": true,
+  "dependencyDashboard": true,
+  "dependencyDashboardTitle": "Renovate Dashboard",
+  "kubernetes": {
+    "fileMatch": ["kubernetes/cluster/.+\\.ya?ml$"]
+  },
+  "prHourlyLimit": 10,
   "includePaths": [
-    "manifest/*"
+    "manifest/**"
+
   ]
 }
