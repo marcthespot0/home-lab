@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>marcthespot0/home-lab:base",
+    "github>marcthespot0/home-lab:main",
     "schedule:weekly"
   ],
   "enabledManagers": [
