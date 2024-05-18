@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended", ":dependencyDashboard"]
-  ,
-  "prHourlyLimit": 3
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "prHourlyLimit": 3,
+  "includePaths": [
+    "manifest/*"
+  ]
 }
