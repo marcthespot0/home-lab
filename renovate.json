@@ -4,7 +4,7 @@
   "dependencyDashboard": true,
   "dependencyDashboardTitle": "Renovate Dashboard",
   "kubernetes": {
-    "fileMatch": ["kubernetes/cluster/.+\\.ya?ml$"]
+    "fileMatch": ["manifest/.ya?ml$"]
   },
   "prHourlyLimit": 10,
   "includePaths": [
