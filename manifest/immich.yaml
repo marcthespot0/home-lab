@@ -44,7 +44,6 @@ metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
 spec:
-  storageClassName: "nfs-csi"
   accessModes:
     - ReadWriteOnce
   resources:
