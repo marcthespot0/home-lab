@@ -36,11 +36,16 @@ spec:
       prune: true
       selfHeal: true 
 ---
-apiVersion: v1
+---
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
   name: immich-photos
-  namespace: immich
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: immich-photos
+  storageClassName: nfs-csi
