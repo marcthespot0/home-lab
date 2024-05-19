@@ -47,18 +47,15 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "3"
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
   name: zfs-nfs
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
-  destination:
-    namespace: democratic-csi
-    server: https://kubernetes.default.svc
   project: default
   source:
+    repoURL: https://democratic-csi.github.io/charts/
+    targetRevision: "0.11.1"
     chart: democratic-csi
     helm:
       values: |
@@ -117,8 +114,9 @@ spec:
                 shareMaprootGroup: wheel
                 shareMapallUser: ""
                 shareMapallGroup: ""
-      repoURL: https://democratic-csi.github.io/charts/
-      targetRevision: 0.14.2
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: democratic-csi
   syncPolicy:
     automated:
       allowEmpty: true
