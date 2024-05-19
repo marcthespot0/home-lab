@@ -84,17 +84,17 @@ spec:
               instance_id:
               httpConnection:
                 protocol: http
-                host: 192.168.1.235
+                host: "{{ .nfs-ip }}"
                 port: 80
                 # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
-                username: {{ .username }}
+                username: "{{ .username }}"
                 allowInsecure: true
                 apiVersion: 2
               sshConnection:
-                host: 192.168.1.235
+                host: "{{ .nfs-ip }}"
                 port: 22
-                username: {{ .username }}
+                username: "{{ .username }}"
                 privateKey: {{ .rsa }}
               zfs:
                 # Make sure to use the storage pool that was created previously
@@ -103,14 +103,14 @@ spec:
                 datasetEnableQuotas: true
                 datasetEnableReservation: false
                 datasetPermissionsMode: "0777"
-                datasetPermissionsUser: {{ .username }}
+                datasetPermissionsUser: "{{ .username }}"
                 datasetPermissionsGroup: wheel
               nfs:
-                shareHost: {{ .nfs-ip }}
+                shareHost: "{{ .nfs-ip }}"
                 shareAlldirs: false
                 shareAllowedHosts: []
                 shareAllowedNetworks: []
-                shareMaprootUser: {{ .username }}
+                shareMaprootUser: "{{ .username }}"
                 shareMaprootGroup: wheel
                 shareMapallUser: ""
                 shareMapallGroup: ""
