@@ -22,7 +22,7 @@ spec:
       - $repo/manifest/values/immich-values.yaml
       releaseName: immich
   - repoURL: https://github.com/marcthespot0/home-lab
-    path: /manifest
+    path: /manifest/
     targetRevision: main
     ref: repo
   destination:
