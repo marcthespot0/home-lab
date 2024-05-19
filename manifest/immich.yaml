@@ -44,7 +44,3 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      # NFS Subdir Provisioner doesn't care at all abou this
-      storage: 100M
