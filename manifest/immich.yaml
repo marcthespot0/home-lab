@@ -41,8 +41,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: immich-photos
   namespace: immich
-  annotations:
-    pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
 spec:
   accessModes:
     - ReadWriteOnce
