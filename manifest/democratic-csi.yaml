@@ -1,9 +1,9 @@
 
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: democratic-csi
+# ---
+# kind: Namespace
+# apiVersion: v1
+# metadata:
+#   name: democratic-csi
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -119,6 +119,7 @@ spec:
     namespace: democratic-csi
   syncPolicy:
     automated:
-      allowEmpty: true
       prune: true
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
