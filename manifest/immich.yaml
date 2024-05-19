@@ -37,15 +37,23 @@ spec:
       selfHeal: true 
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: immich-main-pvc
-  namespace: immich
+  annotations:
+    pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
+  name: pv-nfs
 spec:
-  storageClassName: "media-nfs"
   accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      # NFS Subdir Provisioner doesn't care at all abou this
-      storage: 100M
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-csi
+  mountOptions:
+    - nfsvers=4.1
+  csi:
+    driver: nfs.csi.k8s.io
+    # volumeHandle format: {nfs-server-address}#{sub-dir-name}#{share-name}
+    # make sure this value is unique for every share in the cluster
+    volumeHandle: 192.168.1.235:/mnt/truenas/kubernetes/immich-photos
+    volumeAttributes:
+      server: 192.168.1.235
+      share: /mnt/truenas/kubernetes/immich-photos
