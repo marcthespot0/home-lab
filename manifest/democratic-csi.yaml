@@ -117,3 +117,12 @@ spec:
               shareMaprootGroup: wheel
               shareMapallUser: ""
               shareMapallGroup: ""
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: democratic-csi
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
