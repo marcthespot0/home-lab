@@ -36,7 +36,6 @@ spec:
       prune: true
       selfHeal: true 
 ---
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
