@@ -87,7 +87,7 @@ spec:
                 host: "{{ .nfs-ip }}"
                 port: 80
                 # This is the API key that we generated previously
-                apiKey: 2-S7jx645RfeK1OGhOq8UCzaxJ6ax2Vrz2QzHHUDZqgigIwNQUvDujMC2SxQU719CX
+                apiKey: "{{ .api_key }}"
                 username: "{{ .username }}"
                 allowInsecure: true
                 apiVersion: 2
