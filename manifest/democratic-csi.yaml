@@ -87,11 +87,11 @@ spec:
                 host: 192.168.1.235
                 port: 80
                 allowInsecure: true
-                # This is the API key that we generated previously
-                apiKey: "{{ .api_key }}"
-                username: "{{ .username }}"
-                allowInsecure: true
-                apiVersion: 2
+                # # This is the API key that we generated previously
+                # apiKey: "{{ .api_key }}"
+                # username: "{{ .username }}"
+                # allowInsecure: true
+                # apiVersion: 2
               sshConnection:
                 host: "{{ .nfs-ip }}"
                 port: 22
