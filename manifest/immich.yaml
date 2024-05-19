@@ -18,7 +18,7 @@ spec:
             library:
               # Automatically creating the library volume is not supported by this chart
               # You have to specify an existing PVC to use
-              existingClaim: immich-main-pvc
+              existingClaim: media-nfs
         postgresql:
           enabled: true
         redis:
