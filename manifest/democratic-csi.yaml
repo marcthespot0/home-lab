@@ -96,15 +96,15 @@ spec:
                 port: 22
                 username: "{{ .username }}"
                 privateKey: "{{ .rsa }}"
-              zfs:
-                # Make sure to use the storage pool that was created previously
-                datasetParentName: truenas/kubernetes/nfs/vols
-                detachedSnapshotsDatasetParentName: truenas/kubernetes/nfs/snaps
-                datasetEnableQuotas: true
-                datasetEnableReservation: false
-                datasetPermissionsMode: "0777"
-                datasetPermissionsUser: "{{ .username }}"
-                datasetPermissionsGroup: wheel
+              # zfs:
+              #   # Make sure to use the storage pool that was created previously
+              #   datasetParentName: truenas/kubernetes/nfs/vols
+              #   detachedSnapshotsDatasetParentName: truenas/kubernetes/nfs/snaps
+              #   datasetEnableQuotas: true
+              #   datasetEnableReservation: false
+              #   datasetPermissionsMode: "0777"
+              #   datasetPermissionsUser: "{{ .username }}"
+              #   datasetPermissionsGroup: wheel
               nfs:
                 shareHost: 192.168.1.235
                 shareAlldirs: false
