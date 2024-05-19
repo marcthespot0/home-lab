@@ -86,6 +86,7 @@ spec:
                 protocol: http
                 host: 192.168.1.235
                 port: 80
+                apiVersion: 2
                 # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
                 username: "{{ .username }}"
