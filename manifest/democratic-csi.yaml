@@ -25,6 +25,7 @@ spec:
         DEMOCRATIC_VAR_NFS_IP: "{{ .nfs_ip }}"
         DEMOCRATIC_VAR_TRUENAS_RSA: "{{ .rsa }}"
         DEMOCRATIC_VAR_USERNAME: "{{ .username }}"
+        DEMOCRATIC_VAR_PASSWORD: "{{ .password }}"
         DEMOCRATIC_VAR_TRUENAS_API: "{{ .api_key }}"
   data:
     - secretKey: nfs_ip
@@ -42,7 +43,11 @@ spec:
     - secretKey: api_key
       remoteRef:
         key: nfs
-        property: truenas_api_key 
+        property: truenas_api_key
+    - secretKey: password
+      remoteRef:
+        key: nfs
+        property: password 
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -89,7 +94,8 @@ spec:
                 allowInsecure: true
                 # # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
-                # username: "{{ .username }}"
+                username: "{{ .username }}"
+                password: "{{ .password }}"
                 # allowInsecure: true
                 # apiVersion: 2
               # sshConnection:
