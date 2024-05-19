@@ -22,7 +22,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        DEMOCRATIC_VAR_NFS_IP: "{{ .nfs-ip }}"
+        DEMOCRATIC_VAR_NFS_IP: "{{ .nfs_ip }}"
         DEMOCRATIC_VAR_TRUENAS_RSA: "{{ .rsa }}"
         DEMOCRATIC_VAR_USERNAME: "{{ .username }}"
         DEMOCRATIC_VAR_TRUENAS_API: "{{ .api_key }}"
@@ -84,7 +84,7 @@ spec:
             instance_id:
             httpConnection:
               protocol: http
-              host: {{ .nfs-ip }}
+              host: {{ .nfs_ip }}
               port: 80
               # This is the API key that we generated previously
               apiKey: {{ .api_key }}
@@ -92,7 +92,7 @@ spec:
               allowInsecure: true
               apiVersion: 2
             sshConnection:
-              host: {{ .nfs-ip }}
+              host: {{ .nfs_ip }}
               port: 22
               username: {{ .username }}
               privateKey: {{ .rsa }}
