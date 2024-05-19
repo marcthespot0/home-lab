@@ -37,13 +37,17 @@ spec:
       selfHeal: true 
 ---
 apiVersion: v1
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 metadata:
+  name: immich-photos
+  namespace: immich
   annotations:
     pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
-  name: immich-photos
 spec:
+  storageClassName: "nfs-csi"
   accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-
+    - ReadWriteOnce
+  resources:
+    requests:
+      # NFS Subdir Provisioner doesn't care at all abou this
+      storage: 100M
