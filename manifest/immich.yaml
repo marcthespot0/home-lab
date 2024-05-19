@@ -47,4 +47,4 @@ spec:
     requests:
       storage: 500Gi
   volumeName: immich-photos
-  storageClassName: nfs-csi
+  storageClassName: immich-photos
