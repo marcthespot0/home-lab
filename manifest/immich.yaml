@@ -35,3 +35,17 @@ spec:
     automated:
       prune: true
       selfHeal: true 
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: immich-main-pvc
+  namespace: immich
+spec:
+  storageClassName: "media-nfs"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      # NFS Subdir Provisioner doesn't care at all abou this
+      storage: 100M
