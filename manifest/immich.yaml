@@ -44,7 +44,7 @@ metadata:
 spec:
   storageClassName: media-nfs
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       # NFS Subdir Provisioner doesn't care at all abou this
