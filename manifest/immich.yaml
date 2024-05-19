@@ -12,28 +12,33 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
-  destination:
-    name: in-cluster
-    namespace: immich
   project: default
   sources:
   - chart: immich
+    repoURL: https://immich-app.github.io/immich-charts
+    targetRevision: 0.4.0
     helm:
       valueFiles:
-      - $values/manifest/immich-values.yaml
-    repoURL: https://immich-app.github.io/immich-charts
-    targetRevision: 0.6.0
-  - ref: values
-    repoURL: https://github.com/marcthespot0/home-lab.git
+      - $repo/manifest/immich-values.yaml
+      releaseName: immich
+  - repoURL: https://github.com/marcthespot0/home-lab
+    path: /manifest
     targetRevision: main
-  - path: /manifest
-    repoURL: https://github.com/marcthespot0/home-lab.git
-    targetRevision: main
+    ref: repo
+  destination:
+    name: in-cluster
+    namespace: immich
+  ignoreDifferences:
+  - kind: PersistentVolume
+    jsonPointers:
+    - /spec/claimRef/resourceVersion
+    - /spec/claimRef/uid
+    - /status/lastPhaseTransitionTime
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-    - PruneLast=true
     - CreateNamespace=true
     - ServerSideApply=true
+    - RespectIgnoreDifferences=true
