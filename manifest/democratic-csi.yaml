@@ -1,0 +1,119 @@
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: democratic-csi
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: democratic-csi-configsecrets
+  namespace: democratic-csi
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        DEMOCRATIC_VAR_NFS_IP: "{{ .nfs-ip }}"
+        DEMOCRATIC_VAR_TRUENAS_RSA: "{{ .rsa }}"
+        DEMOCRATIC_VAR_USERNAME: "{{ .username }}"
+        DEMOCRATIC_VAR_TRUENAS_API: "{{ .api_key }}"
+  data:
+    - secretKey: nfs_ip
+      remoteRef:
+        key: nfs
+        property: nfs_ip
+    - secretKey: rsa
+      remoteRef:
+        key: nfs
+        property: truenas_rsa
+    - secretKey: username
+      remoteRef:
+        key: nfs
+        property: username
+    - secretKey: api_key
+      remoteRef:
+        key: nfs
+        property: truenas_api_key 
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nfs
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    repoURL: https://democratic-csi.github.io/charts/
+    targetRevision: "0.11.1"
+    chart: democratic-csi
+    helm:
+      values: |
+        csiDriver:
+          name: "org.democratic-csi.nfs"
+
+        storageClasses:
+        - name: freenas-nfs-csi
+          defaultClass: false
+          reclaimPolicy: Retain
+          volumeBindingMode: Immediate
+          allowVolumeExpansion: true
+          parameters:
+            fsType: nfs
+          
+        mountOptions:
+        - noatime
+        - nfsvers=4
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
+
+        driver:
+          config:
+            driver: freenas-nfs
+            instance_id:
+            httpConnection:
+              protocol: http
+              host: {{ .nfs-ip }}
+              port: 80
+              # This is the API key that we generated previously
+              apiKey: {{ .api_key }}
+              username: {{ .username }}
+              allowInsecure: true
+              apiVersion: 2
+            sshConnection:
+              host: {{ .nfs-ip }}
+              port: 22
+              username: {{ .username }}
+              privateKey: {{ .rsa }}
+            zfs:
+              # Make sure to use the storage pool that was created previously
+              datasetParentName: truenas/kubernetes/nfs/vols
+              detachedSnapshotsDatasetParentName: truenas/kubernetes/nfs/snaps
+              datasetEnableQuotas: true
+              datasetEnableReservation: false
+              datasetPermissionsMode: "0777"
+              datasetPermissionsUser: {{ .username }}
+              datasetPermissionsGroup: wheel
+            nfs:
+              shareHost: {{ .nfs-ip }}
+              shareAlldirs: false
+              shareAllowedHosts: []
+              shareAllowedNetworks: []
+              shareMaprootUser: {{ .username }}
+              shareMaprootGroup: wheel
+              shareMapallUser: ""
+              shareMapallGroup: ""
