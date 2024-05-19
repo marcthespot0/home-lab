@@ -1,9 +1,9 @@
 
-# ---
-# kind: Namespace
-# apiVersion: v1
-# metadata:
-#   name: democratic-csi
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: democratic-csi
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -84,7 +84,7 @@ spec:
               instance_id:
               httpConnection:
                 protocol: http
-                host: {{ .nfs_ip }}
+                host: 192.168.1.235
                 port: 80
                 # This is the API key that we generated previously
                 apiKey: {{ .api_key }}
@@ -92,7 +92,7 @@ spec:
                 allowInsecure: true
                 apiVersion: 2
               sshConnection:
-                host: {{ .nfs_ip }}
+                host: 192.168.1.235
                 port: 22
                 username: {{ .username }}
                 privateKey: {{ .rsa }}
@@ -117,9 +117,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: democratic-csi
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
