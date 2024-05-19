@@ -87,7 +87,7 @@ spec:
                 host: 192.168.1.235
                 port: 80
                 # This is the API key that we generated previously
-                apiKey: {{ .api_key }}
+                apiKey: "{{ .api_key }}"
                 username: {{ .username }}
                 allowInsecure: true
                 apiVersion: 2
