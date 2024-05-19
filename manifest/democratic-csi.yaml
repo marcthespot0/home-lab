@@ -88,7 +88,7 @@ spec:
                 port: 80
                 allowInsecure: true
                 # # This is the API key that we generated previously
-                # apiKey: "{{ .api_key }}"
+                apiKey: "{{ .api_key }}"
                 # username: "{{ .username }}"
                 # allowInsecure: true
                 # apiVersion: 2
