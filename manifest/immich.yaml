@@ -18,7 +18,7 @@ spec:
             library:
               # Automatically creating the library volume is not supported by this chart
               # You have to specify an existing PVC to use
-              existingClaim: media-nfs
+              existingClaim: immich-photos
         postgresql:
           enabled: true
         redis:
@@ -41,19 +41,9 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: nfs.csi.k8s.io
-  name: pv-nfs
+  name: immich-photos
 spec:
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nfs-csi
-  mountOptions:
-    - nfsvers=4.1
-  csi:
-    driver: nfs.csi.k8s.io
-    # volumeHandle format: {nfs-server-address}#{sub-dir-name}#{share-name}
-    # make sure this value is unique for every share in the cluster
-    volumeHandle: 192.168.1.235:/mnt/truenas/kubernetes/immich-photos
-    volumeAttributes:
-      server: 192.168.1.235
-      share: /mnt/truenas/kubernetes/immich-photos
+
