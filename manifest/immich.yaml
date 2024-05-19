@@ -42,7 +42,7 @@ metadata:
   name: immich-main-pvc
   namespace: immich
 spec:
-  storageClassName: immich-photos
+  storageClassName: media-nfs
   accessModes:
     - ReadWriteOnce
   resources:
