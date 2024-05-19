@@ -95,7 +95,7 @@ spec:
                 host: "{{ .nfs-ip }}"
                 port: 22
                 username: "{{ .username }}"
-                privateKey: {{ .rsa }}
+                privateKey: "{{ .rsa }}"
               zfs:
                 # Make sure to use the storage pool that was created previously
                 datasetParentName: truenas/kubernetes/nfs/vols
