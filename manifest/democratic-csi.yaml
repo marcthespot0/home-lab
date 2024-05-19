@@ -30,7 +30,7 @@ spec:
     - secretKey: nfs_ip
       remoteRef:
         key: nfs
-        property: nfs_ip
+        property: truenas_ip
     - secretKey: rsa
       remoteRef:
         key: nfs
