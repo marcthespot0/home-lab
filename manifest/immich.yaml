@@ -36,15 +36,16 @@ spec:
       prune: true
       selfHeal: true 
 ---
-kind: PersistentVolumeClaim
 apiVersion: v1
+kind: PersistentVolumeClaim
 metadata:
-  name: immich-photos
+  name: immich-main-pvc
+  namespace: immich
 spec:
+  storageClassName: "immich-photos"
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 500Gi
-  volumeName: immich-photos
-  storageClassName: immich-photos
+      # NFS Subdir Provisioner doesn't care at all abou this
+      storage: 100M
