@@ -47,7 +47,7 @@ spec:
     - secretKey: password
       remoteRef:
         key: nfs
-        property: password 
+        property: password_truenas
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
