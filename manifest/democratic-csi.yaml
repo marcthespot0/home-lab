@@ -84,7 +84,7 @@ spec:
               instance_id:
               httpConnection:
                 protocol: http
-                host: "{{ .nfs-ip }}"
+                host: 192.168.1.235
                 port: 80
                 # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
@@ -106,7 +106,7 @@ spec:
                 datasetPermissionsUser: "{{ .username }}"
                 datasetPermissionsGroup: wheel
               nfs:
-                shareHost: "{{ .nfs-ip }}"
+                shareHost: 192.168.1.235
                 shareAlldirs: false
                 shareAllowedHosts: []
                 shareAllowedNetworks: []
