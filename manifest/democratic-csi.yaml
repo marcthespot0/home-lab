@@ -117,6 +117,10 @@ spec:
               shareMaprootGroup: wheel
               shareMapallUser: ""
               shareMapallGroup: ""
+            driver:
+              existingConfigSecret: democractic-csi-nfs-driver-config
+              config:
+                driver: freenas-nfs
     destination:
       server: https://kubernetes.default.svc
       namespace: democratic-csi
