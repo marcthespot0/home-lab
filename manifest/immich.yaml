@@ -1,0 +1,64 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: pihole
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: immich
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    name: in-cluster
+    namespace: immich
+  project: default
+  sources:
+  - chart: immich
+    helm:
+      valueFiles:
+        immich:
+          persistence:
+            # Main data store for all photos shared between different components.
+            library:
+              # Automatically creating the library volume is not supported by this chart
+              # You have to specify an existing PVC to use
+              existingClaim: media-nfs
+
+        image:
+          tag: v1.105.1
+        # Dependencies
+
+        redis:
+          enabled: true
+
+        postgresql:
+          enabled: true
+
+        typesense:
+          enabled: false
+          persistence:
+            tsdata:
+              # Enabling typesense persistence is recommended to avoid slow reindexing
+              enabled: true
+              accessMode: ReadWriteOnce
+              size: 1Gi
+  #   repoURL: https://immich-app.github.io/immich-charts
+  #   targetRevision: 0.6.0
+  # - ref: values
+  #   repoURL: https://github.com/synthe102/homelab.git
+  #   targetRevision: main
+  # - path: k8s/sources/immich/manifests
+  #   repoURL: https://github.com/synthe102/homelab.git
+  #   targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - PruneLast=true
+    - CreateNamespace=true
+    - ServerSideApply=true
