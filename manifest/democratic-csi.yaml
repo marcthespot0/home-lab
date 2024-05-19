@@ -72,12 +72,12 @@ spec:
         mountOptions:
         - noatime
         - nfsvers=4
-        # secrets:
-        #   provisioner-secret:
-        #   controller-publish-secret:
-        #   node-stage-secret:
-        #   node-publish-secret:
-        #   controller-expand-secret:
+        secrets:
+          provisioner-secret:
+          controller-publish-secret:
+          node-stage-secret:
+          node-publish-secret:
+          controller-expand-secret:
         driver:
           config:
             driver: freenas-nfs
