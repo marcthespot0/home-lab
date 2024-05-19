@@ -61,7 +61,6 @@ spec:
       values: |
         csiDriver:
           name: "org.democratic-csi.nfs"
-
         storageClasses:
         - name: freenas-nfs-csi
           defaultClass: false
@@ -69,8 +68,7 @@ spec:
           volumeBindingMode: Immediate
           allowVolumeExpansion: true
           parameters:
-            fsType: nfs
-          
+            fsType: nfs        
         mountOptions:
         - noatime
         - nfsvers=4
@@ -80,7 +78,6 @@ spec:
           node-stage-secret:
           node-publish-secret:
           controller-expand-secret:
-
         driver:
           config:
             driver: freenas-nfs
@@ -117,10 +114,6 @@ spec:
               shareMaprootGroup: wheel
               shareMapallUser: ""
               shareMapallGroup: ""
-            driver:
-              existingConfigSecret: democractic-csi-nfs-driver-config
-              config:
-                driver: freenas-nfs
     destination:
       server: https://kubernetes.default.svc
       namespace: democratic-csi
