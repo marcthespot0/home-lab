@@ -1,44 +1,37 @@
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: immich
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: immich
   namespace: argocd
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  sources:
-  - chart: immich
+  source:
+    chart: immich
     repoURL: https://immich-app.github.io/immich-charts
-    targetRevision: 0.4.0
+    targetRevision: '*'
     helm:
-      valueFiles:
-      - $repo/manifest/values/immich-values.yaml
-      releaseName: immich
-  - repoURL: https://github.com/marcthespot0/home-lab
-    path: /manifest/immich.yaml
-    targetRevision: main
-    ref: repo
+      releaseName: immich-release
+      values: |
+        immich:
+          persistence:
+            # Main data store for all photos shared between different components.
+            library:
+              # Automatically creating the library volume is not supported by this chart
+              # You have to specify an existing PVC to use
+              existingClaim: immich-main-pvc
+        postgresql:
+          enabled: true
+        redis:
+          enabled: true
+        service:
+          main:
+            type: LoadBalancer
   destination:
-    name: in-cluster
+    server: "https://kubernetes.default.svc"
     namespace: immich
-  ignoreDifferences:
-  - kind: PersistentVolume
-    jsonPointers:
-    - /spec/claimRef/resourceVersion
-    - /spec/claimRef/uid
-    - /status/lastPhaseTransitionTime
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
     - CreateNamespace=true
-    - ServerSideApply=true
-    - RespectIgnoreDifferences=true
+    automated:
+      prune: true
+      selfHeal: true 
