@@ -55,7 +55,7 @@ spec:
   project: default
   source:
     repoURL: https://democratic-csi.github.io/charts/
-    targetRevision: "0.11.1"
+    targetRevision: "0.14.6"
     chart: democratic-csi
     helm:
       values: |
@@ -64,7 +64,7 @@ spec:
           storageClasses:
           - name: freenas-nfs-csi
             defaultClass: false
-            reclaimPolicy: Retain
+            reclaimPolicy: Delete
             volumeBindingMode: Immediate
             allowVolumeExpansion: true
             parameters:
@@ -83,20 +83,20 @@ spec:
               driver: freenas-api-nfs
               instance_id:
               httpConnection:
-                protocol: http
+                protocol: https
                 host: 192.168.1.235
-                port: 80
+                port: 443
                 allowInsecure: true
                 # # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
                 # username: "{{ .username }}"
                 # allowInsecure: true
                 apiVersion: 2
-              sshConnection:
-                host: "{{ .nfs-ip }}"
-                port: 22
-                username: "{{ .username }}"
-                privateKey: "{{ .rsa }}"
+              # sshConnection:
+              #   host: "{{ .nfs-ip }}"
+              #   port: 22
+              #   username: "{{ .username }}"
+              #   privateKey: "{{ .rsa }}"
               zfs:
                 # Make sure to use the storage pool that was created previously
                 datasetParentName: truenas/kubernetes/nfs/vols
@@ -104,7 +104,7 @@ spec:
                 datasetEnableQuotas: true
                 datasetEnableReservation: false
                 datasetPermissionsMode: "0777"
-                datasetPermissionsUser: "{{ .username }}"
+                # datasetPermissionsUser: "{{ .username }}"
                 datasetPermissionsGroup: wheel
               nfs:
                 shareHost: 192.168.1.235
