@@ -83,9 +83,9 @@ spec:
               driver: freenas-api-nfs
               instance_id:
               httpConnection:
-                protocol: https
+                protocol: http
                 host: 192.168.1.235
-                port: 443
+                port: 80
                 allowInsecure: true
                 # # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
