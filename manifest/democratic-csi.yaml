@@ -109,7 +109,7 @@ spec:
                 datasetEnableQuotas: true
                 datasetEnableReservation: false
                 datasetPermissionsMode: "0777"
-                # datasetPermissionsUser: "{{ .username }}"
+                datasetPermissionsUser: "{{ .username }}"
                 datasetPermissionsGroup: wheel
               nfs:
                 shareHost: 192.168.1.235
