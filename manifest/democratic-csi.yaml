@@ -65,9 +65,9 @@ spec:
     helm:
       values: |
           csiDriver:
-            name: "nfs"
+            name: "org.democratic-csi.nfs"
           storageClasses:
-          - name: nfs
+          - name: freenas-nfs-csi
             defaultClass: false
             reclaimPolicy: Delete
             volumeBindingMode: Immediate
@@ -76,7 +76,7 @@ spec:
               fsType: nfs        
           mountOptions:
           - noatime
-          - nfsvers=3
+          - nfsvers=4
           secrets:
             provisioner-secret:
             controller-publish-secret:
@@ -85,7 +85,7 @@ spec:
             controller-expand-secret:
           driver:
             config:
-              driver: freenas-api-nfs
+              driver: freenas-nfs
               instance_id:
               httpConnection:
                 protocol: http
