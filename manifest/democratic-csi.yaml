@@ -120,3 +120,8 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: democratic-csi
+  syncPolicy:
+  automated:
+    allowEmpty: true
+    prune: true
+    selfHeal: true
