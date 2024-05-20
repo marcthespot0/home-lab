@@ -87,15 +87,15 @@ spec:
             config:
               driver: freenas-api-nfs
               instance_id:
-              # httpConnection:
-              #   protocol: http
-              #   host: 192.168.1.235
-              #   port: 80
-              #   apiVersion: 2
-              #   apiKey: "{{ .api_key }}"
-              #   username: root
-              #   password: "{{ .password }}"
-              #   allowInsecure: true
+              httpConnection:
+                protocol: http
+                host: 192.168.1.235
+                port: 80
+                apiVersion: 2
+                apiKey: "{{ .api_key }}"
+                username: root
+                password: "{{ .password }}"
+                allowInsecure: true
               sshConnection:
                 host: 192.168.1.235
                 port: 22
