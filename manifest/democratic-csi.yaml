@@ -65,9 +65,9 @@ spec:
     helm:
       values: |
           csiDriver:
-            name: "org.democratic-csi.nfs"
+            name: "nfs"
           storageClasses:
-          - name: freenas-nfs-csi
+          - name: nfs
             defaultClass: false
             reclaimPolicy: Delete
             volumeBindingMode: Immediate
@@ -76,13 +76,17 @@ spec:
               fsType: nfs        
           mountOptions:
           - noatime
-          - nfsvers=4
+          - nfsvers=3
           secrets:
             provisioner-secret:
             controller-publish-secret:
             node-stage-secret:
             node-publish-secret:
             controller-expand-secret:
+          volumeSnapshotClasses:
+          - name: nfs
+            parameters:
+              detachedSnapshots: "true"
           driver:
             config:
               driver: freenas-api-nfs
@@ -91,11 +95,10 @@ spec:
                 protocol: http
                 host: 192.168.1.235
                 port: 80
-                allowInsecure: true
-                # # This is the API key that we generated previously
                 apiKey: "{{ .api_key }}"
-                username: "{{ .username }}"
-                password: "{{ .password }}"
+                allowInsecure: true
+                # username: "{{ .username }}"
+                # password: "{{ .password }}"
                 # apiVersion: 2
               # sshConnection:
               #   host: "{{ .nfs-ip }}"
@@ -116,8 +119,8 @@ spec:
                 shareAlldirs: false
                 shareAllowedHosts: []
                 shareAllowedNetworks: []
-                shareMaprootUser: 0
-                shareMaprootGroup: 0
+                shareMaprootUser: root
+                shareMaprootGroup: root
                 shareMapallUser: ""
                 shareMapallGroup: ""
   destination:
