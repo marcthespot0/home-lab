@@ -121,7 +121,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: democratic-csi
   syncPolicy:
-  automated:
-    allowEmpty: true
-    prune: true
-    selfHeal: true
+    automated:
+      allowEmpty: true
+      rune: true
+      selfHeal: true
