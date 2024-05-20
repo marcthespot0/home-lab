@@ -104,7 +104,7 @@ apiVersion: v1
 metadata:
   name: test-claim-nfs-api
   annotations:
-    volume.beta.kubernetes.io/storage-class: "truenas-nfs-csi"
+    volume.beta.kubernetes.io/storage-class: "truenas-nfs-csi-api"
 spec:
   storageClassName: truenas-nfs-csi
   accessModes:
