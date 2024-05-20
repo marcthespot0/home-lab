@@ -92,6 +92,8 @@ spec:
                 host: 192.168.1.235
                 port: 80
                 apiKey: "{{ .api_key }}"
+                username: root
+                password: "{{ .password }}"
                 allowInsecure: true
               zfs:
                 # Make sure to use the storage pool that was created previously
