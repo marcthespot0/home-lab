@@ -98,17 +98,3 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: test-claim-nfs-api
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "truenas-nfs-csi"
-spec:
-  storageClassName: truenas-nfs-csi
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
