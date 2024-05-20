@@ -123,5 +123,5 @@ spec:
   syncPolicy:
     automated:
       allowEmpty: true
-      rune: true
+      prune: true
       selfHeal: true
