@@ -85,7 +85,7 @@ spec:
             controller-expand-secret:
           driver:
             config:
-              driver: freenas-nfs
+              driver: freenas-api-nfs
               instance_id:
               httpConnection:
                 protocol: https
