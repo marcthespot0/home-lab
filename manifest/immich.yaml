@@ -73,7 +73,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: immich-server
+            name: immich-release-server
             port:
               number: 3001
 ---
