@@ -44,9 +44,9 @@ spec:
           enabled: true
         redis:
           enabled: true
-        service:
-          main:
-            type: ClusterIP
+        # service:
+        #   main:
+        #     type: ClusterIP
   destination:
     server: "https://kubernetes.default.svc"
     namespace: immich
@@ -55,6 +55,20 @@ spec:
       allowEmpty: true
       prune: true
       selfHeal: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-server
+  namespace: immich
+spec:
+  type: ClusterIP
+  selector:
+    app: immich-server
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3001
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
