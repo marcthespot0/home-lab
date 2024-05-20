@@ -89,16 +89,11 @@ spec:
               instance_id:
               httpConnection:
                 protocol: https
-                host: 192.168.1.235
+                host: "{{ .nfs_ip }}"
                 port: 443
-                apiKey: "1-tZKE6cqUtMI8o91kTGzmfTjNYDR4t4xht3dVZdVK8JOpflVEzcq4ZNYpuJCSa26S"
+                apiKey: "{{ .api_key }}"
                 allowInsecure: true
                 apiVersion: 2
-              # sshConnection:
-              #   host: 192.168.1.235
-              #   port: 22
-              #   username: root
-              #   privateKey: "{{ .rsa }}"
               zfs:
                 # Make sure to use the storage pool that was created previously
                 datasetParentName: truenas/kubernetes/nfs/vols
@@ -109,7 +104,7 @@ spec:
                 datasetPermissionsUser: 0
                 datasetPermissionsGroup: 0
               nfs:
-                shareHost: 192.168.1.235
+                shareHost: "{{ .nfs_ip }}"
                 shareAlldirs: false
                 shareAllowedHosts: []
                 shareAllowedNetworks: []
