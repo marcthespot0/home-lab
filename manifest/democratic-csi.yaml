@@ -91,7 +91,7 @@ spec:
                 protocol: https
                 host: "{{ .nfs_ip }}"
                 port: 443
-                apiKey: "{{ .api_key }}"
+                apiKey: "1-tZKE6cqUtMI8o91kTGzmfTjNYDR4t4xht3dVZdVK8JOpflVEzcq4ZNYpuJCSa26S"
                 allowInsecure: true
                 apiVersion: 2
               zfs:
