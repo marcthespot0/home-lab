@@ -85,13 +85,13 @@ spec:
             controller-expand-secret:
           driver:
             config:
-              driver: freenas-nfs
+              driver: freenas-nfs-api
               instance_id:
               httpConnection:
                 protocol: http
                 host: 192.168.1.235
                 port: 80
-                apiKey: 1-is0c5ah924wctjI4dKqlGCPvqyMVsVHFLqfxpZhiAHJ0IZhedx6rdRYljJU3NUbn
+                apiKey: "1-is0c5ah924wctjI4dKqlGCPvqyMVsVHFLqfxpZhiAHJ0IZhedx6rdRYljJU3NUbn"
                 allowInsecure: true
               sshConnection:
                 host: 192.168.1.235
