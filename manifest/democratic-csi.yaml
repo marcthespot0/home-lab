@@ -97,14 +97,6 @@ spec:
                 port: 80
                 apiKey: "{{ .api_key }}"
                 allowInsecure: true
-                # username: "{{ .username }}"
-                # password: "{{ .password }}"
-                # apiVersion: 2
-              # sshConnection:
-              #   host: "{{ .nfs-ip }}"
-              #   port: 22
-              #   username: "{{ .username }}"
-              #   privateKey: "{{ .rsa }}"
               zfs:
                 # Make sure to use the storage pool that was created previously
                 datasetParentName: truenas/kubernetes/nfs/vols
@@ -126,8 +118,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: democratic-csi
-  syncPolicy:
-    automated:
-      allowEmpty: true
-      prune: true
-      selfHeal: true
