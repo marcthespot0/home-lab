@@ -92,7 +92,7 @@ spec:
                 host: 192.168.1.235
                 port: 80
                 apiVersion: 2
-                apiKey: "{{ .api_key }}"
+                apiKey: 1-is0c5ah924wctjI4dKqlGCPvqyMVsVHFLqfxpZhiAHJ0IZhedx6rdRYljJU3NUbn
                 username: root
                 password: "{{ .password }}"
                 allowInsecure: true
