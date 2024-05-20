@@ -103,8 +103,8 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: test-claim-nfs
-  # annotations:
-  #   volume.beta.kubernetes.io/storage-class: "freenas-api-nfs"
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-api-nfs"
 spec:
   storageClassName: freenas-api-nfs
   accessModes:
