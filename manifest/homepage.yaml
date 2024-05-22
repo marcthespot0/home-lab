@@ -142,15 +142,15 @@ data:
                     showName: true
     - Automation:
         - Home Assistant:
-            href: https://homeassistant.<path:stringreplacesecret#domain>:8123
+            href: http://homeassistant.<path:stringreplacesecret#domain>:8123
             icon: home-assistant.svg
             widget:
               type: homeassistant
-              url: https://homeassistant.<path:stringreplacesecret#domain>:8123
+              url: http://homeassistant.<path:stringreplacesecret#domain>:8123
               key: {{HOMEPAGE_VAR_HASS_TOKEN}}
     - Infrastructure:
         - Unifi:
-            href: https://unifi.<path:stringreplacesecret#domain>
+            href: http://unifi.<path:stringreplacesecret#domain>
             icon: unifi.png
             description: Unifi Dashboard
             widget:
