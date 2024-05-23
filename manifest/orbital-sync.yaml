@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     chart: orbital-sync
-    repoURL: https://truecharts.org/orbital-sync
+    repoURL: https://truecharts.org/truecharts/orbital-sync 
     targetRevision: 4.0.14
     helm:
       releaseName: immich-release
