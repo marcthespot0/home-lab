@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     chart: orbital-sync
-    repoURL: https://charts.truecharts/orbital-sync
-    targetRevision: 4.0.14
+    repoURL: ghcr.io/mattwebbio/orbital-sync
+    targetRevision: 1.5.2
     helm:
       releaseName: immich-release
       values: |
