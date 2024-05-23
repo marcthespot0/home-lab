@@ -148,7 +148,7 @@ data:
               type: homeassistant
               url: http://hass.<path:stringreplacesecret#domain>:8123
               key: {{HOMEPAGE_VAR_HASS_TOKEN}}
-        - Immich
+        - Immich:
             href: https://immich.<path:stringreplacesecret#domain>
             icon: immich.svg
             widget:
