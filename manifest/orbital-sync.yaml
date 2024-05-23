@@ -67,3 +67,11 @@ spec:
                       enabled: false
                     startup:
                       enabled: false
+    destination:
+    server: "https://kubernetes.default.svc"
+    namespace: immich
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
