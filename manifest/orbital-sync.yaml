@@ -1,0 +1,69 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: orbital-sync
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: orbital-sync
+    repoURL: https://charts.truecharts/orbital-sync
+    targetRevision: 4.0.14
+    helm:
+      releaseName: immich-release
+      values: |
+        orbital:
+          honeybadger_api_key: ""
+          primary_host_base_url: http://pihole.<path:stringreplacesecret#domain>
+          # primary_host_password: password
+          secondary_hosts:
+            - host: http://192.168.1.211
+              # password: password
+        persistence:
+          config:
+            enabled: true
+            mountPath: /app
+        portal:
+          open:
+            enabled: false
+        securityContext:
+          container:
+            container:
+              readOnlyRootFilesystem: false
+        service:
+          main:
+            enabled: false
+            ports:
+              main:
+                enabled: false
+        workload:
+          main:
+            podSpec:
+              containers:
+                main:
+                  env:
+                    INTERVAL_MINUTES: 30
+                    RUN_ONCE: false
+                    SYNC_ADLIST: true
+                    SYNC_AUDITLOG: false
+                    SYNC_BLACKLIST: true
+                    SYNC_CLIENT: true
+                    SYNC_FLUSHTABLES: true
+                    SYNC_GROUP: true
+                    SYNC_LOCALCNAMERECORDS: true
+                    SYNC_LOCALDNSRECORDS: true
+                    SYNC_REGEX_WHITELIST: true
+                    SYNC_REGEXLIST: true
+                    SYNC_STATICDHCPLEASES: false
+                    SYNC_WHITELIST: true
+                    VERBOSE: false
+                  envFrom:
+                    - secretRef:
+                        name: orbital-secrets
+                  probes:
+                    liveness:
+                      enabled: false
+                    readiness:
+                      enabled: false
+                    startup:
+                      enabled: false
