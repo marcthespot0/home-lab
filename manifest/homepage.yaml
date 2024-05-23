@@ -148,6 +148,13 @@ data:
               type: homeassistant
               url: http://hass.<path:stringreplacesecret#domain>:8123
               key: {{HOMEPAGE_VAR_HASS_TOKEN}}
+        - Immich
+            href: https://immich.<path:stringreplacesecret#domain>
+            icon: immich.svg
+            widget:
+              type: immich
+              url: https://immich.marcthespot.com
+              key: EFb2ZdHJBUHFPu9ytBnAGM2XVNrzDUOM3inAGxHAQE
     - Infrastructure:
         - Unifi:
             href: http://unifi.<path:stringreplacesecret#domain>
