@@ -1,0 +1,213 @@
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: media
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: homepage-configsecrets
+  namespace: homepage
+  labels:
+    app.kubernetes.io/part-of: homepage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+
+        QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
+        QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
+  data:
+    - secretKey: vpn_user
+      remoteRef:
+        key: qbitorrent
+        property: OPENVPN_USERNAME
+    - secretKey: vpn_pass
+      remoteRef:
+        key: qbitorrent
+        property: OPENVPN_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbitorrent
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: qbitorrent
+  selector:
+    app.kubernetes.io/component: qbitorrent
+    app.kubernetes.io/instance: qbitorrent
+    app.kubernetes.io/name: qbitorrent
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbitorrent
+  labels:
+    app.kubernetes.io/component: qbitorrent
+    app.kubernetes.io/instance: qbitorrent
+    app.kubernetes.io/name: qbitorrent
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: qbitorrent
+      app.kubernetes.io/name: qbitorrent
+      app.kubernetes.io/instance: qbitorrent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: qbitorrent
+        app.kubernetes.io/instance: qbitorrent
+        app.kubernetes.io/name: qbitorrent
+    spec:
+      enableServiceLinks: true
+      serviceAccountName: default
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 1000
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      dnsPolicy: ClusterFirst
+      containers:
+        - image: lscr.io/linuxserver/qbittorrent:latest
+          name: qbitorrent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "100"
+          volumeMounts:
+            - mountPath: /config
+              name: qbitorrent-config
+              subPath: qbitorrent/config
+            - mountPath: /data
+              name: qbitorrent-data
+        - image: qmcgaw/gluetun:latest
+          name: gluetun
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              value: "expressvpn"
+            - name: OPENVPN_USER
+              value: "{{ .vpn_user }}"
+            -  - name: OPENVPN_PASS
+              value: "{{ .vpn_pass }}"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config
+              name: data
+              subPath: gluetun/config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbitorrent-config
+        - name: qbitorrent-data
+          persistentVolumeClaim:
+            claimName: qbitorrent-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: qbitorrent
+  name: qbitorrent-config
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
+--- 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: qbittorent-data
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
+spec:
+  storageClassName: freenas-nfs-csi
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: qbitorrent
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: qb.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: qbitorrent
+            port:
+              number: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: qbitorrent
+  namespace: media
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "qb.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: o
+      port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: qbitorrent
+  namespace: media
+  annotations:
+    external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: qb.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"

@@ -1,9 +1,3 @@
-# Service: PiHole
-# Ingress: pihole.brhd.io
-# Label: app.kubernetes.io/name: pihole
-# NOTE: all client IPs are substituted by pod IP due to use of ingress controller
-#       consider using 'hostPort' or NodePort with 'ExternalTrafficPolicy=Local"
-#       if it's not desired.
 ---
 kind: Namespace
 apiVersion: v1
