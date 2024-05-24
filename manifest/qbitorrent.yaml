@@ -48,10 +48,6 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: qbitorrent
-  selector:
-    app.kubernetes.io/component: qbitorrent
-    app.kubernetes.io/instance: qbitorrent
-    app.kubernetes.io/name: qbitorrent
 ---
 apiVersion: apps/v1
 kind: Deployment
