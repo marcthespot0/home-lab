@@ -173,6 +173,7 @@ data:
               type: truenas
               url: https://truenas.<path:stringreplacesecret#domain>
               key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
+              enablePools: true
         - Proxmox:
             href: https://proxmox00.<path:stringreplacesecret#domain>:8006
             icon: proxmox.png
