@@ -60,7 +60,7 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: cloudflare_token
-     - secretKey: cloudflare_account_id
+    - secretKey: cloudflare_account_id
       remoteRef:
         key: homepage-configsecrets
         property: cloudflare_account
