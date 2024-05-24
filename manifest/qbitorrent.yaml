@@ -101,7 +101,6 @@ spec:
           securityContext:
           capabilities:
               add:
-                - SYS_ADMIN
                 - NET_ADMIN
           volumeMounts:
             - mountPath: /config
