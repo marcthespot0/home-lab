@@ -76,8 +76,8 @@ spec:
       hostPID: false
       dnsPolicy: ClusterFirst
       containers:
-        - image: lscr.io/linuxserver/qbittorrent:latest
-          name: qbitorrent
+        - name: qbitorrent
+          image: lscr.io/linuxserver/qbittorrent:latest
           env:
             - name: PUID
               value: "1000"
@@ -89,14 +89,14 @@ spec:
               subPath: qbitorrent/config
             - mountPath: /data
               name: qbitorrent-data
-        - image: qmcgaw/gluetun:latest
-          name: gluetun
+        - name: gluten
+          image: qmcgaw/gluetun:latest
           env:
             - name: VPN_SERVICE_PROVIDER
               value: "expressvpn"
             - name: OPENVPN_USER
               value: "{{ .vpn_user }}"
-            -  - name: OPENVPN_PASS
+            - name: OPENVPN_PASS
               value: "{{ .vpn_pass }}"
           securityContext:
             capabilities:
