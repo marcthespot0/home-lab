@@ -8,11 +8,10 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: homepage-configsecrets
-  namespace: homepage
+  name: qbitorrent
+  namespace: media
   labels:
-    app.kubernetes.io/part-of: homepage
-  annotations:
+    app.kubernetes.io/part-of: qbitorrent
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
