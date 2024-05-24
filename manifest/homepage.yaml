@@ -157,12 +157,12 @@ data:
               key: EFb2ZdHJBUHFPu9ytBnAGM2XVNrzDUOM3inAGxHAQE
     - Infrastructure:
         - Unifi:
-            href: https://unifi.<path:stringreplacesecret#domain>
+            href: http://unifi.<path:stringreplacesecret#domain>
             icon: unifi.png
             description: Unifi Dashboard
             widget:
               type: unifi
-              url: https://unifi.<path:stringreplacesecret#domain>
+              url: http://unifi.<path:stringreplacesecret#domain>
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
         - TrueNAS:
