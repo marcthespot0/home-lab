@@ -56,30 +56,17 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbitorrent
+  name: qbittorent
   namespace: media
-  # labels:
-  #   app.kubernetes.io/component: qbitorrent
-  #   app.kubernetes.io/instance: qbitorrent
-  #   app.kubernetes.io/name: qbitorrent
 spec:
-  revisionHistoryLimit: 1
   replicas: 1
-  strategy:
-    type: Recreate
   selector:
     matchLabels:
       app: qbitorrent
-  #     app.kubernetes.io/component: qbitorrent
-  #     app.kubernetes.io/name: qbitorrent
-  #     app.kubernetes.io/instance: qbitorrent
   template:
     metadata:
       labels:
         app: qbitorrent
-        # app.kubernetes.io/component: qbitorrent
-        # app.kubernetes.io/instance: qbitorrent
-        # app.kubernetes.io/name: qbitorrent
     spec:
       enableServiceLinks: true
       serviceAccountName: default
