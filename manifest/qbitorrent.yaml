@@ -130,7 +130,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: qbittorent-data
+  name: qbitorent-data
   namespace: qbitorrent
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
