@@ -28,6 +28,7 @@ spec:
         HOMEPAGE_VAR_WEATHER_LONGITUDE: "{{ .longitude }}"
         HOMEPAGE_VAR_CLOUDFLARE_TUNNEL_ID: "{{ .cloudflare_tunnel_id }}"
         HOMEPAGE_VAR_CLOUDFLARE_TOKEN: "{{ .cloudflare_token_id }}"
+        HOMEPAGE_VAR_CLOUDFLARE_ACCOUNT_ID: "{{ .cloudflare_account_id }}"
         HOMEPAGE_VAR_HASS_TOKEN: "{{ .hass }}"
         HOMEPAGE_VAR_PROXMOX_TOKEN_ID: "{{ .proxmox_token_id_00 }}"
         HOMEPAGE_VAR_PROXMOX_PASSWORD: "{{ .proxmox_password_00 }}"
@@ -59,6 +60,10 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: cloudflare_token
+     - secretKey: cloudflare_account_id
+      remoteRef:
+        key: homepage-configsecrets
+        property: cloudflare_account
     - secretKey: proxmox_token_id_00
       remoteRef:
         key: homepage-configsecrets
@@ -165,6 +170,14 @@ data:
               url: https://unifi.<path:stringreplacesecret#domain>
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+        - Cloudflare:
+            href: www.cloudflare.com
+            icon: cloudflare.png
+            widget:
+              type: cloudflared
+              accountid: accountid # from zero trust dashboard url e.g. https://one.dash.cloudflare.com/<accountid>/home/quick-start
+              tunnelid: tunnelid # found in tunnels dashboard under the tunnel name
+              key: cloudflareapitoken # api token with `Account.Cloudflare Tunnel:Read` https://dash.cloudflare.com/profile/api-tokens
         - TrueNAS:
             href: https://truenas.<path:stringreplacesecret#domain>
             icon: truenas.png
