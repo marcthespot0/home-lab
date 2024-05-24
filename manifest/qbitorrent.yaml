@@ -41,13 +41,15 @@ apiVersion: v1
 kind: Service
 metadata:
   name: qbitorrent
+  namespace: media
 spec:
   type: ClusterIP
+  selector:
+    app: qbitorrent
   ports:
-    - port: 8080
+    - protocol: TCP
+      port: 80
       targetPort: 8080
-      protocol: TCP
-      name: qbitorrent
 ---
 apiVersion: apps/v1
 kind: Deployment
