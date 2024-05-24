@@ -50,69 +50,69 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-# ---
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: qbittorent
-#   namespace: qbitorrent
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: qbitorrent
-#   template:
-#     metadata:
-#       labels:
-#         app: qbitorrent
-#     spec:
-#       enableServiceLinks: true
-#       serviceAccountName: default
-#       automountServiceAccountToken: true
-#       securityContext:
-#         fsGroup: 1000
-#       hostIPC: false
-#       hostNetwork: false
-#       hostPID: false
-#       dnsPolicy: ClusterFirst
-#       containers:
-#         - image: lscr.io/linuxserver/qbittorrent:latest
-#           name: qbitorrent
-#           env:
-#             - name: PUID
-#               value: "1000"
-#             - name: PGID
-#               value: "100"
-#           volumeMounts:
-#             - mountPath: /config
-#               name: qbitorrent-config
-#               subPath: qbitorrent/config
-#             - mountPath: /data
-#               name: qbitorrent-data
-#         - image: qmcgaw/gluetun:latest
-#           name: gluetun
-#           env:
-#             - name: VPN_SERVICE_PROVIDER
-#               value: "expressvpn"
-#             - name: OPENVPN_USER
-#               value: "{{ .vpn_user }}"
-#             -  - name: OPENVPN_PASS
-#               value: "{{ .vpn_pass }}"
-#           securityContext:
-#             capabilities:
-#               add:
-#                 - NET_ADMIN
-#           volumeMounts:
-#             - mountPath: /config
-#               name: data
-#               subPath: gluetun/config
-#       volumes:
-#         - name: config
-#           persistentVolumeClaim:
-#             claimName: qbitorrent-config
-#         - name: qbitorrent-data
-#           persistentVolumeClaim:
-#             claimName: qbitorrent-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbittorent
+  namespace: qbitorrent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbitorrent
+  template:
+    metadata:
+      labels:
+        app: qbitorrent
+    spec:
+      enableServiceLinks: true
+      serviceAccountName: default
+      automountServiceAccountToken: true
+      securityContext:
+        fsGroup: 1000
+      hostIPC: false
+      hostNetwork: false
+      hostPID: false
+      dnsPolicy: ClusterFirst
+      containers:
+        - image: lscr.io/linuxserver/qbittorrent:latest
+          name: qbitorrent
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "100"
+          volumeMounts:
+            - mountPath: /config
+              name: qbitorrent-config
+              subPath: qbitorrent/config
+            - mountPath: /data
+              name: qbitorrent-data
+        - image: qmcgaw/gluetun:latest
+          name: gluetun
+          env:
+            - name: VPN_SERVICE_PROVIDER
+              value: "expressvpn"
+            - name: OPENVPN_USER
+              value: "{{ .vpn_user }}"
+            -  - name: OPENVPN_PASS
+              value: "{{ .vpn_pass }}"
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /config
+              name: data
+              subPath: gluetun/config
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: qbitorrent-config
+        - name: qbitorrent-data
+          persistentVolumeClaim:
+            claimName: qbitorrent-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
