@@ -3,13 +3,13 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: media
+  name: qbitorrent
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: qbitorrent
-  namespace: media
+  namespace: qbitorrent
   labels:
     app.kubernetes.io/part-of: qbitorrent
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
@@ -40,7 +40,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: qbitorrent
-  namespace: media
+  namespace: qbitorrent
 spec:
   type: ClusterIP
   selector:
@@ -54,7 +54,7 @@ spec:
 # kind: Deployment
 # metadata:
 #   name: qbittorent
-#   namespace: media
+#   namespace: qbitorrent
 # spec:
 #   replicas: 1
 #   selector:
@@ -119,7 +119,7 @@ metadata:
   labels:
     app: qbitorrent
   name: qbitorrent-config
-  namespace: media
+  namespace: qbitorrent
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -130,7 +130,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: qbittorent-data
-  namespace: media
+  namespace: qbitorrent
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
@@ -145,7 +145,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: qbitorrent
-  namespace: media
+  namespace: qbitorrent
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
@@ -166,7 +166,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   name: qbitorrent
-  namespace: media
+  namespace: qbitorrent
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -185,7 +185,7 @@ apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
   name: qbitorrent
-  namespace: media
+  namespace: qbitorrent
   annotations:
     external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
