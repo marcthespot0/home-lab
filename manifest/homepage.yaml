@@ -173,8 +173,8 @@ data:
               type: truenas
               url: https://truenas.<path:stringreplacesecret#domain>
               key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
-              enablePools: true
-              nasType: scale
+              enablePools: true # optional, defaults to false
+              nasType: scale # defaults to scale, must be set to 'core' if using enablePools with TrueNAS Core
         - Proxmox:
             href: https://proxmox00.<path:stringreplacesecret#domain>:8006
             icon: proxmox.png
