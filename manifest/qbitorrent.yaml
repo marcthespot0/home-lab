@@ -79,10 +79,10 @@ spec:
         - name: qbitorrent
           image: lscr.io/linuxserver/qbittorrent:latest
           env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "100"
+          - name: PUID
+            value: "1000"
+          - name: PGID
+            value: "100"
           volumeMounts:
             - mountPath: /config
               name: qbitorrent-config
@@ -92,14 +92,14 @@ spec:
         - name: gluten
           image: qmcgaw/gluetun:latest
           env:
-            - name: VPN_SERVICE_PROVIDER
-              value: "expressvpn"
-            - name: OPENVPN_USER
-              value: "{{ .vpn_user }}"
-            - name: OPENVPN_PASS
-              value: "{{ .vpn_pass }}"
+          - name: VPN_SERVICE_PROVIDER
+            value: "expressvpn"
+          - name: OPENVPN_USER
+            value: "{{ .vpn_user }}"
+          - name: OPENVPN_PASS
+            value: "{{ .vpn_pass }}"
           securityContext:
-            capabilities:
+          capabilities:
               add:
                 - NET_ADMIN
           volumeMounts:
