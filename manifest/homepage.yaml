@@ -157,7 +157,7 @@ data:
               key: EFb2ZdHJBUHFPu9ytBnAGM2XVNrzDUOM3inAGxHAQE
     - Infrastructure:
         - Unifi:
-            href: http://unifi.<path:stringreplacesecret#domain>
+            href: https://unifi.<path:stringreplacesecret#domain>
             icon: unifi.png
             description: Unifi Dashboard
             widget:
