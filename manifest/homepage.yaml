@@ -63,7 +63,7 @@ spec:
     - secretKey: cloudflare_account_id
       remoteRef:
         key: homepage-configsecrets
-        property: cloudflare_account
+        property: cloudflare_accountid
     - secretKey: proxmox_token_id_00
       remoteRef:
         key: homepage-configsecrets
