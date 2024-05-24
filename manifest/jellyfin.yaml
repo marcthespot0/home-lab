@@ -94,9 +94,8 @@ spec:
             claimName: jellyfin-config
         - name: jellyfin-cache
           emptyDir: {}
-        - name: jellyfin-downloads
-          persistence:
-            existingClaim: jellyfin-downloads
+        persistence:
+          existingClaim: jellyfin-downloads
       nodeSelector:
         beta.kubernetes.io/arch: amd64
         nvidia.com/gpu.present: "false"
