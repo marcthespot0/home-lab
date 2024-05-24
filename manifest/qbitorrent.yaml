@@ -12,6 +12,7 @@ metadata:
   namespace: qbitorrent
   labels:
     app.kubernetes.io/part-of: qbitorrent
+  annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
