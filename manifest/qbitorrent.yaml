@@ -107,7 +107,7 @@ spec:
               name: data
               subPath: gluetun/config
       volumes:
-        - name: config
+        - name: qbitorrent-config
           persistentVolumeClaim:
             claimName: qbitorrent-config
         - name: qbitorrent-data
