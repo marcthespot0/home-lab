@@ -95,8 +95,7 @@ spec:
           - name: VPN_SERVICE_PROVIDER
             value: "expressvpn"
           - name: FIREWALL_OUTBOUND_SUBNETS
-              value: "192.168.0.0/24"
-            - name: OPENVPN_USER
+            value: "192.168.0.0/24"
           - name: OPENVPN_USER
             value: "{{ .vpn_user }}"
           - name: OPENVPN_PASS
