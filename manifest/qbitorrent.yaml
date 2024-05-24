@@ -101,6 +101,7 @@ spec:
           - name: OPENVPN_PASS
             value: "{{ .vpn_pass }}"
           securityContext:
+          privileged: true
           capabilities:
               add:
                 - NET_ADMIN
