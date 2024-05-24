@@ -122,7 +122,7 @@ data:
       longhorn:
         url: https://lh.<path:stringreplacesecret#domain>
     background:
-      image: http://7-themes.com/data_images/out/27/6860538-new-york-rangers-wallpaper.jpg
+      image: https://wallpaperset.com/w/full/4/6/d/24497.jpg
       blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
       saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
       brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
