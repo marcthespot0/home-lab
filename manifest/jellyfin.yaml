@@ -35,6 +35,19 @@ spec:
     requests:
       storage: 50Gi
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: jellyfin-config
+  name: jellyfin-config
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -84,7 +97,7 @@ spec:
           volumeMounts:
             - name: jellyfin-config
               mountPath: /config
-            - name: jellyfin-cache
+            - name: jellyfin-config
               mountPath: /cache
             - name: jellyfin-downloads
               mountPath: /downloads
