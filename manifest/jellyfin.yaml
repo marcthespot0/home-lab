@@ -94,7 +94,7 @@ spec:
             claimName: jellyfin-config
         - name: jellyfin-cache
           emptyDir: {}
-      persistence:
+        - name: jellyfin-downloads
         existingClaim: jellyfin-downloads
       nodeSelector:
         beta.kubernetes.io/arch: amd64
