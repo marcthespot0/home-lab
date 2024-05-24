@@ -104,7 +104,7 @@ spec:
                 - NET_ADMIN
           volumeMounts:
             - mountPath: /config
-              name: data
+              name: qbitorrent-config
               subPath: gluetun/config
       volumes:
         - name: qbitorrent-config
