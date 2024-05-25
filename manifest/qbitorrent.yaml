@@ -90,10 +90,82 @@ spec:
       port: 80
       targetPort: 8080
 ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: qbittorent
+#   namespace: qbittorrent
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: qbittorrent
+#   template:
+#     metadata:
+#       labels:
+#         app: qbittorrent
+#     spec:
+#       enableServiceLinks: true
+#       serviceAccountName: default
+#       automountServiceAccountToken: true
+#       securityContext:
+#         fsGroup: 1000
+#       hostIPC: false
+#       hostNetwork: false
+#       hostPID: false
+#       dnsPolicy: ClusterFirst
+#       containers:
+#         - name: qbittorrent
+#           image: lscr.io/linuxserver/qbittorrent:4.6.2
+#           env:
+#           - name: PUID
+#             value: "1000"
+#           - name: PGID
+#             value: "100"
+#           - name: TZ
+#             value: "American/New_York"
+#           - name: UMASK_SET
+#             value: "022"
+#           - name: WEBUI_PORT
+#             value: "8080"
+#           volumeMounts:
+#             - mountPath: /config
+#               name: qbittorrent-config
+#               subPath: qbittorrent/config
+#             - mountPath: /data
+#               name: qbittorrent-data
+#         - name: gluten
+#           image: qmcgaw/gluetun:latest
+#           env:
+#           - name: VPN_SERVICE_PROVIDER
+#             value: "expressvpn"
+#           - name: FIREWALL_OUTBOUND_SUBNETS
+#             value: "192.168.1.0/24"
+#           - name: OPENVPN_USER
+#             value: "{{ .vpn_user }}"
+#           - name: OPENVPN_PASSWORD
+#             value: "{{ .vpn_user }}"
+#           securityContext:
+#             privileged: true
+#             allowPrivilegeEscalation: true
+#             capabilities:
+#               add:
+#                 - NET_ADMIN
+#           volumeMounts:
+#             - mountPath: /config
+#               name: qbittorrent-config
+#               subPath: gluetun/config
+#       volumes:
+#         - name: qbittorrent-config
+#           persistentVolumeClaim:
+#             claimName: qbittorrent-config
+#         - name: qbittorrent-data
+#           persistentVolumeClaim:
+#             claimName: qbittorrent-data
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorent
+  name: qbittorrent
   namespace: qbittorrent
 spec:
   replicas: 1
@@ -105,46 +177,36 @@ spec:
       labels:
         app: qbittorrent
     spec:
-      enableServiceLinks: true
-      serviceAccountName: default
-      automountServiceAccountToken: true
-      securityContext:
-        fsGroup: 1000
-      hostIPC: false
-      hostNetwork: false
-      hostPID: false
-      dnsPolicy: ClusterFirst
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:4.6.2
           env:
-          - name: PUID
-            value: "1000"
-          - name: PGID
-            value: "100"
-          - name: TZ
-            value: "American/New_York"
-          - name: UMASK_SET
-            value: "022"
-          - name: WEBUI_PORT
-            value: "8080"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "100"
+            - name: TZ
+              value: "American/New_York"
+            - name: UMASK_SET
+              value: "022"
+            - name: WEBUI_PORT
+              value: "8080"
           volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: qbittorrent/config
-            - mountPath: /data
-              name: qbittorrent-data
+            - mountPath: /config/qBittorrent     # Mount at the desired path
+              name: qbittorrent-config-volume    # Use a different name for the volume
+              readOnly: true                     # Set read-only as ConfigMaps are immutable
+              subPath: qBittorrent.conf          # Specify the specific file
         - name: gluten
           image: qmcgaw/gluetun:latest
           env:
-          - name: VPN_SERVICE_PROVIDER
-            value: "expressvpn"
-          - name: FIREWALL_OUTBOUND_SUBNETS
-            value: "192.168.1.0/24"
-          - name: OPENVPN_USER
-            value: "{{ .vpn_user }}"
-          - name: OPENVPN_PASSWORD
-            value: "{{ .vpn_user }}"
+            - name: VPN_SERVICE_PROVIDER
+              value: "expressvpn"
+            - name: FIREWALL_OUTBOUND_SUBNETS
+              value: "192.168.1.0/24"
+            - name: OPENVPN_USER
+              value: "{{ .vpn_user }}"
+            - name: OPENVPN_PASSWORD
+              value: "{{ .vpn_user }}"
           securityContext:
             privileged: true
             allowPrivilegeEscalation: true
@@ -152,16 +214,16 @@ spec:
               add:
                 - NET_ADMIN
           volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: gluetun/config
+            - mountPath: /config/gluetun     # Mount at the desired path
+              name: gluetun-config-volume    # Use a different name for the volume
+              readOnly: true                 # Set read-only as ConfigMaps are immutable
+              subPath: gluetun/config        # Specify the specific file
       volumes:
-        - name: qbittorrent-config
-          persistentVolumeClaim:
-            claimName: qbittorrent-config
-        - name: qbittorrent-data
-          persistentVolumeClaim:
-            claimName: qbittorrent-data
+        - name: qbittorrent-config-volume        # Define the volume name
+          configMap:
+            name: qbittorrent-configmap         # Reference the ConfigMap
+        - name: gluetun-config-volume            # Define the volume name for gluetun
+          emptyDir: {}                          # Use an emptyDir volume as gluetun configuration might not be available as a ConfigMap
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
