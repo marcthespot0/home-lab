@@ -124,9 +124,9 @@ spec:
               - NET_ADMIN
           privileged: true
         ports:
-        - containerPort: 6881
-        - containerPort: 80
-        - containerPort: 8118
+          - containerPort: 6881
+          - containerPort: 80
+          - containerPort: 8118
         env:
           - name: VPN_ENABLED
             value: "yes"
