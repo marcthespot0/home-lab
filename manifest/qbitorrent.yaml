@@ -9,7 +9,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: qbittorrent-configmap
-  namespace: qbitorrent
+  namespace: qbittorrent
 data:
   qBittorrent.conf: |
     [AutoRun]
