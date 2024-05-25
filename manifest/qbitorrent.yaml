@@ -5,46 +5,6 @@ apiVersion: v1
 metadata:
   name: qbittorrent
 ---
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: qbittorrent-configmap
-#   namespace: qbittorrent
-# data:
-#   qBittorrent.conf: |
-#     [AutoRun]
-#     enabled=false
-#     program=
-
-#     [BitTorrent]
-#     Session\DefaultSavePath=/downloads/
-#     Session\Port=6881
-#     Session\QueueingSystemEnabled=true
-#     Session\TempPath=/downloads/incomplete/
-
-#     [LegalNotice]
-#     Accepted=true
-
-#     [Meta]
-#     MigrationVersion=6
-
-#     [Network]
-#     Cookies=@Invalid()
-#     PortForwardingEnabled=false
-#     Proxy\HostnameLookupEnabled=false
-#     Proxy\Profiles\BitTorrent=true
-#     Proxy\Profiles\Misc=true
-#     Proxy\Profiles\RSS=true
-
-#     [Preferences]
-#     Connection\PortRangeMin=6881
-#     Connection\UPnP=false
-#     Downloads\SavePath=/downloads/
-#     Downloads\TempPath=/downloads/incomplete/
-#     WebUI\Address=*
-#     WebUI\ServerDomains=*
-# #     WebUI\CSRFProtection=false
-# ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -118,30 +78,30 @@ spec:
         - name: qbittorrent
           # image: lscr.io/linuxserver/qbittorrent:4.6.4
           image: binhex/arch-qbittorrentvpn:4.6.4-1-01
-          securityContext:
+       securityContext:
           capabilities:
             add:
               - NET_ADMIN
           privileged: true
         ports:
-          - containerPort: 6881
-          - containerPort: 80
-          - containerPort: 8118
+        - containerPort: 6881
+        - containerPort: 80
+        - containerPort: 8118
         env:
-          - name: VPN_ENABLED
-            value: "yes"
-          - name: VPN_USER
-            value: 
-          - name: VPN_PASS
-            value:
-          - name: VPN_PROV
-            value: custom
-          - name: VPN_CLIENT
-            value: openvpn
-          - name: LAN_OPTIONS
-            value: "10.0.0.0/8"
-          - name: DEBUG
-            value: true
+        - name: VPN_ENABLED
+          value: "yes"
+        - name: VPN_USER
+          value: 
+        - name: VPN_PASS
+          value:
+        - name: VPN_PROV
+          value: custom
+        - name: VPN_CLIENT
+          value: openvpn
+        - name: LAN_OPTIONS
+          value: "10.0.0.0/8"
+        - name: DEBUG
+          value: true
     # -e VPN_USER=<vpn username> \
     # -e VPN_PASS=<vpn password> \
     # -e VPN_PROV=<pia|airvpn|protonvpn|custom> \
@@ -159,22 +119,22 @@ spec:
     # -e UMASK=<umask for created files> \
     # -e PUID=<uid for user> \
     # -e PGID=<gid for user> \
-          - name: PUID
-            value: "1024"
-          - name: PGID
-            value: "100"
+        - name: PUID
+          value: "1024"
+        - name: PGID
+          value: "100"
           # - name: TZ
           #   value: "American/New_York"
           # - name: UMASK_SET
           #   value: "022"
           # - name: WEBUI_PORT
           #   value: "8080"
-          volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: qbittorrent/config
-            - mountPath: /data
-              name: qbittorrent-data
+        volumeMounts:
+          - mountPath: /config
+            name: qbittorrent-config
+            subPath: qbittorrent/config
+          - mountPath: /data
+            name: qbittorrent-data
         # - name: gluten
         #   image: qmcgaw/gluetun:latest
         #   env:
