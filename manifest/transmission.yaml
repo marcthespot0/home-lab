@@ -70,7 +70,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: transmission     # Name of the secret
-              key: vpn_code          # Key of the secret
+              key: ACTIVATION_CODE        # Key of the secret
         securityContext:
           privileged: true
           capabilities:
