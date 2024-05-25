@@ -23,7 +23,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        TRANSMISSION_VAR_VPN_CODE:  "{{ .vpncode }}"
+        TRANSMISSION_VAR_VPNCODE:  "{{ .vpncode }}"
   data:
     - secretKey: vpncode
       remoteRef:
