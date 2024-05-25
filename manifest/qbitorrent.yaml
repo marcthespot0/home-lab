@@ -119,7 +119,7 @@ spec:
           image: lscr.io/linuxserver/qbittorrent:4.6.2
           env:
           - name: PUID
-            value: "1000"
+            value: "1024"
           - name: PGID
             value: "100"
           - name: TZ
@@ -128,9 +128,6 @@ spec:
             value: "022"
           - name: WEBUI_PORT
             value: "8080"
-          securityContext:
-            capabilities:
-              add: ["NET_ADMIN"]
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
