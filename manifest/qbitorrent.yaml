@@ -75,13 +75,12 @@ spec:
             add: ["NET_ADMIN", "SYS_TIME"]
         ports:
         - containerPort: 8080
-        volumes:
-        - name: qbittorrent-config
-          persistentVolumeClaim:
-            claimName: qbittorrent-config
-        - name: qbittorrent-data
-          persistentVolumeClaim:
-            claimName: qbittorrent-data
+          volumeMounts:
+          - mountPath: /config
+            name: qbittorrent-config
+            subPath: qbittorrent/config
+          - mountPath: /data
+            name: qbittorrent-data
         env:
         - name: VPN_ENABLED
           value: "yes"
@@ -116,6 +115,14 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: qbittorrent-config
+          subpath: qbt/config
+      volumes:    
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config
+        - name: qbittorrent-data
+          persistentVolumeClaim:
+            claimName: qbittorrent-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
