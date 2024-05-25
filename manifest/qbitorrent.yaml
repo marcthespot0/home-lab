@@ -65,7 +65,7 @@ spec:
   template:
     metadata:
       labels:
-        app: qbtittorrent
+        app: qbittorrent
     spec: 
       containers:
       - name: qbittorrent
