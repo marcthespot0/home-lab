@@ -48,6 +48,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: expressvpn-transmission
+  namespace: transmission
 spec:
   replicas: 1 
   selector:
