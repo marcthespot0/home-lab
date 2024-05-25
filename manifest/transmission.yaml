@@ -28,7 +28,7 @@ spec:
     - secretKey: vpncode
       remoteRef:
         key: transmission
-        property: expressvpn
+        property: vpn_code
 ---
 apiVersion: v1
 kind: Service
@@ -66,7 +66,7 @@ spec:
           mountPath: /var/lib/transmission-daemon/downloads
         env:
         - name: ACTIVATION_CODE
-          value: "TRANSMISSION_VAR_VPN_CODE"
+          value: "{{ .vpncode }}"
         securityContext:
           privileged: true
           capabilities:
