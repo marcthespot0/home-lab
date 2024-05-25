@@ -45,55 +45,121 @@ data:
     WebUI\ServerDomains=*
     WebUI\CSRFProtection=false
 ---
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: qbittorrent
-  namespace: qbittorrent
-  labels:
-    app.kubernetes.io/part-of: qbittorrent
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
-        QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
-  data:
-    - secretKey: vpn_user
-      remoteRef:
-        key: qbittorrent
-        property: OPENVPN_USERNAME
-    - secretKey: vpn_pass
-      remoteRef:
-        key: qbittorrent
-        property: OPENVPN_PASSWORD
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: qbittorrent
-  namespace: qbittorrent
-spec:
-  type: ClusterIP
-  selector:
-    app: qbittorrent
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8080
----
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: qbittorrent
+#   namespace: qbittorrent
+#   labels:
+#     app.kubernetes.io/part-of: qbittorrent
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   refreshInterval: "5m"
+#   secretStoreRef:
+#     kind: ClusterSecretStore
+#     name: 1password
+#   target:
+#     creationPolicy: Owner
+#     template:
+#       engineVersion: v2
+#       data:
+#         QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
+#         QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
+#   data:
+#     - secretKey: vpn_user
+#       remoteRef:
+#         key: qbittorrent
+#         property: OPENVPN_USERNAME
+#     - secretKey: vpn_pass
+#       remoteRef:
+#         key: qbittorrent
+#         property: OPENVPN_PASSWORD
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: qbittorrent
+#   namespace: qbittorrent
+# spec:
+#   type: ClusterIP
+#   selector:
+#     app: qbittorrent
+#   ports:
+#     - protocol: TCP
+#       port: 80
+#       targetPort: 8080
+# ---
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: qbittorent
+#   namespace: qbittorrent
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: qbittorrent
+#   template:
+#     metadata:
+#       labels:
+#         app: qbittorrent
+#     spec:
+#       enableServiceLinks: true
+#       serviceAccountName: default
+#       automountServiceAccountToken: true
+#       securityContext:
+#         fsGroup: 1000
+#       hostIPC: false
+#       hostNetwork: false
+#       hostPID: false
+#       dnsPolicy: ClusterFirst
+#       containers:
+#         - name: qbittorrent
+#           image: lscr.io/linuxserver/qbittorrent:4.6.2
+#           env:
+#           - name: PUID
+#             value: "1000"
+#           - name: PGID
+#             value: "100"
+#           volumeMounts:
+#             - mountPath: /config
+#               name: qbittorrent-config
+#               subPath: qbittorrent/config
+#             - mountPath: /data
+#               name: qbittorrent-data
+#         - name: gluten
+#           image: qmcgaw/gluetun:latest
+#           env:
+#           - name: VPN_SERVICE_PROVIDER
+#             value: "expressvpn"
+#           - name: FIREWALL_OUTBOUND_SUBNETS
+#             value: "192.168.1.0/24"
+#           - name: OPENVPN_USER
+#             value: "{{ .vpn_user }}"
+#           - name: OPENVPN_PASSWORD
+#             value: "{{ .vpn_user }}"
+#           securityContext:
+#             privileged: true
+#             allowPrivilegeEscalation: true
+#             capabilities:
+#               add:
+#                 - NET_ADMIN
+#           volumeMounts:
+#             - mountPath: /config
+#               name: qbittorrent-config
+#               subPath: gluetun/config
+#       volumes:
+#         - name: qbittorrent-config
+#           persistentVolumeClaim:
+#             claimName: qbittorrent-config
+#         - name: qbittorrent-data
+#           persistentVolumeClaim:
+#             claimName: qbittorrent-data
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorent
+  name: qbittorrent
   namespace: qbittorrent
 spec:
   replicas: 1
@@ -156,6 +222,9 @@ spec:
         - name: qbittorrent-data
           persistentVolumeClaim:
             claimName: qbittorrent-data
+        - name: qbittorrent-configmap-volume
+          configMap:
+            name: qbittorrent-configmap  # Name of your ConfigMap
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
