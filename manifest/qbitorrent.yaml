@@ -73,48 +73,48 @@ spec:
           persistentVolumeClaim:
             claimName: qbittorrent-data
       containers:
-      - name: qbt
+      - name: qbittorrent
         image: binhex/arch-qbittorrentvpn
         securityContext:
           capabilities:
             add: ["NET_ADMIN", "SYS_TIME"]
         ports:
         - containerPort: 8080
-        # env:
-        # - name: VPN_ENABLED
-        #   value: "yes"
-        # - name: VPN_PROV
-        #   value: "custom"
-        # - name: VPN_CLIENT
-        #   value: "openvpn"
-        # - name: VPN_USER
-        #   value: "{{ .vpn_user }}"
-        # - name: VPN_PASS
-        #   value: "{{ .vpn_pass }}"
-        # - name: ENABLE_PRIVOXY
-        #   value: "yes"
-        # - name: LAN_NETWORK
-        #   value: "192.168.0.0/16"
-        # - name: NAME_SERVERS
-        #   value: "192.168.1.165,192.168.1.211,1.1.1.1"
-        # - name: VPN_INPUT_PORTS
-        #   value: "1234"
-        # - name: VPN_OUTPUT_PORTS
-        #   value: "5678"
-        # - name: DEBUG
-        #   value: "false"
-        # - name: WEBUI_PORT
-        #   value: "8080"
-        # - name: PUID
-        #   value: "1000"
-        # - name: PGID
-        #   value: "1000"
-        # - name: UMASK
-        #   value: "000"
-        # volumeMounts:
-        # - mountPath: /config
-        #   name: qbittorrent-config
-        #   subPath: config
+        env:
+        - name: VPN_ENABLED
+          value: "yes"
+        - name: VPN_PROV
+          value: "custom"
+        - name: VPN_CLIENT
+          value: "openvpn"
+        - name: VPN_USER
+          value: "{{ .vpn_user }}"
+        - name: VPN_PASS
+          value: "{{ .vpn_pass }}"
+        - name: ENABLE_PRIVOXY
+          value: "yes"
+        - name: LAN_NETWORK
+          value: "192.168.0.0/16"
+        - name: NAME_SERVERS
+          value: "192.168.1.165,192.168.1.211,1.1.1.1"
+        - name: VPN_INPUT_PORTS
+          value: "1234"
+        - name: VPN_OUTPUT_PORTS
+          value: "5678"
+        - name: DEBUG
+          value: "false"
+        - name: WEBUI_PORT
+          value: "8080"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: UMASK
+          value: "000"
+        volumeMounts:
+        - mountPath: /config
+          name: qbittorrent-config
+          subPath: config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
