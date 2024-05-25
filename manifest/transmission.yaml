@@ -67,7 +67,10 @@ spec:
           mountPath: /var/lib/transmission-daemon/downloads
         env:
         - name: ACTIVATION_CODE
-          value: "{{ .ACTIVATION_CODE }}"
+          valueFrom:
+            secretKeyRef:
+              name: transmission     # Name of the secret
+              key: vpn_code          # Key of the secret
         securityContext:
           privileged: true
           capabilities:
