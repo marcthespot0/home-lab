@@ -78,9 +78,8 @@ spec:
         - containerPort: 9091 
       volumes:
       - name: transmission-data
-        hostPath:
-          path: /home/user/Torrents 
-          type: DirectoryOrCreate
+        persistentVolumeClaim:
+          claimName: transmission-data
 --- 
 kind: PersistentVolumeClaim
 apiVersion: v1
