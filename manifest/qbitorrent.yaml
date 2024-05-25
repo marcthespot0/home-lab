@@ -118,17 +118,57 @@ spec:
         - name: qbittorrent
           # image: lscr.io/linuxserver/qbittorrent:4.6.4
           image: binhex/arch-qbittorrentvpn:4.6.4-1-01
+          securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+          privileged: true
+        ports:
+        - containerPort: 6881
+        - containerPort: 80
+        - containerPort: 8118
           env:
+           - name: VPN_ENABLED
+             value: "yes"
+           - name: VPN_USER
+             value: 
+           - name: VPN_PASS
+             value:
+           - name: VPN_PROV
+             value: custom
+           - name: VPN_CLIENT
+             value: openvpn
+           - name: LAN_OPTIONS
+             value: "10.0.0.0/8"
+           - name: DEBUG
+             value: true
+    # -e VPN_USER=<vpn username> \
+    # -e VPN_PASS=<vpn password> \
+    # -e VPN_PROV=<pia|airvpn|protonvpn|custom> \
+    # -e VPN_CLIENT=<openvpn|wireguard> \
+    # -e VPN_OPTIONS=<additional openvpn cli options> \
+    # -e STRICT_PORT_FORWARD=<yes|no> \
+    # -e ENABLE_PRIVOXY=<yes|no> \
+    # -e ENABLE_STARTUP_SCRIPTS=<yes|no> \
+    # -e LAN_NETWORK=<lan ipv4 network>/<cidr notation> \
+    # -e NAME_SERVERS=<name server ip(s)> \
+    # -e VPN_INPUT_PORTS=<port number(s)> \
+    # -e VPN_OUTPUT_PORTS=<port number(s)> \
+    # -e DEBUG=<true|false> \
+    # -e WEBUI_PORT=<port for web interfance> \
+    # -e UMASK=<umask for created files> \
+    # -e PUID=<uid for user> \
+    # -e PGID=<gid for user> \
           - name: PUID
             value: "1024"
           - name: PGID
             value: "100"
-          - name: TZ
-            value: "American/New_York"
-          - name: UMASK_SET
-            value: "022"
-          - name: WEBUI_PORT
-            value: "8080"
+          # - name: TZ
+          #   value: "American/New_York"
+          # - name: UMASK_SET
+          #   value: "022"
+          # - name: WEBUI_PORT
+          #   value: "8080"
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
