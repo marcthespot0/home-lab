@@ -45,51 +45,51 @@ data:
     WebUI\ServerDomains=*
     WebUI\CSRFProtection=false
 ---
-# apiVersion: external-secrets.io/v1beta1
-# kind: ExternalSecret
-# metadata:
-#   name: qbittorrent
-#   namespace: qbittorrent
-#   labels:
-#     app.kubernetes.io/part-of: qbittorrent
-#   annotations:
-#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-# spec:
-#   refreshInterval: "5m"
-#   secretStoreRef:
-#     kind: ClusterSecretStore
-#     name: 1password
-#   target:
-#     creationPolicy: Owner
-#     template:
-#       engineVersion: v2
-#       data:
-#         QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
-#         QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
-#   data:
-#     - secretKey: vpn_user
-#       remoteRef:
-#         key: qbittorrent
-#         property: OPENVPN_USERNAME
-#     - secretKey: vpn_pass
-#       remoteRef:
-#         key: qbittorrent
-#         property: OPENVPN_PASSWORD
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: qbittorrent
-#   namespace: qbittorrent
-# spec:
-#   type: ClusterIP
-#   selector:
-#     app: qbittorrent
-#   ports:
-#     - protocol: TCP
-#       port: 80
-#       targetPort: 8080
-# ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+  labels:
+    app.kubernetes.io/part-of: qbittorrent
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
+        QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
+  data:
+    - secretKey: vpn_user
+      remoteRef:
+        key: qbittorrent
+        property: OPENVPN_USERNAME
+    - secretKey: vpn_pass
+      remoteRef:
+        key: qbittorrent
+        property: OPENVPN_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent
+  namespace: qbittorrent
+spec:
+  type: ClusterIP
+  selector:
+    app: qbittorrent
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+---
 # apiVersion: apps/v1
 # kind: Deployment
 # metadata:
