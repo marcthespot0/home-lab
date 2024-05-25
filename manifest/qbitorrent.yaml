@@ -64,14 +64,7 @@ spec:
     metadata:
       labels:
         app: qbtittorrent
-    spec:
-      # volumes:
-      # - name: qbittorrent-config
-      #     persistentVolumeClaim:
-      #       claimName: qbittorrent-config
-      # - name: qbittorrent-data
-      #     persistentVolumeClaim:
-      #       claimName: qbittorrent-data
+    spec: 
       containers:
       - name: qbittorrent
         image: binhex/arch-qbittorrentvpn
@@ -80,6 +73,13 @@ spec:
             add: ["NET_ADMIN", "SYS_TIME"]
         ports:
         - containerPort: 8080
+        volumes:
+        - name: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config
+        - name: qbittorrent-data
+          persistentVolumeClaim:
+            claimName: qbittorrent-data
         env:
         - name: VPN_ENABLED
           value: "yes"
