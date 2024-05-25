@@ -70,10 +70,10 @@ spec:
       automountServiceAccountToken: true
       securityContext:
         fsGroup: 1000
-      hostIPC: false
-      hostNetwork: false
-      hostPID: false
-      dnsPolicy: ClusterFirst
+      # hostIPC: false
+      # hostNetwork: false
+      # hostPID: false
+      # dnsPolicy: ClusterFirst
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest
