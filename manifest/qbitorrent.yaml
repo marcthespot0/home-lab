@@ -109,6 +109,7 @@ spec:
       serviceAccountName: default
       automountServiceAccountToken: true
       securityContext:
+        runAsUser: 1000
         fsGroup: 1000
       hostIPC: false
       hostNetwork: false
