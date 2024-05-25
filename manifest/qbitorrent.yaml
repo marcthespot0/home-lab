@@ -12,7 +12,7 @@ metadata:
   namespace: qbittorrent
 data:
   vpn.opvn: |
-    "{{ .vpn_opvn }}"
+    "{{ .vpn_ovpn }}"
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -35,7 +35,7 @@ spec:
       data:
         QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
         QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
-        QBIT_VAR_VPN_OPVN:  "{{ .vpn_opvn }}"
+        QBIT_VAR_VPN_OPVN:  "{{ .vpn_ovpn }}"
   data:
     - secretKey: vpn_user
       remoteRef:
@@ -45,10 +45,10 @@ spec:
       remoteRef:
         key: qbittorrent
         property: OPENVPN_PASSWORD
-    - secretKey: vpn_opvn
+    - secretKey: vpn_ovpn
       remoteRef:
         key: qbittorrent
-        property: opvn
+        property: ovpn
 ---
 apiVersion: v1
 kind: Service
