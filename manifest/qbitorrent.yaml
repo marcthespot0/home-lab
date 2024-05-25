@@ -137,6 +137,10 @@ spec:
         - name: qbittorrent-data
           persistentVolumeClaim:
             claimName: qbittorrent-data
+        - name: qbittorrent-configmap
+          configMap:
+            name: qbittorrent-configmap
+            path: config/openvpn
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
