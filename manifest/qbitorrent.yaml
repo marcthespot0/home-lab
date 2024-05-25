@@ -140,7 +140,7 @@ spec:
         - name: qbittorrent-configmap
           configMap:
             name: qbittorrent-configmap
-            path: qbt/config/openvpn
+            path: config/openvpn
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
