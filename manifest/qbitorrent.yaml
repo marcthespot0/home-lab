@@ -54,6 +54,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qbittorrent-deployment
+  namespace: qbittorrent
   labels:
     app: qbittorrent
 spec:
