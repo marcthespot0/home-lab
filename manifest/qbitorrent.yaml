@@ -128,6 +128,9 @@ spec:
             value: "022"
           - name: WEBUI_PORT
             value: "8080"
+          securityContext:
+            capabilities:
+              add: ["NET_ADMIN"]
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
