@@ -24,7 +24,6 @@ spec:
     template:
       engineVersion: v2
       data:
-
         QBIT_VAR_VPN_USERNAME:  "{{ .vpn_user }}"
         QBIT_VAR_VPN_PASSWORD:  "{{ .vpn_pass }}"
   data:
