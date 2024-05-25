@@ -101,7 +101,6 @@ spec:
           - name: OPENVPN_PASS
             value: "{{ .vpn_pass }}"
           securityContext:
-          privileged: true
           capabilities:
               add:
                 - NET_ADMIN
@@ -109,6 +108,8 @@ spec:
             - mountPath: /config
               name: qbitorrent-config
               subPath: gluetun/config
+            securityContext:
+              allowPriviledgeEscalation: true
       volumes:
         - name: qbitorrent-config
           persistentVolumeClaim:
