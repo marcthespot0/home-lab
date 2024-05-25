@@ -43,8 +43,8 @@ metadata:
 #     Downloads\TempPath=/downloads/incomplete/
 #     WebUI\Address=*
 #     WebUI\ServerDomains=*
-#     WebUI\CSRFProtection=false
----
+# #     WebUI\CSRFProtection=false
+# ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -128,20 +128,20 @@ spec:
         - containerPort: 80
         - containerPort: 8118
         env:
-           - name: VPN_ENABLED
-             value: "yes"
-           - name: VPN_USER
-             value: 
-           - name: VPN_PASS
-             value:
-           - name: VPN_PROV
-             value: custom
-           - name: VPN_CLIENT
-             value: openvpn
-           - name: LAN_OPTIONS
-             value: "10.0.0.0/8"
-           - name: DEBUG
-             value: true
+          - name: VPN_ENABLED
+            value: "yes"
+          - name: VPN_USER
+            value: 
+          - name: VPN_PASS
+            value:
+          - name: VPN_PROV
+            value: custom
+          - name: VPN_CLIENT
+            value: openvpn
+          - name: LAN_OPTIONS
+            value: "10.0.0.0/8"
+          - name: DEBUG
+            value: true
     # -e VPN_USER=<vpn username> \
     # -e VPN_PASS=<vpn password> \
     # -e VPN_PROV=<pia|airvpn|protonvpn|custom> \
