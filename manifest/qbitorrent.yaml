@@ -122,6 +122,10 @@ spec:
             value: "1000"
           - name: PGID
             value: "100"
+          volumes:
+            - name: qbittorrent-config
+              configMap:
+                name: qbittorrent-configmap
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
@@ -151,8 +155,6 @@ spec:
               subPath: gluetun/config
       volumes:
         - name: qbittorrent-config
-          configMap: 
-            name: qbittorrent-configmap
           persistentVolumeClaim:
             claimName: qbittorrent-config
         - name: qbittorrent-data
