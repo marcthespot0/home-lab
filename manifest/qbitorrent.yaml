@@ -3,15 +3,15 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: qbitorrent
+  name: qbittorrent
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: qbitorrent
-  namespace: qbitorrent
+  name: qbittorrent
+  namespace: qbittorrent
   labels:
-    app.kubernetes.io/part-of: qbitorrent
+    app.kubernetes.io/part-of: qbittorrent
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -29,22 +29,22 @@ spec:
   data:
     - secretKey: vpn_user
       remoteRef:
-        key: qbitorrent
+        key: qbittorrent
         property: OPENVPN_USERNAME
     - secretKey: vpn_pass
       remoteRef:
-        key: qbitorrent
+        key: qbittorrent
         property: OPENVPN_PASSWORD
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: qbitorrent
-  namespace: qbitorrent
+  name: qbittorrent
+  namespace: qbittorrent
 spec:
   type: ClusterIP
   selector:
-    app: qbitorrent
+    app: qbittorrent
   ports:
     - protocol: TCP
       port: 80
@@ -54,16 +54,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: qbittorent
-  namespace: qbitorrent
+  namespace: qbittorrent
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: qbitorrent
+      app: qbittorrent
   template:
     metadata:
       labels:
-        app: qbitorrent
+        app: qbittorrent
     spec:
       enableServiceLinks: true
       serviceAccountName: default
@@ -75,7 +75,7 @@ spec:
       hostPID: false
       dnsPolicy: ClusterFirst
       containers:
-        - name: qbitorrent
+        - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:latest
           env:
           - name: PUID
@@ -84,10 +84,10 @@ spec:
             value: "100"
           volumeMounts:
             - mountPath: /config
-              name: qbitorrent-config
-              subPath: qbitorrent/config
+              name: qbittorrent-config
+              subPath: qbittorrent/config
             - mountPath: /data
-              name: qbitorrent-data
+              name: qbittorrent-data
         - name: gluten
           image: qmcgaw/gluetun:latest
           env:
@@ -107,23 +107,23 @@ spec:
                 - NET_ADMIN
           volumeMounts:
             - mountPath: /config
-              name: qbitorrent-config
+              name: qbittorrent-config
               subPath: gluetun/config
       volumes:
-        - name: qbitorrent-config
+        - name: qbittorrent-config
           persistentVolumeClaim:
-            claimName: qbitorrent-config
-        - name: qbitorrent-data
+            claimName: qbittorrent-config
+        - name: qbittorrent-data
           persistentVolumeClaim:
-            claimName: qbitorrent-data
+            claimName: qbittorrent-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: qbitorrent
-  name: qbitorrent-config
-  namespace: qbitorrent
+    app: qbittorrent
+  name: qbittorrent-config
+  namespace: qbittorrent
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -133,8 +133,8 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: qbitorrent-data
-  namespace: qbitorrent
+  name: qbittorrent-data
+  namespace: qbittorrent
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
@@ -148,8 +148,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: qbitorrent
-  namespace: qbitorrent
+  name: qbittorrent
+  namespace: qbittorrent
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
@@ -162,15 +162,15 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: qbitorrent
+            name: qbittorrent
             port:
               number: 8080
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: qbitorrent
-  namespace: qbitorrent
+  name: qbittorrent
+  namespace: qbittorrent
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -188,8 +188,8 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: qbitorrent
-  namespace: qbitorrent
+  name: qbittorrent
+  namespace: qbittorrent
   annotations:
     external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
