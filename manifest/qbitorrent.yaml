@@ -108,13 +108,12 @@ spec:
       enableServiceLinks: true
       serviceAccountName: default
       automountServiceAccountToken: true
-      securityContext:
-        runAsUser: 1000
-        fsGroup: 1000
-      hostIPC: false
-      hostNetwork: false
-      hostPID: false
-      dnsPolicy: ClusterFirst
+      # securityContext:
+      #   fsGroup: 1000
+      # hostIPC: false
+      # hostNetwork: false
+      # hostPID: false
+      # dnsPolicy: ClusterFirst
       containers:
         - name: qbittorrent
           image: lscr.io/linuxserver/qbittorrent:4.6.2
