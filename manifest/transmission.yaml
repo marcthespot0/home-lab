@@ -30,7 +30,6 @@ spec:
         key: transmission
         property: expressvpn
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -61,7 +60,7 @@ spec:
     spec:
       containers:
       - name: expressvpn-transmission
-        image: polkaned/expressvpn-transmission:3.57.0.3-1.653ac494
+        image: polkaned/expressvpn-transmission
         volumeMounts:
         - name: transmission-data
           mountPath: /var/lib/transmission-daemon/downloads
