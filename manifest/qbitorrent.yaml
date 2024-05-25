@@ -65,13 +65,13 @@ spec:
       labels:
         app: qbtittorrent
     spec:
-      volumes:
-      - name: qbittorrent-config
-          persistentVolumeClaim:
-            claimName: qbittorrent-config
-      - name: qbittorrent-data
-          persistentVolumeClaim:
-            claimName: qbittorrent-data
+      # volumes:
+      # - name: qbittorrent-config
+      #     persistentVolumeClaim:
+      #       claimName: qbittorrent-config
+      # - name: qbittorrent-data
+      #     persistentVolumeClaim:
+      #       claimName: qbittorrent-data
       containers:
       - name: qbittorrent
         image: binhex/arch-qbittorrentvpn
