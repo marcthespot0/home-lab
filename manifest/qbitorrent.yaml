@@ -155,7 +155,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: qb.<path:stringreplacesecret#domain>
+  - host: qbittorrent.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
@@ -179,7 +179,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "qb.<path:stringreplacesecret#domain>"
+  - "qbittorrent.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: qbittorent
@@ -195,7 +195,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: qb.<path:stringreplacesecret#domain>
+    - dnsName: qbittorrent.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
         - intgw.<path:stringreplacesecret#domain>
