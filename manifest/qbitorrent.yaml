@@ -116,7 +116,7 @@ spec:
         volumeMounts:
         - mountPath: /config
           name: qbittorrent-config
-          # subPath: config
+          subPath: qbt/config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
