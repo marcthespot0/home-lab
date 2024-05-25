@@ -1,0 +1,154 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: transmission
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: transmission
+  namespace: transmission
+  labels:
+    app.kubernetes.io/part-of: transmission
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        TRANSMISSION_VAR_VPN_CODE  "{{ .vpn_code }}"
+  data:
+    - secretKey: vpn_code
+      remoteRef:
+        key: transmission
+        property: expressvpn
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: transmission
+  namespace: transmission
+spec:
+  type: ClusterIP
+  selector:
+    app: transmission
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9091
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expressvpn-transmission
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: expressvpn-transmission
+  template:
+    metadata:
+      labels:
+        app: expressvpn-transmission
+    spec:
+      containers:
+      - name: expressvpn-transmission
+        image: polkaned/expressvpn-transmission
+        volumeMounts:
+        - name: transmission-data
+          mountPath: /var/lib/transmission-daemon/downloads
+        env:
+        - name: ACTIVATION_CODE
+          value: "{{ .vpn_code }}"
+        securityContext:
+          capabilities:
+            add:
+              - NET_ADMIN
+        ports:
+        - containerPort: 9091 
+      volumes:
+      - name: transmission-data
+        hostPath:
+          path: /home/user/Torrents 
+          type: DirectoryOrCreate
+--- 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: transmission-data
+  namespace: transmission
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
+spec:
+  storageClassName: freenas-nfs-csi
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: transmission
+  namespace: transmission
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: transmission.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: transmission
+            port:
+              number: 9091
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: transmission
+  namespace: transmission
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "transmission.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: qbittorent
+      port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: transmission
+  namespace: transmission
+  annotations:
+    external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: transmission.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
