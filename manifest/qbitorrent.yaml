@@ -175,27 +175,27 @@ spec:
               subPath: qbittorrent/config
             - mountPath: /data
               name: qbittorrent-data
-        - name: gluten
-          image: qmcgaw/gluetun:latest
-          env:
-          - name: VPN_SERVICE_PROVIDER
-            value: "expressvpn"
-          - name: FIREWALL_OUTBOUND_SUBNETS
-            value: "192.168.1.0/24"
-          - name: OPENVPN_USER
-            value: "{{ .vpn_user }}"
-          - name: OPENVPN_PASSWORD
-            value: "{{ .vpn_user }}"
-          securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - NET_ADMIN
-          volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: gluetun/config
+        # - name: gluten
+        #   image: qmcgaw/gluetun:latest
+        #   env:
+        #   - name: VPN_SERVICE_PROVIDER
+        #     value: "expressvpn"
+        #   - name: FIREWALL_OUTBOUND_SUBNETS
+        #     value: "192.168.1.0/24"
+        #   - name: OPENVPN_USER
+        #     value: "{{ .vpn_user }}"
+        #   - name: OPENVPN_PASSWORD
+        #     value: "{{ .vpn_user }}"
+        #   securityContext:
+        #     privileged: true
+        #     allowPrivilegeEscalation: true
+        #     capabilities:
+        #       add:
+        #         - NET_ADMIN
+        #   volumeMounts:
+        #     - mountPath: /config
+        #       name: qbittorrent-config
+        #       subPath: gluetun/config
       volumes:
         - name: qbittorrent-config
           persistentVolumeClaim:
