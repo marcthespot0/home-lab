@@ -157,10 +157,8 @@ spec:
               subPath: gluetun/config
       volumes:
         - name: qbittorrent-config
-          configMap:
-            name: qbittorrent-configmap
-          # persistentVolumeClaim:
-          #   claimName: qbittorrent-config
+          persistentVolumeClaim:
+            claimName: qbittorrent-config
         - name: qbittorrent-data
           persistentVolumeClaim:
             claimName: qbittorrent-data
