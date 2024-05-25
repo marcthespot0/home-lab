@@ -55,6 +55,8 @@ kind: Deployment
 metadata:
   name: qbittorrent
   namespace: qbittorrent
+  labels:
+    app: qbittorrent
 spec:
   replicas: 1
   selector:
