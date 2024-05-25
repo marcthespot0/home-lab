@@ -101,11 +101,11 @@ spec:
           - name: OPENVPN_PASS
             value: "{{ .vpn_pass }}"
           securityContext:
-          privileged: true
-          allowPrivilegeEscalation: true
-          capabilities:
-            add:
-              - NET_ADMIN
+            privileged: true
+            allowPrivilegeEscalation: true
+            capabilities:
+              add:
+                - NET_ADMIN
           volumeMounts:
             - mountPath: /config
               name: qbitorrent-config
@@ -117,6 +117,7 @@ spec:
         - name: qbitorrent-data
           persistentVolumeClaim:
             claimName: qbitorrent-data
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
