@@ -104,8 +104,8 @@ spec:
           privileged: true
           allowPrivilegeEscalation: true
           capabilities:
-              add:
-                - NET_ADMIN
+            add:
+              - NET_ADMIN
           volumeMounts:
             - mountPath: /config
               name: qbitorrent-config
