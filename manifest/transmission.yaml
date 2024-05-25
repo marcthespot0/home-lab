@@ -23,7 +23,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        TRANSMISSION_VAR_VPNCODE:  "{{ .ACTIVATION_CODE }}"
+        TRANSMISSION_VAR_VPNCODE: "{{ .ACTIVATION_CODE }}"
   data:
     - secretKey: ACTIVATION_CODE
       remoteRef:
