@@ -124,10 +124,6 @@ spec:
             value: "100"
           - name: TZ
             value: "American/New_York"
-          - name: UMASK_SET
-            value: "022"
-          - name: WEBUI_PORT
-            value: "8080"
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
