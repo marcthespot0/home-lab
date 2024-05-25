@@ -5,46 +5,6 @@ apiVersion: v1
 metadata:
   name: qbittorrent
 ---
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: qbittorrent-configmap
-  namespace: qbittorrent
-data:
-  qBittorrent.conf: |
-    [AutoRun]
-    enabled=false
-    program=
-
-    [BitTorrent]
-    Session\DefaultSavePath=/downloads/
-    Session\Port=6881
-    Session\QueueingSystemEnabled=true
-    Session\TempPath=/downloads/incomplete/
-
-    [LegalNotice]
-    Accepted=true
-
-    [Meta]
-    MigrationVersion=6
-
-    [Network]
-    Cookies=@Invalid()
-    PortForwardingEnabled=false
-    Proxy\HostnameLookupEnabled=false
-    Proxy\Profiles\BitTorrent=true
-    Proxy\Profiles\Misc=true
-    Proxy\Profiles\RSS=true
-
-    [Preferences]
-    Connection\PortRangeMin=6881
-    Connection\UPnP=false
-    Downloads\SavePath=/downloads/
-    Downloads\TempPath=/downloads/incomplete/
-    WebUI\Address=*
-    WebUI\ServerDomains=*
-    WebUI\CSRFProtection=false
----
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -93,8 +53,9 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: qbittorent
-  namespace: qbittorrent
+  name: qbittorrent-deployment
+  labels:
+    app: qbittorrent
 spec:
   replicas: 1
   selector:
@@ -103,61 +64,58 @@ spec:
   template:
     metadata:
       labels:
-        app: qbittorrent
+        app: qbtittorrent
     spec:
-      enableServiceLinks: true
-      serviceAccountName: default
-      automountServiceAccountToken: true
-      # securityContext:
-      #   fsGroup: 1000
-      # hostIPC: false
-      # hostNetwork: false
-      # hostPID: false
-      # dnsPolicy: ClusterFirst
-      containers:
-        - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:20.04.1
-          env:
-          - name: PUID
-            value: "1024"
-          - name: PGID
-            value: "100"
-          - name: TZ
-            value: "American/New_York"
-          volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: qbittorrent/config
-            - mountPath: /data
-              name: qbittorrent-data
-        - name: gluten
-          image: qmcgaw/gluetun:latest
-          env:
-          - name: VPN_SERVICE_PROVIDER
-            value: "expressvpn"
-          - name: FIREWALL_OUTBOUND_SUBNETS
-            value: "192.168.1.0/24"
-          - name: OPENVPN_USER
-            value: "{{ .vpn_user }}"
-          - name: OPENVPN_PASSWORD
-            value: "{{ .vpn_user }}"
-          securityContext:
-            privileged: true
-            allowPrivilegeEscalation: true
-            capabilities:
-              add:
-                - NET_ADMIN
-          volumeMounts:
-            - mountPath: /config
-              name: qbittorrent-config
-              subPath: gluetun/config
       volumes:
-        - name: qbittorrent-config
+      - name: qbittorrent-config
           persistentVolumeClaim:
             claimName: qbittorrent-config
-        - name: qbittorrent-data
+      - name: qbittorrent-data
           persistentVolumeClaim:
             claimName: qbittorrent-data
+      containers:
+      - name: qbt
+        image: binhex/arch-qbittorrentvpn
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "SYS_TIME"]
+        ports:
+        - containerPort: 8080
+        env:
+        - name: VPN_ENABLED
+          value: "yes"
+        - name: VPN_PROV
+          value: "custom"
+        - name: VPN_CLIENT
+          value: "openvpn"
+        - name: VPN_USER
+          value: "{{ .vpn_user }}"
+        - name: VPN_PASS
+          value: "{{ .vpn_pass }}"
+        - name: ENABLE_PRIVOXY
+          value: "yes"
+        - name: LAN_NETWORK
+          value: "192.168.0.0/16"
+        - name: NAME_SERVERS
+          value: "192.168.1.165,192.168.1.211,1.1.1.1"
+        - name: VPN_INPUT_PORTS
+          value: "1234"
+        - name: VPN_OUTPUT_PORTS
+          value: "5678"
+        - name: DEBUG
+          value: "false"
+        - name: WEBUI_PORT
+          value: "8080"
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: UMASK
+          value: "000"
+        volumeMounts:
+        - mountPath: /config
+          name: qbittorrent-config
+          subPath: config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
