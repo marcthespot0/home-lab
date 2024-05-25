@@ -23,9 +23,9 @@ spec:
     template:
       engineVersion: v2
       data:
-        TRANSMISSION_VAR_VPN_CODE:  "{{ .vpn_code }}"
+        TRANSMISSION_VAR_VPN_CODE:  "{{ .vpncode }}"
   data:
-    - secretKey: vpn_code
+    - secretKey: vpncode
       remoteRef:
         key: transmission
         property: expressvpn
@@ -66,7 +66,7 @@ spec:
           mountPath: /var/lib/transmission-daemon/downloads
         env:
         - name: ACTIVATION_CODE
-          value: "{{ .vpn_code }}"
+          value: "{{ .vpncode }}"
         securityContext:
           privileged: true
           capabilities:
