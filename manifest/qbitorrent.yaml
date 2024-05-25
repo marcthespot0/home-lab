@@ -11,7 +11,7 @@ metadata:
   name: qbittorrent-configmap
   namespace: qbittorrent
 data:
-  vpn.opvn: |
+  vpn.ovpn: |
     "{{ .vpn_ovpn }}"
 ---
 apiVersion: external-secrets.io/v1beta1
