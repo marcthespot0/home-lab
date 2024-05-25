@@ -38,11 +38,11 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: transmission
+    app: expressvpn-transmission   # Corrected label selector to match the Deployment
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 9091
+      targetPort: 9091            # Ensure this matches the port your application listens on
 ---
 apiVersion: apps/v1
 kind: Deployment
