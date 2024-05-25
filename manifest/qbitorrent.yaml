@@ -108,8 +108,6 @@ spec:
             - mountPath: /config
               name: qbitorrent-config
               subPath: gluetun/config
-            securityContext:
-              allowPriviledgeEscalation: true
       volumes:
         - name: qbitorrent-config
           persistentVolumeClaim:
