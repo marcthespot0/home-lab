@@ -69,6 +69,8 @@ spec:
         - name: ACTIVATION_CODE
           value: "{{ .vpn_code }}"
         securityContext:
+          runAsUser: 1000 # Adjust the user ID as needed
+          runAsGroup: 1000 # Adjust the group ID as needed
           capabilities:
             add:
               - NET_ADMIN
