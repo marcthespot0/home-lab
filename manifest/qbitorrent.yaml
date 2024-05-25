@@ -191,9 +191,6 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
-              subPath: qbittorrent/config
-            - mountPath: /data
-              name: qbittorrent-data
         - name: gluten
           image: qmcgaw/gluetun:latest
           env:
@@ -214,15 +211,8 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: qbittorrent-config
-              subPath: gluetun/config
       volumes:
         - name: qbittorrent-config
-          persistentVolumeClaim:
-            claimName: qbittorrent-config
-        - name: qbittorrent-data
-          persistentVolumeClaim:
-            claimName: qbittorrent-data
-        - name: qbittorrent-configmap-volume
           configMap:
             name: qbittorrent-configmap  # Name of your ConfigMap
 ---
