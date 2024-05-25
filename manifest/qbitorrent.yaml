@@ -132,8 +132,6 @@ spec:
             - mountPath: /config
               name: qbittorrent-config
               subPath: qbittorrent/config
-              configMap:
-                name: qbittorrent-configmap
             - mountPath: /data
               name: qbittorrent-data
         - name: gluten
