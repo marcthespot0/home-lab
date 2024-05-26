@@ -71,8 +71,8 @@ spec:
             secretKeyRef:
               name: transmission     # Name of the secret
               key: TRANSMISSION_VAR_VPNCODE     # Key of the secret
-        - name: T_ALLOWED
-          value: 0.0.0.0
+        # - name: T_ALLOWED
+        #   value: 0.0.0.0
         securityContext:
           privileged: true
           capabilities:
