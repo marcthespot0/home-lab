@@ -38,7 +38,7 @@ spec:
     - secretKey: pass_word
       remoteRef:
         key: transmission
-        property: password
+        property: t_password
 ---
 apiVersion: v1
 kind: Service
