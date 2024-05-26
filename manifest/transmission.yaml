@@ -24,11 +24,21 @@ spec:
       engineVersion: v2
       data:
         TRANSMISSION_VAR_VPNCODE: "{{ .ACTIVATION_CODE }}"
+        TRANSMISSION_VAR_USERNAME: "{{ .user_name }}"
+        TRANSMISSION_VAR_PASSWORD: "{{ .pass_word }}"
   data:
     - secretKey: ACTIVATION_CODE
       remoteRef:
         key: transmission
         property: vpn_code
+    - secretKey: user_name
+      remoteRef:
+        key: transmission
+        property: username
+    - secretKey: pass_word
+      remoteRef:
+        key: transmission
+        property: password
 ---
 apiVersion: v1
 kind: Service
@@ -73,6 +83,16 @@ spec:
               key: TRANSMISSION_VAR_VPNCODE     # Key of the secret
         - name: T_ALLOWED
           value: 127.0.0.1,192.168.*.*,10.*.*.*
+        - name: T_USERNAME
+          valueFrom:  
+            secretKeyRef:
+              name: transmission
+              key: TRANSMISSION_VAR_USERNAME
+        - name: T_PASSWORD
+          valueFrom:  
+            secretKeyRef:
+              name: transmission
+              key: TRANSMISSION_VAR_PASSWORD
         securityContext:
           privileged: true
           capabilities:
