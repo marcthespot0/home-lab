@@ -72,7 +72,7 @@ spec:
               name: transmission     # Name of the secret
               key: TRANSMISSION_VAR_VPNCODE     # Key of the secret
         - name: T_ALLOWED
-          value: 192.168.1.162
+          value: 0.0.0.0
         securityContext:
           privileged: true
           capabilities:
