@@ -79,8 +79,8 @@ spec:
         - name: ACTIVATION_CODE
           valueFrom:
             secretKeyRef:
-              name: transmission     # Name of the secret
-              key: TRANSMISSION_VAR_VPNCODE     # Key of the secret
+              name: transmission
+              key: TRANSMISSION_VAR_VPNCODE
         - name: T_ALLOWED
           value: 127.0.0.1,192.168.*.*,10.*.*.*
         - name: T_USERNAME
