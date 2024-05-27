@@ -30,7 +30,7 @@ metadata:
 spec:
   storageClassName: freenas-nfs-csi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 100Gi
@@ -43,7 +43,7 @@ metadata:
   name: jellyfin-config
   namespace: media
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ["ReadWriteOnce"]
   resources:
     requests:
       storage: 5Gi
