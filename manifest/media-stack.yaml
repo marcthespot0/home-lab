@@ -189,6 +189,7 @@ spec:
     spec:
       volumes:
       - name: config
+        persistentVolumeClaim: 
           clainName: radarr-config
       - name: appdata
         persistentVolumeClaim:
