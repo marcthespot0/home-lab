@@ -8,6 +8,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: radarr-deployment
+  namespace: media
   labels:
     app: radarr
 spec:
