@@ -497,17 +497,6 @@ spec:
             - name: web
               containerPort: 9696
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 9696
-              scheme: HTTP
-          startupProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /
-              port: 9696
-              scheme: HTTP
           resources:
             limits:
               cpu: 350m
