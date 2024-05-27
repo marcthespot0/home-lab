@@ -190,7 +190,7 @@ spec:
       volumes:
       - name: config
         persistentVolumeClaim: 
-          clainName: radarr-config
+          claimName: radarr-config
       - name: appdata
         persistentVolumeClaim:
           claimName: transmission-data
