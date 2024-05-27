@@ -44,17 +44,11 @@ spec:
         - name: PGID
           value: "1000"
         volumeMounts:
-        - mountPath: "/Media"
-          subPath: "Movies"
+        - mountPath: "/Media/Movies"
           name: media
-        # - mountPath: "/nzb"
-        #   subPath: "Downloads"
-        #   name: media
-        - mountPath: "/data"
-          subPath: "/var/lib/transmission-daemon/downloads"
+        - mountPath: "/data/var/lib/transmission-daemon/downloads"
           name: appdata
-        - mountPath: "/config"
-          subPath: "transmission/radarr/config"
+        - mountPath: "/config/transmission/radarr/config"
           name: appdata
 ---
 apiVersion: v1
