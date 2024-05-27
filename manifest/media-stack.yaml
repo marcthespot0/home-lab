@@ -221,7 +221,7 @@ spec:
           name: media
         - mountPath: "/var/lib/transmission-daemon/downloads"
           name: appdata
-        - mountPath: "/radarr"
+        - mountPath: "/radarr/config"
           name: config
 ---
 apiVersion: v1
