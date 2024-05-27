@@ -228,8 +228,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: radarr-config
-  name: radarr
+    app: radarr
+  name: radarr-config
   namespace: media
 spec:
   accessModes: ["ReadWriteOnce"]
