@@ -2,13 +2,13 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: radarr
+  name: media
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: radarr-deployment
-  namespace: radarr
+  namespace: media
 spec:
   replicas: 1
   selector:
