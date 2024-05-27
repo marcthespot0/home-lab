@@ -537,3 +537,16 @@ spec:
         # - name: anime
         #   persistentVolumeClaim:
         #     claimName: anime-library
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: prowlarr
+  name: prowlarr-storage
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
