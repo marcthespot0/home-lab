@@ -464,3 +464,76 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+---
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prowlarr
+  namespace: media
+  annotations:
+    link.argocd.argoproj.io/external-link: http://prowlarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: prowlarr
+  template:
+    metadata:
+      labels:
+        app: prowlarr
+    spec:
+      containers:
+        - name: prowlarr
+          image: ghcr.io/hotio/prowlarr:release-1.7.4.3769
+          envFrom:
+            - configMapRef:
+                name: prowlarr-cm
+          securityContext:
+            allowPrivilegeEscalation: true
+          ports:
+            - name: web
+              containerPort: 9696
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9696
+              scheme: HTTP
+          startupProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: 9696
+              scheme: HTTP
+          resources:
+            limits:
+              cpu: 350m
+              memory: 512Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            # - name: downloads
+            #   mountPath: /downloads
+            # - name: movies
+            #   mountPath: /movies
+            # - name: anime
+            #   mountPath: /anime
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: prowlarr-storage
+        # - name: movies
+        #   persistentVolumeClaim:
+        #     claimName: movie-library
+        # - name: downloads
+        #   persistentVolumeClaim:
+        #     claimName: downloads-storage
+        # - name: anime
+        #   persistentVolumeClaim:
+        #     claimName: anime-library
