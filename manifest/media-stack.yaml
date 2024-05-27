@@ -231,64 +231,64 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 7878
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: radarr
-  namespace: media
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-spec:
-  ingressClassName: ingress-nginx-internal
-  rules:
-  - host: radarr.<path:stringreplacesecret#domain>
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: radarr-service
-            port:
-              number: 7878
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: radarr
-  namespace: media
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  parentRefs:
-  - name: internal
-    namespace: gateway
-    sectionName: https
-  hostnames:
-  - "radarr".<path:stringreplacesecret#domain>"
-  rules:
-  - backendRefs:
-    - name: radarr-service
-      port: 80
----
-apiVersion: externaldns.k8s.io/v1alpha1
-kind: DNSEndpoint
-metadata:
-  name: radarr
-  namespace: media
-  annotations:
-    external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  endpoints:
-    - dnsName: radarr.<path:stringreplacesecret#domain>
-      recordType: CNAME
-      targets:
-        - intgw.<path:stringreplacesecret#domain>
-      providerSpecific:
-        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "false"
+# ---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: radarr
+#   namespace: media
+#   annotations:
+#     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+# spec:
+#   ingressClassName: ingress-nginx-internal
+#   rules:
+#   - host: radarr.<path:stringreplacesecret#domain>
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: radarr-service
+#             port:
+#               number: 7878
+# ---
+# apiVersion: gateway.networking.k8s.io/v1
+# kind: HTTPRoute
+# metadata:
+#   name: radarr
+#   namespace: media
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   parentRefs:
+#   - name: internal
+#     namespace: gateway
+#     sectionName: https
+#   hostnames:
+#   - "radarr".<path:stringreplacesecret#domain>"
+#   rules:
+#   - backendRefs:
+#     - name: radarr-service
+#       port: 80
+# ---
+# apiVersion: externaldns.k8s.io/v1alpha1
+# kind: DNSEndpoint
+# metadata:
+#   name: radarr
+#   namespace: media
+#   annotations:
+#     external-dns.custom/type: private
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   endpoints:
+#     - dnsName: radarr.<path:stringreplacesecret#domain>
+#       recordType: CNAME
+#       targets:
+#         - intgw.<path:stringreplacesecret#domain>
+#       providerSpecific:
+#         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+#           value: "false"
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
