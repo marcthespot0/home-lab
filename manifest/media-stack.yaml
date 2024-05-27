@@ -43,7 +43,7 @@ metadata:
   name: jellyfin-config
   namespace: media
 spec:
-  accessModes: ["ReadWriteOnce"]
+  accessModes: ["ReadWriteMany"]
   resources:
     requests:
       storage: 5Gi
@@ -171,7 +171,6 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
----
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -403,7 +402,7 @@ metadata:
 spec:
   storageClassName: freenas-nfs-csi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 100Gi
