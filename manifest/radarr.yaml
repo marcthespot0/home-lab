@@ -63,36 +63,7 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 7878
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: jellyfin-downloads
-  namespace: radarr
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
-spec:
-  storageClassName: freenas-nfs-csi
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: transmission-data
-  namespace: radarr
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
-spec:
-  storageClassName: freenas-nfs-csi
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
+
 # ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
