@@ -539,6 +539,16 @@ spec:
         #     claimName: anime-library
 ---
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prowlarr-cm
+data:
+  TZ: "America/New_York"
+  PUID: "1000"
+  PGID: "1000"
+  UMASK: "002"
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
