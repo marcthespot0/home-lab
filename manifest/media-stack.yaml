@@ -214,7 +214,7 @@ spec:
         volumeMounts:
         - mountPath: "/Media/Movies"
           name: media
-        - mountPath: "/downloads"
+        - mountPath: "/var/lib/transmission-daemon/downloads"
           name: appdata
         - mountPath: "/config/transmission/radarr/config"
           name: appdata
