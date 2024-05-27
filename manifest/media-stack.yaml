@@ -542,6 +542,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: prowlarr-cm
+  namespace: media
 data:
   TZ: "America/New_York"
   PUID: "1000"
