@@ -204,6 +204,8 @@ spec:
             memory: "4G"
         ports:
         - containerPort: 7878
+        securityContext:
+          privileged: true
         env:
         - name: UMASK
           value: "000"
