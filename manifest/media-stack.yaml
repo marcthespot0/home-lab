@@ -245,7 +245,7 @@ metadata:
 spec:
   selector:
     app: radarr
-    type: LoadBalancer
+  type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
