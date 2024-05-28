@@ -12,7 +12,7 @@ metadata:
   labels:
     app.kubernetes.io/name: jellyfin
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - protocol: TCP
       port: 80
@@ -245,13 +245,12 @@ metadata:
 spec:
   selector:
     app: radarr
+    type: LoadBalancer
   ports:
     - name: http
       protocol: TCP
       port: 7878
       targetPort: 7878
-
-
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -353,7 +352,7 @@ metadata:
   name: transmission
   namespace: media
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: expressvpn-transmission   # Corrected label selector to match the Deployment
   ports:
