@@ -404,8 +404,8 @@ spec:
           capabilities:
             add:
               - NET_ADMIN
-        # ports:
-        # - containerPort: 9091 
+        ports:
+        - containerPort: 9091 
       volumes:
       - name: transmission-data
         persistentVolumeClaim:
