@@ -359,9 +359,6 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 9091            # Ensure this matches the port your application listens on
-    - protocol: TCP
-      port: 9091
-      targetPort: 9091            # Ensure this matches the port your application listens on
 ---
 apiVersion: apps/v1
 kind: Deployment
