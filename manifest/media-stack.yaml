@@ -380,7 +380,7 @@ spec:
         image: polkaned/expressvpn-transmission
         volumeMounts:
         - name: transmission-data
-          mountPath: /downloads
+          mountPath: /var/lib/transmission-daemon/downloads
         env:
         - name: ACTIVATION_CODE
           valueFrom:
