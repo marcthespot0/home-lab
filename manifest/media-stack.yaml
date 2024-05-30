@@ -611,10 +611,10 @@ spec:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
-        - name: unpackarr-data
+        - name: downloads
           mountPath: /var/lib/transmission-daemon/downloads
         volumes:
-        - name: unpackarr-data
+        - name: downloads
           persistentVolumeClaim:
             claimName: transmission-data
 
