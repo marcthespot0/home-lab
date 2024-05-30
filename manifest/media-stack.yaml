@@ -603,9 +603,9 @@ spec:
       - name: downloads
         persistentVolumeClaim:
           claimName: transmission-data   
-      # - name: unpackerr-config
-      #   persistentVolumeClaim:
-      #     claimName: unpackerr-config 
+      - name: unpackerr-config
+        persistentVolumeClaim:
+          claimName: unpackerr-config 
       containers:
       - name: unpackerr
         image: golift/unpackerr:0.13.1
@@ -620,9 +620,9 @@ spec:
         volumeMounts:
         - name: downloads
           mountPath: "/var/lib/transmission-daemon/downloads"
-#         - name: unpackerr-config
-#           mountPath: /config
-# ---
+        - name: unpackerr-config
+          mountPath: /config
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
