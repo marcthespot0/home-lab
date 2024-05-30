@@ -583,3 +583,38 @@ spec:
       protocol: TCP
       port: 9696
       targetPort: 9696
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unpackerr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unpackerr
+  template:
+    metadata:
+      labels:
+        app: unpackerr
+    spec:
+      containers:
+      - name: unpackerr
+        image: golift/unpackerr:0.9.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: TZ
+          value: America/New_York
+        # Add more environment variables here if needed
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: transmission-data
+          mountPath: /var/lib/transmission-daemon/downloads
+        volumes:
+        - name: transmission-data
+          persistentVolumeClaim:
+            claimName: transmission-data
+
