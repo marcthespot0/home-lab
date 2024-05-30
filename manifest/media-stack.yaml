@@ -612,7 +612,7 @@ spec:
           protocol: TCP
         volumeMounts:
         - name: downloads
-          mountPath: /var/lib/transmission-daemon/downloads
+          mountPath: "/var/lib/transmission-daemon/downloads"
         volumes:
         - name: downloads
           persistentVolumeClaim:
