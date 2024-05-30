@@ -601,7 +601,7 @@ spec:
     spec:
       containers:
       - name: unpackerr
-        image: golift/unpackerr:0.9.7
+        image: golift/unpackerr:0.13.1
         imagePullPolicy: IfNotPresent
         env:
         - name: TZ
