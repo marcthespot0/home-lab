@@ -614,8 +614,26 @@ spec:
         - name: downloads
           persistentVolumeClaim:
             claimName: transmission-data   
+        - name: config
+          persistentVolumeClaim:
+            claimName: unpackerr-config 
         volumeMounts:
         - name: downloads
           mountPath: "/var/lib/transmission-daemon/downloads"
+        - name: unpackerr-config
+          mountPath: /config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: unpackerr
+  name: unpackerr-config
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
         
 
