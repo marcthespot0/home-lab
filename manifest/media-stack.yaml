@@ -608,7 +608,7 @@ spec:
           claimName: unpackerr-config 
       containers:
       - name: unpackerr
-        image: golift/unpackerr:14.0.8
+        image: golift/unpackerr:0.13.1
         imagePullPolicy: IfNotPresent
         env:
         - name: TZ
