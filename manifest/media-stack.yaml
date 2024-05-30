@@ -600,12 +600,12 @@ spec:
         app: unpackerr
     spec:
      volumes:
-    - name: downloads
-      persistentVolumeClaim:
-        claimName: transmission-data   
-    - name: config
-      persistentVolumeClaim:
-        claimName: unpackerr-config 
+     - name: downloads
+       persistentVolumeClaim:
+         claimName: transmission-data   
+     - name: config
+       persistentVolumeClaim:
+         claimName: unpackerr-config 
       containers:
       - name: unpackerr
         image: golift/unpackerr:0.9.7
