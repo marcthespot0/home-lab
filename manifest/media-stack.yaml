@@ -603,7 +603,7 @@ spec:
       - name: downloads
         persistentVolumeClaim:
           claimName: transmission-data   
-      - name: config
+      - name: unpackerr-config
         persistentVolumeClaim:
           claimName: unpackerr-config 
       containers:
