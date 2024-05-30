@@ -610,11 +610,12 @@ spec:
         ports:
         - containerPort: 8080
           protocol: TCP
-        volumeMounts:
-        - name: downloads
-          mountPath: "/var/lib/transmission-daemon/downloads"
         volumes:
         - name: downloads
           persistentVolumeClaim:
-            claimName: transmission-data
+            claimName: transmission-data   
+        volumeMounts:
+        - name: downloads
+          mountPath: "/var/lib/transmission-daemon/downloads"
+        
 
