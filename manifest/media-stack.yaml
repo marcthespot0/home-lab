@@ -597,14 +597,17 @@ spec:
         image: golift/unpackerr:0.13.1
         imagePullPolicy: IfNotPresent
         env:
-        - name: TZ
-          value: America/New_York
-        - name: radarr.url
-          value: http://192.168.1.167:7878
-        - name: radarr.api_key
-          value: "{{ .radarr_api }}"
-        - name: radarr.paths
-          value: "/var/lib/transmission-daemon/downloads"
+        # - name: TZ
+        #   value: America/New_York
+        # - name: radarr.url
+        #   value: http://192.168.1.167:7878
+        # - name: radarr.api_key
+        #   value: "{{ .radarr_api }}"
+        # - name: radarr.paths
+        #   value: "/var/lib/transmission-daemon/downloads"
+          radarr.url: http://192.168.1.167:7878
+          radarr.api_key: "{{ .radarr_api }}"
+          radarr.paths: "/var/lib/transmission-daemon/downloads"
         ports:
         - containerPort: 8080
           protocol: TCP
