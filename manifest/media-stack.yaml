@@ -525,25 +525,11 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
-            # - name: downloads
-            #   mountPath: /downloads
-            # - name: movies
-            #   mountPath: /movies
-            # - name: anime
-            #   mountPath: /anime
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: prowlarr-storage
-        # - name: movies
-        #   persistentVolumeClaim:
-        #     claimName: movie-library
-        # - name: downloads
-        #   persistentVolumeClaim:
-        #     claimName: downloads-storage
-        # - name: anime
-        #   persistentVolumeClaim:
-        #     claimName: anime-library
+
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -600,7 +586,7 @@ spec:
         app: unpackerr
     spec:
       volumes:
-      - name: downloads
+      - name: transmission-downloads
         persistentVolumeClaim:
           claimName: transmission-data   
       - name: unpackerr-config
@@ -613,12 +599,11 @@ spec:
         env:
         - name: TZ
           value: America/New_York
-        # Add more environment variables here if needed
         ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
-        - name: downloads
+        - name: transmission-downloads
           mountPath: "/var/lib/transmission-daemon/downloads"
         - name: unpackerr-config
           mountPath: /config
