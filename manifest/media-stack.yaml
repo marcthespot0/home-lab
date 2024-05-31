@@ -603,6 +603,8 @@ spec:
           value: http://192.168.1.167:7878
         - name: radarr.api_key
           value: "{{ .radarr_api }}"
+        - name: radarr.paths
+          value: "/var/lib/transmission-daemon/downloads"
         ports:
         - containerPort: 8080
           protocol: TCP
