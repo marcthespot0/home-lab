@@ -599,6 +599,10 @@ spec:
         env:
         - name: TZ
           value: America/New_York
+        - name: radarr.url
+          value: http://192.168.1.167:7878
+        - name: radarr.api_key
+          value: "{{ .radarr_api }}"
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -620,5 +624,30 @@ spec:
   resources:
     requests:
       storage: 1Gi
-        
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: media-configsecrets
+  namespace: media
+  labels:
+    app.kubernetes.io/part-of: homepage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        MEDIA_VAR_RADARR_API: "{{ .radarr_api }}"
+  data:
+    - secretKey: radarr_api
+      remoteRef:
+        key: media-configsecrets
+        property: radarrapi
 
