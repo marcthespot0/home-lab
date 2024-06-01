@@ -599,12 +599,12 @@ spec:
           value: "http://192.168.1.167:7878"
         - name: UN_RADARR_0_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
-        - name: UN_RADARR_0_API
-          valueFrom:
-            secretKeyRef:
-              name: media-configsecrets
-              key: radarrapi
-        ports:
+        # - name: UN_RADARR_0_API
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: media-configsecrets
+        #       key: radarrapi
+        # ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
