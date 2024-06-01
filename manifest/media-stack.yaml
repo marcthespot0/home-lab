@@ -591,7 +591,7 @@ spec:
           claimName: transmission-data
       containers:
       - name: unpackerr
-        image: ghcr.io/unpackerr/unpackerr:0.13.1@sha256:04fcb43fa70e6db88331962760607842cdf19889e6d35d9d2fde0cf6a1550eaf
+        image: golift/unpackerr:0.13.1
         env:
         - name: TZ
           value: America/New_York
