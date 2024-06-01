@@ -588,26 +588,30 @@ spec:
       volumes:
       - name: transmission-downloads
         persistentVolumeClaim:
-          claimName: transmission-data   
+          claimName: transmission-data
       containers:
       - name: unpackerr
-        image: golift/unpackerr:0.13.1
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/unpackerr/unpackerr:0.13.1@sha256:04fcb43fa70e6db88331962760607842cdf19889e6d35d9d2fde0cf6a1550eaf
         env:
         - name: TZ
           value: America/New_York
-        - name: radarr.url
-          value: http://192.168.1.167:7878
-        - name: radarr.api_key
-          value: "{{ .radarr_api }}"
+        - name: UN_RADARR_0_URL
+          value: "http://192.168.1.167:7878"
+        - name: UN_RADARR_0_PATHS_0
+          value: "/var/lib/transmission-daemon/downloads"
+        - name: UN_RADARR_0_API
+          valueFrom:
+            secretKeyRef:
+              name: media-configsecrets
+              key: radarr_api
         - name: radarr.paths
-          value: "/var/lib/transmission-daemon/downloads"  # Changed the value to /var/lib/transmission-daemon/downloads
+          value: "/var/lib/transmission-daemon/downloads"
         ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
         - name: transmission-downloads
-          mountPath: "/var/lib/transmission-daemon/downloads"  # Changed the mountPath to /var/lib/transmission-daemon/downloads
+          mountPath: "/var/lib/transmission-daemon/downloads"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
