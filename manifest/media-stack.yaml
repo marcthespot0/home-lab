@@ -604,8 +604,6 @@ spec:
             secretKeyRef:
               name: media-configsecrets
               key: radarrapi
-        - name: radarr.paths
-          value: "/var/lib/transmission-daemon/downloads"
         ports:
         - containerPort: 8080
           protocol: TCP
