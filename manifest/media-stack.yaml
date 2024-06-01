@@ -603,7 +603,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: media-configsecrets
-              key: radarr_api
+              key: radarrapi
         - name: radarr.paths
           value: "/var/lib/transmission-daemon/downloads"
         ports:
