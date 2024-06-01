@@ -604,7 +604,7 @@ spec:
         #     secretKeyRef:
         #       name: media-configsecrets
         #       key: radarrapi
-        # ports:
+        ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
