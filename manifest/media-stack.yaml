@@ -600,7 +600,10 @@ spec:
         - name: UN_RADARR_0_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
         - name: UN_RADARR_0_API_KEY
-          value: "{{ .radarr_api }}"
+          valueFrom:
+            secretKeyRef:
+              name: media-configsecrets
+              key: MEDIA_VAR_RADARR_API
         ports:
         - containerPort: 8080
           protocol: TCP
