@@ -599,7 +599,7 @@ spec:
           value: "http://192.168.1.167:7878"
         - name: UN_RADARR_0_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
-        - name: UN_RADARR_0_API
+        - name: UN_RADARR_0_API_0
           value: "796b04c3f2124c7ca24429d8223fc910"
         ports:
         - containerPort: 8080
