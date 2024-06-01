@@ -75,11 +75,11 @@ spec:
           image: jellyfin/jellyfin:10.9.3
           resources:
             requests:
-              memory: 1000Mi
-              cpu: 1000m
+              memory: 4096Mi
+              cpu: 2000m
             limits:
-              memory: 2000Mi
-              cpu: 3000m
+              memory: 8192Mi
+              cpu: 4000m
           ports:
             - containerPort: 8096
           readinessProbe:
