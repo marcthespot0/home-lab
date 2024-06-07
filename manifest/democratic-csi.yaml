@@ -86,6 +86,7 @@ spec:
           driver:
             config:
               driver: freenas-api-nfs
+              logLevel: debug
               instance_id:
               httpConnection:
                 protocol: https
