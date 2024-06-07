@@ -425,7 +425,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
+      storage: 800Gi
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
