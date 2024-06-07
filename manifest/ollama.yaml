@@ -82,8 +82,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  nodeSelector:
-    nvidia-gpu: "true"
+  # nodeSelector:
+  #   nvidia-gpu: "true"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
