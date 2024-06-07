@@ -14,8 +14,8 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: repoUrl: https://otwld.github.io/ollama-helm/
-    targetRevision: "0.1.41"
+    repoURL: https://otwld.github.io/ollama-helm/
+    targetRevision: "0.33.0"  # Assuming this is the chart version or tag
     chart: ollama
     helm:
       values: |
@@ -33,13 +33,21 @@ spec:
           service:
             type: ClusterIP
             port: 11434
-            nodePort:31434
-          volumes:
-            - name: ollama
+        persistentVolume:
+          enabled: true
+          existingClaim: "ollama-pvc"
+        volumes:
+          - name: ollama
             mountPath: /config
-          persistentVolume:
-            enabled: true
-            existingClaim: "ollama-pvc"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ollama
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  nodeSelector:
+        nvidia-gpu: "true"
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
