@@ -15,7 +15,7 @@ spec:
   project: default
   source:
     repoURL: https://otwld.github.io/ollama-helm/
-    targetRevision: "0.33.0"  # Assuming this matches the chart version or tag
+    targetRevision: "0.33.0"
     chart: ollama
     helm:
       values: |
@@ -23,7 +23,7 @@ spec:
 
         knative:
           enabled: false
-          containerConcurrency: 0
+          containerConcurrency: 1
           timeoutSeconds: 300
           responseStartTimeoutSeconds: 300
           idleTimeoutSeconds: 300
@@ -31,7 +31,7 @@ spec:
         image:
           repository: ollama/ollama
           pullPolicy: IfNotPresent
-          tag: ""
+          tag: "latest"  # Specify version or "latest"
 
         imagePullSecrets: []
 
@@ -47,6 +47,11 @@ spec:
             - llama3
           insecure: false
 
+          # Added PVC Configuration
+          storage:
+            volumeName: ollama-pvc
+            mountPath: /data  # Example mount path
+
         serviceAccount:
           create: true
           automount: true
@@ -56,17 +61,22 @@ spec:
         podAnnotations: {}
         podLabels: {}
 
-        podSecurityContext: {}
-        securityContext: {}
+        podSecurityContext:
+          runAsUser: 1000
+          runAsGroup: 3000
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          allowPrivilegeEscalation: false
 
-        runtimeClassName: ""
+        runtimeClassName: "nvidia"
 
         service:
           type: ClusterIP
           port: 11434
-          nodePort: 31434
-          annotations: {}
-   destination:
+
+  destination:
     server: https://kubernetes.default.svc
     namespace: ollama
   syncPolicy:
@@ -74,7 +84,8 @@ spec:
       prune: true
       selfHeal: true
   nodeSelector:
-        nvidia-gpu: "true"
+    nvidia-gpu: "true"
+
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
