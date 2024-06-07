@@ -4,3 +4,56 @@ apiVersion: v1
 metadata:
   name: ollama
 ---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ollama
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    repoURL: repoUrl: https://otwld.github.io/ollama-helm/
+    targetRevision: "0.1.41"
+    chart: ollama
+    helm:
+      values: |
+        replicaCount: 1
+        image:
+          repository: ollama/ollama
+          pullPolicy: IfNotPresent
+        ollama:
+          gpu: enabled
+          type: 'nvidia'
+          number: 1
+          models:
+            - llama3
+          insecure: false
+          service:
+            type: ClusterIP
+            port: 11434
+            nodePort:31434
+          volumes:
+            - name: ollama
+            mountPath: /config
+          persistentVolume:
+            enabled: true
+            existingClaim: "ollama-pvc"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: ollama-pvc
+  namespace: ollama
+  labels:
+    app.kubernetes.io/name: ollama
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100G
+
+        
+
