@@ -42,7 +42,7 @@ spec:
           gpu:
             enabled: true
             type: nvidia
-            number: 1
+            # number: 1
           models:
             - llama3
           insecure: false
@@ -82,8 +82,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  # nodeSelector:
-  #   nvidia-gpu: "true"
+  nodeName: talos-lab-02
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1

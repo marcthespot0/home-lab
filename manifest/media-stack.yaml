@@ -111,8 +111,9 @@ spec:
         - name: jellyfin-downloads
           persistentVolumeClaim:
             claimName: jellyfin-downloads
-      nodeSelector:
-        nvidia-gpu: "true"
+      nodeName: talos-lab-02
+      # nodeSelector:
+      #   nvidia-gpu: "true"
 
 ---
 apiVersion: networking.k8s.io/v1
