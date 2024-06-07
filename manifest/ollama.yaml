@@ -46,9 +46,6 @@ spec:
           models:
             - llama3
           insecure: false
-          resources:
-            limits:
-              nvidia.com/gpu: 0.5
 
           # Added PVC Configuration
           storage:
