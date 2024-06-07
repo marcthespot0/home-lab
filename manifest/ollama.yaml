@@ -66,6 +66,13 @@ spec:
           port: 11434
           nodePort: 31434
           annotations: {}
+   destination:
+    server: https://kubernetes.default.svc
+    namespace: ollama
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
   nodeSelector:
         nvidia-gpu: "true"
 ---
