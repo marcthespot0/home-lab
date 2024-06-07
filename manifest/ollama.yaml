@@ -75,7 +75,6 @@ spec:
         service:
           type: ClusterIP
           port: 11434
-
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
