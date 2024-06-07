@@ -50,27 +50,27 @@ spec:
           # Added PVC Configuration
           storage:
             volumeName: ollama-pvc
-            mountPath: /data  # Example mount path
+            mountPath: /data
 
-        serviceAccount:
-          create: true
-          automount: true
-          annotations: {}
-          name: ""
+        # serviceAccount:
+        #   create: true
+        #   automount: true
+        #   annotations: {}
+        #   name: ""
 
-        podAnnotations: {}
-        podLabels: {}
+        # podAnnotations: {}
+        # podLabels: {}
 
-        podSecurityContext:
-          runAsUser: 1000
-          runAsGroup: 3000
-        securityContext:
-          capabilities:
-            drop:
-            - ALL
-          allowPrivilegeEscalation: false
+        # podSecurityContext:
+        #   runAsUser: 1000
+        #   runAsGroup: 3000
+        # securityContext:
+        #   capabilities:
+        #     drop:
+        #     - ALL
+        #   allowPrivilegeEscalation: false
 
-        runtimeClassName: "nvidia"
+        # runtimeClassName: "nvidia"
 
         service:
           type: ClusterIP
