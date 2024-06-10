@@ -81,7 +81,7 @@ spec:
             limits:
               memory: 8192Mi
               cpu: 4000m
-              nvidia.com/gpu: 1
+              # nvidia.com/gpu: 1
           ports:
             - containerPort: 8096
           readinessProbe:
