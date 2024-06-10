@@ -82,7 +82,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  nodeSelector
+  nodeSelector:
     kubernetes.io/hostname: talos-lab-02
 ---
 kind: PersistentVolumeClaim
