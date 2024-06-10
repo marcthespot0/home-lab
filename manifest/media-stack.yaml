@@ -70,6 +70,7 @@ spec:
         app.kubernetes.io/name: jellyfin
     spec:
       restartPolicy: Always
+      runtimeClassName: nvidia
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:10.9.6
@@ -112,8 +113,7 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-downloads
       nodeSelector:
-        nvidia-gpu: "true"
-
+        kubernetes.io/hostname: talos-lab-02
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
