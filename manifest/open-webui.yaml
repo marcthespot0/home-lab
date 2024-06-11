@@ -80,7 +80,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: ollama.<path:stringreplacesecret#domain>
+  - host: ol.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
@@ -104,7 +104,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "ollama.<path:stringreplacesecret#domain>"
+  - "ol.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: open-webui
@@ -120,10 +120,10 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: ollama.<path:stringreplacesecret#domain>
+    - dnsName: ol.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - intgw.<path:stringreplacesecret#domain>
+        - extgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
