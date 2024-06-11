@@ -33,7 +33,11 @@ spec:
             memory: "4Gi"
         env:
         - name: OLLAMA_BASE_URL
+<<<<<<< HEAD
+          value: "http://10.69.2.219:11434"
+=======
           value: "http://192.168.1.170:11434"
+>>>>>>> 4241cb1ac2f808827a695e28c28c0013ebbc7c8f
         tty: true
         volumeMounts:
         - name: webui-volume
@@ -80,7 +84,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: ol.<path:stringreplacesecret#domain>
+  - host: ollama.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
@@ -104,7 +108,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "ol.<path:stringreplacesecret#domain>"
+  - "ollama.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: open-webui
@@ -116,14 +120,14 @@ metadata:
   name: open-webui
   namespace: open-webui
   annotations:
-    external-dns.custom/type: public
+    external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: ol.<path:stringreplacesecret#domain>
+    - dnsName: ollama.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - extgw.<path:stringreplacesecret#domain>
+        - intgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
