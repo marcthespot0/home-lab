@@ -116,7 +116,7 @@ metadata:
   name: open-webui
   namespace: open-webui
   annotations:
-    external-dns.custom/type: private
+    external-dns.custom/type: public
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
