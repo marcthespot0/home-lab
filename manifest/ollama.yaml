@@ -48,7 +48,7 @@ spec:
           type: LoadBalancer
           port: 11434
   destination:
-    server: https://kubernetes
+    server: https://kubernetes.default.svc
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
