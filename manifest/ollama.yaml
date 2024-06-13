@@ -39,54 +39,16 @@ spec:
         fullnameOverride: ""
 
         ollama:
-          # gpu:
-          #   enabled: true
-            # type: nvidia
-            # number: 1
-          models:
-            - llama3
-          insecure: false
-
-          # # Added PVC Configuration
-          # storage:
-          #   volumeName: ollama-pvc
-          #   mountPath: /data
           volumeSources:
-          - name: ollama-pvc
-            persistentVolumeClaim:
-              claimName: ollama-pvc
-        # serviceAccount:
-        #   create: true
-        #   automount: true
-        #   annotations: {}
-        #   name: ""
-
-        # podAnnotations: {}
-        # podLabels: {}
-
-        # podSecurityContext:
-        #   runAsUser: 1000
-        #   runAsGroup: 3000
-        # securityContext:
-        #   capabilities:
-        #     drop:
-        #     - ALL
-        #   allowPrivilegeEscalation: false
-
-        runtimeClassName: "nvidia"
+            - name: ollama-pvc
+              persistentVolumeClaim:
+                claimName: ollama-pvc
 
         service:
           type: LoadBalancer
           port: 11434
   destination:
-    server: https://kubernetes.default.svc
-    namespace: ollama
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-  # nodeSelector:
-  #   kubernetes.io/hostname: talos-lab-02
+    server: https://kubernetes
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
