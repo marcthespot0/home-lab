@@ -47,11 +47,14 @@ spec:
             - llama3
           insecure: false
 
-          # Added PVC Configuration
-          storage:
-            volumeName: ollama-pvc
-            mountPath: /data
-
+          # # Added PVC Configuration
+          # storage:
+          #   volumeName: ollama-pvc
+          #   mountPath: /data
+          volumeSources:
+          - name: ollama-pvc
+            persistentVolumeClaim:
+              claimName: ollama-pvc
         # serviceAccount:
         #   create: true
         #   automount: true
