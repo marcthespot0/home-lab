@@ -1,8 +1,8 @@
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: homepage
+# ---
+# kind: Namespace
+# apiVersion: v1
+# metadata:
+#   name: homepage
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
