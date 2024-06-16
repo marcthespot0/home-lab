@@ -150,7 +150,7 @@ data:
                   color: zinc
                   params:
                     showName: true
-    - Automation:
+    - Self-hosted:
         - Home Assistant:
             href: http://hass.<path:stringreplacesecret#domain>:8123
             icon: home-assistant.svg
