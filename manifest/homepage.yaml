@@ -168,11 +168,11 @@ data:
         - Radarr:
             href: http://radarr.<path:stringreplacesecret#domain>
             icon: radarr.svg
-              widget:
-                type: radarr
-                url: http://radarr.<path:stringreplacesecret#domain>
-                key: 796b04c3f2124c7ca24429d8223fc910
-                enableQueue: true # 
+            widget:
+              type: radarr
+              url: http://radarr.<path:stringreplacesecret#domain>
+              key: 796b04c3f2124c7ca24429d8223fc910
+              enableQueue: true # 
     - Infrastructure:
         - Unifi:
             href: https://unifi.<path:stringreplacesecret#domain>
