@@ -185,6 +185,15 @@ data:
               enableUser: true # optional, defaults to false
               showEpisodeNumber: true # optional, defaults to false
               expandOneStreamToTwoRows: false # optional, defaults to true
+        - Tranmission:
+            href: https://transmission.<path:stringreplacesecret#domain>
+            icon: transmission.svg
+            widget:
+              type: transmission
+              url: https://transmission.<path:stringreplacesecret#domain>
+              username: username
+              password: password
+              rpcUrl: /
     - Infrastructure:
         - Unifi:
             href: https://unifi.<path:stringreplacesecret#domain>
