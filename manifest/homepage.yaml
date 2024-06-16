@@ -35,6 +35,8 @@ spec:
         HOMEPAGE_VAR_UNIFI_USERNAME:  "{{ .unifi_user }}"
         HOMEPAGE_VAR_UNIFI_PASSWORD:  "{{ .unifi_pass }}"
         HOMEPAGE_VAR_TRUENAS_TOKEN: "{{ .truenas_token }}"
+        HOMEPAGE_VAR_TR_USERNAME: "{{ .tr_username }}"
+        HOMEPAGE_VAR_TR_PASSWORD: "{{ .tr_password }}"
   data:
     - secretKey: weather
       remoteRef:
@@ -84,6 +86,14 @@ spec:
       remoteRef:
         key: homepage-configsecrets
         property: UNIFI_PASS
+    - secretKey: tr_username
+      remoteRef:
+        key: homepage-configsecrets
+        property: trans_username
+    - secretKey: tr_password
+      remoteRef:
+        key: homepage-configsecrets
+        property: trans_password
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -191,8 +201,8 @@ data:
             widget:
               type: transmission
               url: https://transmission.<path:stringreplacesecret#domain>
-              username: username
-              password: password
+              username: {{ .tr_username }}
+              password: {{ .tr_password }}
               rpcUrl: /
     - Infrastructure:
         - Unifi:
