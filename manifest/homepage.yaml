@@ -172,7 +172,19 @@ data:
               type: radarr
               url: https://radarr.<path:stringreplacesecret#domain>
               key: 796b04c3f2124c7ca24429d8223fc910
-              enableQueue: true # 
+              enableQueue: true
+        - Jellyfin:
+            href: https://jellyfin.<path:stringreplacesecret#domain>
+            icon: jellyfin.svg
+            widget:
+              type: jellyfin
+              url: https://jellyfin.<path:stringreplacesecret#domain>
+              key: 23cf7b9449d84421b0566f54b4b62b47
+              enableBlocks: true # optional, defaults to false
+              enableNowPlaying: true # optional, defaults to true
+              enableUser: true # optional, defaults to false
+              showEpisodeNumber: true # optional, defaults to false
+              expandOneStreamToTwoRows: false # optional, defaults to true
     - Infrastructure:
         - Unifi:
             href: https://unifi.<path:stringreplacesecret#domain>
