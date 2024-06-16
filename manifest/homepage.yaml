@@ -166,6 +166,21 @@ data:
               type: immich
               url: https://immich.marcthespot.com
               key: EFb2ZdHJBUHFPu9ytBnAGM2XVNrzDUOM3inAGxHAQE
+        - Radarr:
+            href: https://radarr.<path:stringreplacesecret#domain>
+            icon: radarr.svg
+            widget:
+              type: radarr
+              url: https://radarr.marcthespot.com
+              key: 796b04c3f2124c7ca24429d8223fc910
+        - Jellyfin:
+            href: https://jellyfin.<path:stringreplacesecret#domain>
+            icon: jellyfin.svg
+            widget:
+              type: jellyfin
+              url: https://jellyfin.marcthespot.com
+              key: 23cf7b9449d84421b0566f54b4b62b47
+  enableQueue: true
     - Infrastructure:
         - Unifi:
             href: https://unifi.<path:stringreplacesecret#domain>
