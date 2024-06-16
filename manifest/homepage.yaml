@@ -127,15 +127,16 @@ data:
   kubernetes.yaml: |
     mode: cluster
   settings.yaml: |
+    color: gray
     providers:
       longhorn:
         url: https://lh.<path:stringreplacesecret#domain>
     background:
-      image: https://wallpaperset.com/w/full/4/6/d/24497.jpg
-      blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
-      saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
-      brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
-      opacity: 50 # 0-100
+      # image: https://wallpaperset.com/w/full/4/6/d/24497.jpg
+      # blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
+      # saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+      # brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+      # opacity: 50 # 0-100
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
@@ -195,14 +196,6 @@ data:
               enableUser: true # optional, defaults to false
               showEpisodeNumber: true # optional, defaults to false
               expandOneStreamToTwoRows: false # optional, defaults to true
-        - Tranmission:
-            href: https://transmission.<path:stringreplacesecret#domain>
-            icon: transmission.svg
-            widget:
-              type: transmission
-              url: https://transmission.<path:stringreplacesecret#domain>
-              username: {{ .tr_username }}
-              password: {{ .tr_password }}
     - Infrastructure:
         - Unifi:
             href: https://unifi.<path:stringreplacesecret#domain>
