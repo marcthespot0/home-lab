@@ -1,4 +1,4 @@
----
+.---
 kind: Namespace
 apiVersion: v1
 metadata:
@@ -200,7 +200,7 @@ spec:
           claimName: jellyfin-downloads
       containers:
       - name: radarr
-        image: binhex/arch-radarr
+        image: binhex/arch-radarr:latest
         resources:
           requests:
             memory: "4G"
