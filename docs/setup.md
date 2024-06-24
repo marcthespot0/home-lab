@@ -36,9 +36,10 @@ kubectl create namespace 1passwordconnect
 kubectl create secret generic 1passwordconnect --namespace 1passwordconnect --from-literal 1password-credentials.json="$onepasswordconnect_json"
 
 kubectl create namespace external-secrets
-kubectl create secret generic 1passwordconnect --namespace external-secrets --from-literal token=$externalsecrets_token```
+kubectl create secret generic 1passwordconnect --namespace external-secrets --from-literal token=$externalsecrets_token
+```
 
-```sh 
+```sh
 export argocd_applicationyaml=$(curl -sL "https://raw.githubusercontent.com/marcthespot0/home-lab/main/manifest/argocd.yaml" | yq eval-all '. | select(.metadata.name == "argocd" and .kind == "Application")' -)
 export argocd_name=$(echo "$argocd_applicationyaml" | yq eval '.metadata.name' -)
 export argocd_chart=$(echo "$argocd_applicationyaml" | yq eval '.spec.source.chart' -)
