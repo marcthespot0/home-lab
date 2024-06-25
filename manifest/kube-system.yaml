@@ -50,7 +50,7 @@ spec:
   source:
     chart: cilium
     repoURL: https://helm.cilium.io/
-    targetRevision: 1.15.6
+    targetRevision: 1.15.4
     helm:
       valuesObject:
         autoDirectNodeRoutes: true
@@ -113,9 +113,7 @@ spec:
           rollOutPods: true
         rollOutCiliumPods: true
         securityContext:
-          # privileged: true
-          appArmorProfile: 
-            type: Unconfined
+          privileged: true
         routingMode: native
         gatewayAPI:
           enabled: true
