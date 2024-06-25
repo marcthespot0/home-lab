@@ -2,7 +2,7 @@
 Cilium Install:
 ```sh
 # INSTALL CILIUM
-export cilium_applicationyaml=$(curl -sL "https://raw.githubusercontent.com/acelinkio/argocd-homelab/main/manifest/kube-system.yaml" | yq eval-all '. | select(.metadata.name == "cilium" and .kind == "Application")' -)
+export cilium_applicationyaml=$(curl -sL "https://raw.githubusercontent.com/marcthespot0/home-lab/main/manifest/kube-system.yaml" | yq eval-all '. | select(.metadata.name == "cilium" and .kind == "Application")' -)
 export cilium_name=$(echo "$cilium_applicationyaml" | yq eval '.metadata.name' -)
 export cilium_chart=$(echo "$cilium_applicationyaml" | yq eval '.spec.source.chart' -)
 export cilium_repo=$(echo "$cilium_applicationyaml" | yq eval '.spec.source.repoURL' -)
