@@ -113,13 +113,13 @@ spec:
           rollOutPods: true
         rollOutCiliumPods: true
         routingMode: native
+        securityContext:
+          privileged: true
         gatewayAPI:
           enabled: true
           secretsNamespace:
             create: false
             name: certificate
-  securityContext:
-    privileged: true
   syncPolicy:
     automated:
       allowEmpty: true
