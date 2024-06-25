@@ -113,7 +113,9 @@ spec:
           rollOutPods: true
         rollOutCiliumPods: true
         securityContext:
-          privileged: true
+          # privileged: true
+          appArmorProfile: 
+            type: Unconfined
         routingMode: native
         gatewayAPI:
           enabled: true
