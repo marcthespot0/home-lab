@@ -45,14 +45,11 @@ spec:
     namespace: external-dns-unifi
   source:
     git:
-      repoURL: https://github.com/marcthespot0/home-lab.git
+      repoURL: 'https://github.com/marcthespot0/home-lab.git'
       path: manifest/external-dns-unifi.yaml
       targetRevision: HEAD
   project: default
-
 ---
-
-# manifest/external-dns-unifi.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
