@@ -24,17 +24,17 @@ spec:
     template:
       engineVersion: v2
       data:
-        EXTERNAL_DNS_UNIFI_USER: "{{ .EXTERNAL_DNS_UNIFI_USER }}"
-        EXTERNAL_DNS_UNIFI_PASS: "{{ .EXTERNAL_DNS_UNIFI_PASS }}"
+        EXTERNAL_DNS_UNIFI_USER: "{{ .unifi_user }}"
+        EXTERNAL_DNS_UNIFI_PASS: "{{ .unifi_pass }}"
   data:
-    - secretKey: unifi_username
+    - secretKey: unifi_user
       remoteRef:
         key: external-dns-unifi
-        property: EXTERNAL_DNS_UNIFI_USER
-    - secretKey: unifi_password
+        property: UNIFI_USER
+    - secretKey: unifi_pass
       remoteRef:
         key: external-dns-unifi
-        property: EXTERNAL_DNS_UNIFI_PASS
+        property: UNIFI_PASS
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
