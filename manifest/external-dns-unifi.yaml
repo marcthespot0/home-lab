@@ -42,7 +42,7 @@ metadata:
   name: external-dns-unifi
 spec:
   destination:
-    namespace: flux-system
+    namespace: external-dns-unifi
   source:
     git:
       repoURL: https://github.com/marcthespot0/home-lab.git
