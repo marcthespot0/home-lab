@@ -42,31 +42,38 @@ metadata:
   name: external-dns-unifi
 spec:
   destination:
-    namespace: external-dns-unifi
+    namespace: flux-system
   source:
-    helm:
-      parameters:
-        - name: fullnameOverride
-          value: external-dns-unifi
-        - name: provider.name
-          value: webhook
-        - name: provider.webhook.image.repository
-          value: ghcr.io/kashalls/external-dns-unifi-webhook
-        - name: provider.webhook.image.tag
-          value: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
-        - name: provider.webhook.env.UNIFI_HOST
-          value: https://192.168.1.1
-        - name: provider.webhook.env.UNIFI_USER
-          valueFrom:
-            secretKeyRef:
-              name: external-dns-unifi
-              key: EXTERNAL_DNS_UNIFI_USER
-        - name: provider.webhook.env.UNIFI_PASS
-          valueFrom:
-            secretKeyRef:
-              name: external-dns-unifi
-              key: EXTERNAL_DNS_UNIFI_PASS
-  project: default
+    git:
+      repoURL: https://github.com/marcthespot0/home-lab.git
+      path: manifest/external-dns-unifi.yaml
+      targetRevision: HEAD
+  helm:
+    valueFiles:
+      - provider.yaml
   syncPolicy:
     automated:
       prune: true
+
+---
+
+# provider.yaml
+provider:
+  name: webhook
+  webhook:
+    image:
+      repository: ghcr.io/kashalls/external-dns-unifi-webhook
+      tag: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
+    env:
+      - name: UNIFI_HOST
+        value: https://192.168.1.1
+      - name: UNIFI_USER
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-unifi-secret
+            key: EXTERNAL_DNS_UNIFI_USER
+      - name: UNIFI_PASS
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-unifi-secret
+            key: EXTERNAL_DNS_UNIFI_PASS
