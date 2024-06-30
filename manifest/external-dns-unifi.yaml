@@ -59,12 +59,12 @@ spec:
         - name: provider.webhook.env.UNIFI_USER
           valueFrom:
             secretKeyRef:
-              name: external-dns-unifi-secret
+              name: external-dns-unifi
               key: EXTERNAL_DNS_UNIFI_USER
         - name: provider.webhook.env.UNIFI_PASS
           valueFrom:
             secretKeyRef:
-              name: external-dns-unifi-secret
+              name: external-dns-unifi
               key: EXTERNAL_DNS_UNIFI_PASS
   project: default
   syncPolicy:
