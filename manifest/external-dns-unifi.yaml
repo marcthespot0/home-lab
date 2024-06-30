@@ -8,10 +8,10 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: homepage-configsecrets
-  namespace: homepage
+  name: external-dns-unifi
+  namespace: external-dns-unifi
   labels:
-    app.kubernetes.io/part-of: homepage
+    app.kubernetes.io/part-of: external-dns-unifi
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
