@@ -48,7 +48,6 @@ spec:
       repoURL: 'https://github.com/marcthespot0/home-lab.git'
       path: manifest/external-dns-unifi.yaml
       targetRevision: HEAD
-  project: default
 ---
 apiVersion: v1
 kind: ConfigMap
