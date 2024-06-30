@@ -1,0 +1,72 @@
+---
+
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: external-dns-unifi
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: homepage-configsecrets
+  namespace: homepage
+  labels:
+    app.kubernetes.io/part-of: homepage
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        EXTERNAL_DNS_UNIFI_USER: "{{ .EXTERNAL_DNS_UNIFI_USER }}"
+        EXTERNAL_DNS_UNIFI_PASS: "{{ .EXTERNAL_DNS_UNIFI_PASS }}"
+  data:
+    - secretKey: unifi_username
+      remoteRef:
+        key: external-dns-unifi
+        property: EXTERNAL_DNS_UNIFI_USER
+    - secretKey: unifi_password
+      remoteRef:
+        key: external-dns-unifi
+        property: EXTERNAL_DNS_UNIFI_PASS
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns-unifi
+spec:
+  destination:
+    namespace: external-dns-unifi
+  source:
+    helm:
+      parameters:
+        - name: fullnameOverride
+          value: external-dns-unifi
+        - name: provider.name
+          value: webhook
+        - name: provider.webhook.image.repository
+          value: ghcr.io/kashalls/external-dns-unifi-webhook
+        - name: provider.webhook.image.tag
+          value: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
+        - name: provider.webhook.env.UNIFI_HOST
+          value: https://192.168.1.1
+        - name: provider.webhook.env.UNIFI_USER
+          valueFrom:
+            secretKeyRef:
+              name: external-dns-unifi-secret
+              key: EXTERNAL_DNS_UNIFI_USER
+        - name: provider.webhook.env.UNIFI_PASS
+          valueFrom:
+            secretKeyRef:
+              name: external-dns-unifi-secret
+              key: EXTERNAL_DNS_UNIFI_PASS
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
