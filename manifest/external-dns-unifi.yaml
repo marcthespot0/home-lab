@@ -97,10 +97,4 @@ metadata:
 data:
   log-level: "debug"
   provider-webhook-image: "ghcr.io/kashalls/external-dns-unifi-webhook:main"
----
-apiVersion: v1
-kind: PodDisruptionBudget
-metadata:
-  name: external-dns-unifi-pdb
-spec:
-  maxUnavailable: 0
+
