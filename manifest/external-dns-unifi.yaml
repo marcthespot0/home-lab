@@ -43,36 +43,58 @@ metadata:
 spec:
   destination:
     namespace: external-dns-unifi
+  project: default
   source:
-    git:
-      repoURL: 'https://github.com/marcthespot0/home-lab.git'
-      path: manifest/external-dns-unifi.yaml
-      targetRevision: HEAD
-  project: home-lab
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: external-dns-unifi-webhook
-  namespace: external-dns-unifi
-data:
-  values.yaml: |
-    provider:
-      name: webhook
-      webhook:
-        image:
-          repository: ghcr.io/kashalls/external-dns-unifi-webhook
-          tag: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
-        env:
-          - name: UNIFI_HOST
-            value: https://192.168.1.1
-          - name: UNIFI_USER
-            valueFrom:
-              secretKeyRef:
-                key: EXTERNAL_DNS_UNIFI_USER
-                name: external-dns-unifi-secret
-          - name: UNIFI_PASS
-            valueFrom:
-              secretKeyRef:
-                key: EXTERNAL_DNS_UNIFI_PASS
-                name: external-dns-unifi-secret
+    repoURL: https://github.com/external-dns/charts.git
+    targetRevision: v1.14.5
+    helmValues: |
+      fullnameOverride: ${APP_NAME}
+      provider:
+        name: webhook
+        webhook:
+          image:
+            repository: ghcr.io/kashalls/external-dns-unifi-webhook
+            tag: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
+          env:
+            - name: UNIFI_HOST
+              value: https://192.168.1.1
+            - name: UNIFI_USER
+              valueFrom:
+                secretKeyRef:
+                  name: external-dns-unifi
+                  key: UNIFI_USER
+            - name: UNIFI_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: external-dns-unifi
+                  key: UNIFI_PASS
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http-wh-metrics
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http-wh-metrics
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+      policy: sync
+      sources:
+        - ingress
+        - service
+      txtOwnerId: k8s
+      txtPrefix: k8s.
+      domainFilters:
+        - ${PUBLIC_DOMAIN}
+      excludeDomains:
+        - ${INTERNAL_DOMAIN}
+      serviceMonitor:
+        enabled: true
+      podAnnotations:
+        secret.reloader.stakater.com/reload: external-dns-unifi
+  syncPolicy:
+    automated:
+      prune: true
+      selfHealing: true
