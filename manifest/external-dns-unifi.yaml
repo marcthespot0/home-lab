@@ -41,7 +41,7 @@ metadata:
   name: external-dns-unifi
 spec:
   destination:
-    namespace: external-dns
+    namespace: external-dns-unifi
     server: https://kubernetes.default.svc
   project: default
   source:
