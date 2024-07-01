@@ -43,65 +43,58 @@ metadata:
 spec:
   destination:
     namespace: default
-    server: https://kubernetes.default.svc
-  project: my-project
   source:
-    repoURL: 'https://github.com/your-username/external-dns-charts.git'
+    repoURL: https://github.com/kashalls/external-dns-unifi-webhook.git
     targetRevision: main
   syncPolicy:
     automated:
       prune: true
-  resources:
-  - name: external-dns-unifi
-    namespace: default
-    helm:
-      valueFiles:
-        - values.yaml
-      releaseName: external-dns-unifi
-      chart:
-        repository: https://kubernetes-charts.storage.googleapis.com/
-        name: external-dns
-        version: 1.14.5
-      interval: 12h
-      maxHistory: 3
-      cleanupOnFail: true
-      keepHistory: false
-      provider:
-        webhook:
-          image:
-            repository: ghcr.io/kashalls/external-dns-unifi-webhook
-            tag: v0.2.0
-          env:
-            - name: UNIFI_HOST
-              value: https://192.168.1.1
-            - name: UNIFI_USER
-              value: external-dns
-            - name: UNIFI_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: external-dns-unifi
-                  key: external_dns_unifi
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: http-wh-metrics
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-          readinessProbe:
-            httpGet:
-              path: /readyz
-              port: http-wh-metrics
-            initialDelaySeconds: 10
-            timeoutSeconds: 5
-      resources:
-        requests:
-          cpu: 16m
-          memory: 90M
-        limits:
-          memory: 90M
-      serviceMonitor:
-        enabled: true
-      sources:
-        - gateway-httproute
-      txtPrefix: k8s.
-      txtOwnerId: home-cluster
+      selfHeal: true
+  project: default
+
+configMapGenerator:
+- name: external-dns-unifi-config
+  literals:
+  - name: UNIFI_HOST
+    value: https://192.168.1.1
+  - name: LOG_LEVEL
+    value: debug
+
+env:
+  - name: UNIFI_USER
+    secretKeyRef:
+      name: external-dns-unifi
+      key: UNFI_USER
+  - name: UNIFI_PASS
+    secretKeyRef:
+      name: external-dns-unifi
+      key: UNIFI_PASS
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http-wh-metrics
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+
+readinessProbe:
+  httpGet:
+    path: /readyz
+    port: http-wh-metrics
+  initialDelaySeconds: 10
+  timeoutSeconds: 5
+
+extraArgs:
+- --ignore-ingress-tls-spec
+
+policy:
+  sync: true
+
+sources:
+- ingress
+- service
+
+txtOwnerId: default
+txtPrefix: k8s.
+domainFilters:
+- marcthespot.com
