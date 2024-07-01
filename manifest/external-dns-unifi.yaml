@@ -77,7 +77,13 @@ spec:
             value: Externaldns123
           - name: LOG_LEVEL
             value: debug
-        command: ["--policy=sync", "--txtOwnerId=default", "--txtPrefix=k8s.", "--domainFilters=marcthespot.com"]
+        command: [
+          "external-dns",
+          "--policy=sync",
+          "--txtOwnerId=default",
+          "--txtPrefix=k8s.",
+          "--domainFilters=marcthespot.com"
+        ]
         annotationFilter: "external-dns.custom/type in (private)"
         livenessProbe:
           httpGet:
