@@ -42,7 +42,7 @@ metadata:
   name: external-dns-unifi
 spec:
   destination:
-    namespace: default
+    namespace: external-dns-unifi
   source:
     repoURL: https://github.com/kashalls/external-dns-unifi-webhook.git
     targetRevision: main
