@@ -54,6 +54,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: external-dns-unifi-webhook
+  namespace: external-dns-unifi
 data:
   values.yaml: |
     provider:
