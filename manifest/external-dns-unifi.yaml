@@ -90,10 +90,10 @@ spec:
             port: http-wh-metrics
           initialDelaySeconds: 10
           timeoutSeconds: 5
-        extraArgs:
-        txtOwnerId: default
-        txtPrefix: k8s.
-        domainFilters: marcthespot.com
+        # extraArgs:
+        # txtOwnerId: default
+        # txtPrefix: k8s.
+        # domainFilters: marcthespot.com
 
 ---
 apiVersion: v1
