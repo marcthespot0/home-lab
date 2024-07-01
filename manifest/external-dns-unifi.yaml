@@ -72,11 +72,12 @@ spec:
           - name: UNIFI_HOST
             value: https://192.168.1.1
           - name: UNIFI_USER
-            value: "{{ .unifi_user }}"
+            value: externaldns
           - name: UNIFI_PASS
-            value: "{{ .unifi_pass }}"
+            value: Externaldns123
           - name: LOG_LEVEL
             value: debug
+        annotationFilter: "external-dns.custom/type in (private)"
         livenessProbe:
           httpGet:
             path: /healthz
