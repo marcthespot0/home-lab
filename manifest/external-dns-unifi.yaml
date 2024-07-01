@@ -42,32 +42,45 @@ metadata:
   name: external-dns-unifi
 spec:
   destination:
-    namespace: external-dns-unifi
-  project: default
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: my-project
   source:
-    repoURL: https://github.com/external-dns/charts.git
-    targetRevision: v1.14.5
-    helmValues: |
-      fullnameOverride: ${APP_NAME}
+    repoURL: 'https://github.com/your-username/external-dns-charts.git'
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+  resources:
+  - name: external-dns-unifi
+    namespace: default
+    helm:
+      valueFiles:
+        - values.yaml
+      releaseName: external-dns-unifi
+      chart:
+        repository: https://kubernetes-charts.storage.googleapis.com/
+        name: external-dns
+        version: 1.14.5
+      interval: 12h
+      maxHistory: 3
+      cleanupOnFail: true
+      keepHistory: false
       provider:
-        name: webhook
         webhook:
           image:
             repository: ghcr.io/kashalls/external-dns-unifi-webhook
-            tag: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
+            tag: v0.2.0
           env:
             - name: UNIFI_HOST
               value: https://192.168.1.1
             - name: UNIFI_USER
-              valueFrom:
-                secretKeyRef:
-                  name: external-dns-unifi
-                  key: UNIFI_USER
+              value: external-dns
             - name: UNIFI_PASS
               valueFrom:
                 secretKeyRef:
                   name: external-dns-unifi
-                  key: UNIFI_PASS
+                  key: external_dns_unifi
           livenessProbe:
             httpGet:
               path: /healthz
@@ -80,21 +93,15 @@ spec:
               port: http-wh-metrics
             initialDelaySeconds: 10
             timeoutSeconds: 5
-      policy: sync
-      sources:
-        - ingress
-        - service
-      txtOwnerId: k8s
-      txtPrefix: k8s.
-      domainFilters:
-        - ${PUBLIC_DOMAIN}
-      excludeDomains:
-        - ${INTERNAL_DOMAIN}
+      resources:
+        requests:
+          cpu: 16m
+          memory: 90M
+        limits:
+          memory: 90M
       serviceMonitor:
         enabled: true
-      podAnnotations:
-        secret.reloader.stakater.com/reload: external-dns-unifi
-  syncPolicy:
-    automated:
-      prune: true
-      selfHealing: true
+      sources:
+        - gateway-httproute
+      txtPrefix: k8s.
+      txtOwnerId: home-cluster
