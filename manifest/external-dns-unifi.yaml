@@ -35,20 +35,20 @@ spec:
         key: external-dns-unifi
         property: UNIFI_PASS
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: external-dns-unifi
-spec:
-  destination:
-    namespace: external-dns-unifi
-  project: default
-  sources:
-  - git:
-      repoURL: https://github.com/kubernetes-sigs/external-dns.git
-      revision: main
-  target:
-    server: https://kubernetes.default.svc
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: external-dns-unifi
+# spec:
+#   destination:
+#     namespace: external-dns-unifi
+#   project: default
+#   sources:
+#   - git:
+#       repoURL: https://github.com/kubernetes-sigs/external-dns.git
+#       revision: main
+#   target:
+#     server: https://kubernetes.default.svc
 ---
 apiVersion: apps/v1
 kind: Deployment
