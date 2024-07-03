@@ -13,7 +13,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns-unifi
+    server: 'https://your-destination-server.com'
   project: default
   source:
     repoURL: https://charts.bitnami.com/bitnami
