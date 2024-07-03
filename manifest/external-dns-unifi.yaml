@@ -59,6 +59,5 @@ spec:
         external-dns.custom/type: "private"
   syncPolicy:
     automated:
-      allowEmpty: true
       prune: true
       selfHeal: true
