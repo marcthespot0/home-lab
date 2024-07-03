@@ -35,66 +35,98 @@ spec:
         key: external-dns-unifi
         property: UNIFI_PASS
 ---
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: external-dns-unifi
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: external-dns-unifi
+  namespace: external-dns-unifi
+  labels:
+    app.kubernetes.io/part-of: external-dns-unifi
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        EXTERNAL_DNS_UNIFI_USER: "{{ .unifi_user }}"
+        EXTERNAL_DNS_UNIFI_PASS: "{{ .unifi_pass }}"
+  data:
+    - secretKey: unifi_user
+      remoteRef:
+        key: external-dns-unifi
+        property: UNIFI_USER
+    - secretKey: unifi_pass
+      remoteRef:
+        key: external-dns-unifi
+        property: UNIFI_PASS
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns-unifi
+  name: external-dns-pihole
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns-unifi
+    namespace: external-dns-pihole
     server: https://kubernetes.default.svc
-  project: default
+  project: homelab
   source:
+    chart: external-dns
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 7.3.0
     helm:
-      chart:
-        repo: 'external-dns-charts'
-        name: 'external-dns'
-        version: '1.14.5'
-      values:
-        - domainFilters:
-            - marcthespot.com
-        - extraArgs:
-            - --ignore-ingress-tls-spec
-        - podAnnotations:
-            secret.reloader.stakater.com/reload: external-dns-unifi-secret
-        - policy: sync
-        - provider:
-            name: webhook
-            webhook:
-              image:
-                repository: 'ghcr.io/kashalls/external-dns-unifi-webhook'
-                tag: 'v0.2.0'
-              env:
-                - name: UNIFI_HOST
-                  value: 'https://192.168.1.1'
-                - name: UNIFI_USER
-                  value: 'externaldns'
-                - name: UNIFI_PASS
-                  value: 'Externaldns123'
-              livenessProbe:
-                httpGet:
-                  path: '/healthz'
-                  port: 'http-wh-metrics'
-                initialDelaySeconds: 10
-                timeoutSeconds: 5
-              readinessProbe:
-                httpGet:
-                  path: '/readyz'
-                  port: 'http-wh-metrics'
-                initialDelaySeconds: 10
-                timeoutSeconds: 5
-        - resources:
-            requests:
-              cpu: 16m
-              memory: 90M
-          limits:
-            memory: 90M
-        - serviceMonitor:
-            enabled: true
-        - sources:
-          - gateway-httproute
-        - txtPrefix: k8s.
-        - txtOwnerId: home-cluster
+      values: |
+        fullnameOverride: external-dns-unifi
+        logLevel: debug
+        provider:
+          name: webhook
+          webhook:
+            image:
+              repository: ghcr.io/kashalls/external-dns-unifi-webhook
+              tag: main # replace with a versioned release tag
+            env:
+              - name: UNIFI_HOST
+                value: https://192.168.1.1 # replace with the address to your UniFi router
+              - name: UNIFI_USER
+                value: externaldns
+              - name: UNIFI_PASS
+                value: Externaldns123
+              - name: LOG_LEVEL
+                value: debug
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: http-wh-metrics
+              initialDelaySeconds: 10
+              timeoutSeconds: 5
+            readinessProbe:
+              httpGet:
+                path: /readyz
+                port: http-wh-metrics
+              initialDelaySeconds: 10
+              timeoutSeconds: 5
+        annotationFilter: "external-dns.custom/type in (private)"
+        extraArgs:
+        policy: sync
+        txtOwnerId: default
+        txtPrefix: k8s.
+        domainFilters: marcthespot.com 
   syncPolicy:
     automated:
-      prune: false
+      allowEmpty: true
+      prune: true
+      selfHeal: true
