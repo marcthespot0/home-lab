@@ -9,8 +9,6 @@ kind: Application
 metadata:
   name: external-dns-unifi
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
     server: "https://kubernetes.default.svc"
@@ -23,7 +21,8 @@ spec:
     helm:
       values: |
         provider:
-          webhook:
+          type: webhook
+          config:
             image:
               repository: ghcr.io/kashalls/external-dns-unifi-webhook
               tag: 0.2.0
