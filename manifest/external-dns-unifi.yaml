@@ -9,32 +9,55 @@ kind: Application
 metadata:
   name: external-dns-unifi
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    server: "https://kubernetes.default.svc"
-  cluster:
-    name: talos-proxmox-cluster
-  project: default
+    namespace: external-dns-unifi
+    server: https://kubernetes.default.svc
+  project: homelab
   source:
+    chart: external-dns
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 8.0.0
     helm:
       values: |
-        {{ .Values }}
-      extraArgs:
-      policy: sync
-      txtOwnerId: default
-      txtPrefix: k8s.
-      domainFilters: ["marcthespot.com"]
+        fullnameOverride: external-dns-unifi
+        logLevel: debug
+        provider:
+          webhook:
+            image:
+              repository: ghcr.io/kashalls/external-dns-unifi-webhook
+              tag: main
+            env:
+              - name: UNIFI_HOST
+                value: https://192.168.1.1 
+              - name: UNIFI_USER
+                value: externaldns
+              - name: UNIFI_PASS
+                value: Externaldns123
+              - name: LOG_LEVEL
+                value: debug
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: http-wh-metrics
+              initialDelaySeconds: 10
+              timeoutSeconds: 5
+            readinessProbe:
+              httpGet:
+                path: /readyz
+                port: http-wh-metrics
+              initialDelaySeconds: 10
+              timeoutSeconds: 5
+        extraArgs:
+        policy: sync
+        txtOwnerId: default
+        txtPrefix: k8s.
+        domainFilters: ["marcthespot.com"]
+      annotations:
+        external-dns.custom/type: "private"
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: external-dns-values
-data:
-  provider.json: |
-    {"type": "webhook", "config": {"image": {"repository": "ghcr.io/kashalls/external-dns-unifi-webhook", "tag": "0.2.0"}, "env": [{"name": "UNIFI_HOST", "value": "https://192.168.1.1"}, {"name": "UNIFI_USER", "value": "externaldns"}, {"name": "UNIFI_PASS", "value": "Externaldns123"}, {"name": "LOG_LEVEL", "value": "debug"}], "livenessProbe": {"httpGet": {"path": "/healthz", "port": "http-wh-metrics"}, "initialDelaySeconds": 10, "timeoutSeconds": 5}, "readinessProbe": {"httpGet": {"path": "/readyz", "port": "http-wh-metrics"}, "initialDelaySeconds": 10, "timeoutSeconds": 5}}
