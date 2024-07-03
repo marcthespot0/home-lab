@@ -14,10 +14,8 @@ metadata:
 spec:
   destination:
     namespace: external-dns-unifi
-    server: https://kubernetes.default.svc
-  project: homelab
+  project: default
   source:
-    chart: external-dns
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 8.0.0
     helm:
@@ -57,6 +55,7 @@ spec:
         domainFilters: ["marcthespot.com"]
       annotations:
         external-dns.custom/type: "private"
+    chart: external-dns
   syncPolicy:
     automated:
       prune: true
