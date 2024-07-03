@@ -13,7 +13,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    server: 'https://your-destination-server.com'
+    server: "https://kubernetes.default.svc"
   project: default
   source:
     repoURL: https://charts.bitnami.com/bitnami
