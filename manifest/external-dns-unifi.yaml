@@ -29,43 +29,51 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: external-dns-unifi
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns-unifi
+    namespace: flux-system
     server: https://kubernetes.default.svc
-  project: homelab
+  project: default
   source:
-    chart: external-dns
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 7.3.0
     helm:
-      values: |
+      chart:
+        repository: https://charts.bitnami.com/bitnami
+        name: external-dns
+        version: 8.0.0
+      values:
+        fullnameOverride: "external-dns-unifi"
         provider:
+          name: webhook
           webhook:
             image:
               repository: ghcr.io/kashalls/external-dns-unifi-webhook
-              tag: 0.2.0
+              tag: v0.2.0@sha256:4f0d996ba6932f38e921b0717ba44cb58b7d687dcf6a55c9d3843396d23b22d1
             env:
               - name: UNIFI_HOST
-                value: https://192.168.1.1 
+                value: "https://192.168.1.1"
               - name: UNIFI_USER
                 value: externaldns
               - name: UNIFI_PASS
                 value: Externaldns123
-              - name: LOG_LEVEL
-                value: debug
             livenessProbe:
               httpGet:
-                path: /healthz
-                port: http-wh-metrics
+                path: "/healthz"
+                port: "http-wh-metrics"
               initialDelaySeconds: 10
               timeoutSeconds: 5
             readinessProbe:
               httpGet:
-                path: /readyz
-                port: http-wh-metrics
+                path: "/readyz"
+                port: "http-wh-metrics"
               initialDelaySeconds: 10
               timeoutSeconds: 5
+        extraArgs:
+          - --ignore-ingress-tls-spec
+        txtOwnerId: default
+        txtPrefix: k8s.
+        domainFilters: ["marcthespot.com"] 
+    syncPolicy:
+      automated:
+        prune: true
+  targets:
+  - namespace: external-dns-unifi
