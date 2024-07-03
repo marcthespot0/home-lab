@@ -14,6 +14,8 @@ metadata:
 spec:
   destination:
     server: "https://kubernetes.default.svc"
+  cluster:
+    name: talos-proxmox-cluster
   project: default
   source:
     repoURL: https://charts.bitnami.com/bitnami
@@ -60,3 +62,8 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+
+
+
+      "https://kubernetes.default.svc"
