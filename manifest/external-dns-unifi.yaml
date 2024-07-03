@@ -119,12 +119,12 @@ spec:
                 port: http-wh-metrics
               initialDelaySeconds: 10
               timeoutSeconds: 5
-        annotationFilter: "external-dns.custom/type in (private)"
-        extraArgs:
-        policy: sync
-        txtOwnerId: default
-        txtPrefix: k8s.
-        domainFilters: marcthespot.com 
+          extraArgs:
+          policy: sync
+          txtOwnerId: default
+          txtPrefix: k8s.
+          domainFilters: marcthespot.com
+      annotationFilter: "external-dns.custom/type in (private)"
   syncPolicy:
     automated:
       allowEmpty: true
