@@ -174,14 +174,14 @@ data:
             widget:
               type: immich
               url: https://immich.<path:stringreplacesecret#domain>
-              key: EFb2ZdHJBUHFPu9ytBnAGM2XVNrzDUOM3inAGxHAQE
+              key: x92upwt8nNUF0YHrpEnRtoM1cE71kuTDQfGELN2lNI
         - Radarr:
             href: https://radarr.<path:stringreplacesecret#domain>
             icon: radarr.svg
             widget:
               type: radarr
               url: https://radarr.<path:stringreplacesecret#domain>
-              key: 796b04c3f2124c7ca24429d8223fc910
+              key: aa059cca511a43759bf433eceaa159c5
               enableQueue: true
         - Jellyfin:
             href: https://jellyfin.<path:stringreplacesecret#domain>
@@ -189,7 +189,7 @@ data:
             widget:
               type: jellyfin
               url: https://jellyfin.<path:stringreplacesecret#domain>
-              key: 23cf7b9449d84421b0566f54b4b62b47
+              key: 11401999788f4501ad9e2e8c48f0b5fb
               enableBlocks: true # optional, defaults to false
               enableNowPlaying: true # optional, defaults to true
               enableUser: true # optional, defaults to false
