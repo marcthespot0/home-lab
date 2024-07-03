@@ -28,13 +28,13 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-dns-pihole
+  name: external-dns-unifi
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns-pihole
+    namespace: external-dns-unifi
     server: https://kubernetes.default.svc
   project: homelab
   source:
