@@ -23,8 +23,8 @@ spec:
     helm:
       values: |
         fullnameOverride: external-dns-unifi
-        logLevel: debug
         provider:
+          name: webhook
           webhook:
             image:
               repository: ghcr.io/kashalls/external-dns-unifi-webhook
@@ -50,11 +50,11 @@ spec:
                 port: http-wh-metrics
               initialDelaySeconds: 10
               timeoutSeconds: 5
-        extraArgs:
-        policy: sync
-        txtOwnerId: default
-        txtPrefix: k8s.
-        domainFilters: ["marcthespot.com"]
+      extraArgs:
+      policy: sync
+      txtOwnerId: default
+      txtPrefix: k8s.
+      domainFilters: ["marcthespot.com"]
       annotations:
         external-dns.custom/type: "private"
   syncPolicy:
