@@ -62,8 +62,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-
-
-
-      "https://kubernetes.default.svc"
