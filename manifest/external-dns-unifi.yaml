@@ -81,7 +81,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    namespace: external-dns-unifi
+    # namespace: external-dns-unifi
     server: https://kubernetes.default.svc
   project: homelab
   source:
