@@ -3,43 +3,6 @@ kind: Namespace
 apiVersion: v1
 metadata:
   name: external-dns-unifi
----
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: external-dns-unifi
-  namespace: external-dns-unifi
-  labels:
-    app.kubernetes.io/part-of: external-dns-unifi
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        EXTERNAL_DNS_UNIFI_USER: "{{ .unifi_user }}"
-        EXTERNAL_DNS_UNIFI_PASS: "{{ .unifi_pass }}"
-  data:
-    - secretKey: unifi_user
-      remoteRef:
-        key: external-dns-unifi
-        property: UNIFI_USER
-    - secretKey: unifi_pass
-      remoteRef:
-        key: external-dns-unifi
-        property: UNIFI_PASS
----
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: external-dns-unifi
 # ---
 # apiVersion: external-secrets.io/v1beta1
 # kind: ExternalSecret
@@ -81,7 +44,7 @@ metadata:
     argocd.argoproj.io/sync-wave: "10"
 spec:
   destination:
-    # namespace: external-dns-unifi
+    namespace: external-dns-unifi
     server: https://kubernetes.default.svc
   project: homelab
   source:
