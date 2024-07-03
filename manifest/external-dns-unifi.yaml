@@ -22,8 +22,6 @@ spec:
     targetRevision: 8.0.0
     helm:
       values: |
-        fullnameOverride: external-dns-unifi
-        logLevel: debug
         provider:
           webhook:
             image:
