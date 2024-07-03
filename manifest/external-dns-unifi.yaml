@@ -43,7 +43,6 @@ spec:
     targetRevision: 7.3.0
     helm:
       values: |
-        annotationFilter: "external-dns.custom/type in (private)"
         provider:
           webhook:
             image:
