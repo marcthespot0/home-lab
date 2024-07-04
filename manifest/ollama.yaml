@@ -34,6 +34,15 @@ spec:
         nameOverride: ""
         fullnameOverride: ""
         ollama:
+          persistentVolume:
+            enabled: true
+            accessModes:
+              - ReadWriteOnce
+            annotations: {}
+            existingClaim: "ollama-pvc"
+            size: 100Gi
+            storageClass: ""
+            subPath: "/ollama"
           models:
             - llama3
           insecure: false
@@ -65,19 +74,19 @@ template:
     - name: ollama-pvc
       persistentVolumeClaim:
         claimName: ollama-pvc
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: ollama-pvc
-  namespace: ollama
-  labels:
-    app.kubernetes.io/name: ollama
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100G
+# ---
+# kind: PersistentVolumeClaim
+# apiVersion: v1
+# metadata:
+#   name: ollama-pvc
+#   namespace: ollama
+#   labels:
+#     app.kubernetes.io/name: ollama
+# spec:
+#   accessModes:
+#   - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100G
 
         
