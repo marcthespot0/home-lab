@@ -865,6 +865,9 @@ metadata:
   namespace: immich
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/client-max-body-size: "0"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: 600s
+    nginx.ingress.kubernetes.io/proxy-read-timeout: 600s
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
