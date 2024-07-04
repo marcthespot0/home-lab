@@ -42,9 +42,11 @@ spec:
               persistentVolumeClaim:
                 claimName: ollama-pvc
           runtimeClassName: "nvidia"
-          service:
-            type: LoadBalancer
-            port: 11434
+        service:
+          type: ClusterIP
+          port: 11434
+        nodeSelector:
+          kubernetes.io/hostname: talos-lab-02
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
@@ -63,8 +65,6 @@ template:
     - name: ollama-pvc
       persistentVolumeClaim:
         claimName: ollama-pvc
-    nodeSelector:
-        kubernetes.io/hostname: talos-lab-02
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
