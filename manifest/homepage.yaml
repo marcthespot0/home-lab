@@ -161,13 +161,6 @@ data:
                   params:
                     showName: true
     - Self-hosted:
-        - Home Assistant:
-            href: http://hass.<path:stringreplacesecret#domain>:8123
-            icon: home-assistant.svg
-            widget:
-              type: homeassistant
-              url: http://hass.<path:stringreplacesecret#domain>:8123
-              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
         - Immich:
             href: https://immich.<path:stringreplacesecret#domain>
             icon: immich.svg
@@ -213,6 +206,13 @@ data:
               url: https://unifi.<path:stringreplacesecret#domain>
               username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
               password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+        - Home Assistant:
+            href: http://hass.<path:stringreplacesecret#domain>:8123
+            icon: home-assistant.svg
+            widget:
+              type: homeassistant
+              url: http://hass.<path:stringreplacesecret#domain>:8123
+              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
         - TrueNAS:
             href: https://truenas.<path:stringreplacesecret#domain>
             icon: truenas.png
