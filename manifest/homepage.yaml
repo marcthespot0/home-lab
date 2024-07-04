@@ -141,7 +141,7 @@ data:
   bookmarks.yaml: |
     - Social:
         - Facebook:
-          - icon: facebook.png
+            - icon: facebook.png
               href: https://facebook.com
         - Gmail:
             - icon: gmail.png
@@ -157,14 +157,14 @@ data:
               href: https://youtube.com/feed/subscriptions
         - Instagram:
             - icon: instagram.png
-            hfref: https://instagram.com
+              hfref: https://instagram.com
     - AI: 
         - Ollama:
             - icon: ollama.png
-            href: https://ollama.marcthespot.com
+              href: https://ollama.marcthespot.com
         - ChatGPT:
             - icon: chatgpt.png
-            href: https://chat.openai.com
+              href: https://chat.openai.com
     - Git:
         - home-cluster:
             - icon: github.png
