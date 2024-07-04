@@ -64,7 +64,7 @@ template:
       persistentVolumeClaim:
         claimName: ollama-pvc
     nodeSelector:
-      kubernetes.io/hostname: talos-lab-02
+      kubernetes.io/nvidia: gpu
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
