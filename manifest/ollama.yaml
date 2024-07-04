@@ -43,7 +43,7 @@ spec:
                 claimName: ollama-pvc
           runtimeClassName: "nvidia"
         service:
-          type: ClusterIP
+          type: LoadBalancer
           port: 11434
         nodeSelector:
           kubernetes.io/hostname: talos-lab-02
