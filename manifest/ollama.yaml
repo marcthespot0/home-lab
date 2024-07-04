@@ -63,6 +63,8 @@ template:
     - name: ollama-pvc
       persistentVolumeClaim:
         claimName: ollama-pvc
+    nodeSelector:
+      kubernetes.io/hostname: talos-lab-02
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
