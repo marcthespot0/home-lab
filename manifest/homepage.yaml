@@ -145,7 +145,7 @@ data:
               href: https://facebook.com
         - Gmail:
             - icon: gmail.png
-              href: http://gmail.com
+              href: https://gmail.com
         - Reddit:
             - icon: reddit.png
               href: https://reddit.com
@@ -154,7 +154,7 @@ data:
               href: https://x.com
         - YouTube:
             - icon: youtube.png
-              href: https://youtube.com/feed/subscriptions
+              href: https://youtube.com
         - Instagram:
             - icon: instagram.png
               hfref: https://instagram.com
