@@ -152,9 +152,9 @@ data:
         - YouTube:
             - icon: youtube.png
               href: https://youtube.com
-        - Instagram:
-            - icon: instagram.png
-              hfref: https://instagram.com
+        # - Instagram:
+        #     - icon: instagram.png
+        #       hfref: https://instagram.com
     - AI: 
         - Ollama:
             - icon: ollama.png
