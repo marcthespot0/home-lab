@@ -143,12 +143,12 @@ data:
         - Facebook:
             - icon: facebook.png
               href: https://facebook.com
-        # - Gmail:
-        #     - icon: gmail.png
-        #       href: https://gmail.com
-        # - Reddit:
-        #     - icon: reddit.png
-        #       href: https://reddit.com
+        - Gmail:
+            - icon: gmail.png
+              href: https://gmail.com
+        - Reddit:
+            - icon: reddit.png
+              href: https://reddit.com
         # - X:
         #     - icon: x.png
         #       href: https://x.com
