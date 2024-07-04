@@ -33,14 +33,15 @@ spec:
         imagePullSecrets: []
         nameOverride: ""
         fullnameOverride: ""
-        persistentVolume.existingClaim: "true"
         volumeMounts:
           - name: ollama-volume
             mountPath: /ollama
         volumes:
           - name: ollama-volume
+        persistentVolume:
+          enabled: true
           existingClaim: ollama-pvc
-          runtimeClassName: "nvidia"
+        runtimeClassName: "nvidia"
         ollama:
           models:
             - llama3
