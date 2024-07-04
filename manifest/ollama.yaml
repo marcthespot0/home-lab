@@ -46,8 +46,7 @@ spec:
             mountPath: /ollama
           volumes:
             - name: ollama-volume
-              persistentVolumeClaim:
-                claimName: ollama-pvc
+          existingClaim: ollama-pvc
           runtimeClassName: "nvidia"
         service:
           type: LoadBalancer
@@ -61,17 +60,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-template:
-  spec:
-    containers:
-    - name: ollama
-      volumeMounts:
-      - name: ollama-pvc
-        mountPath: /ollama/models
-    volumes:
-    - name: ollama-pvc
-      persistentVolumeClaim:
-        claimName: ollama-pvc
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
