@@ -175,7 +175,7 @@ data:
               href: https://dash.cloudflare.com
         - ArgoCD: 
             - icon: argocd.png
-              href: https://argocd.marcthrespot.com
+              href: https://argocd.marcthespot.com
   services.yaml: |
     - Calendar:
         - Agenda:
