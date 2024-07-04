@@ -149,15 +149,15 @@ data:
         - Reddit:
             - icon: reddit.png
               href: https://reddit.com
-        # - X:
-        #     - icon: x.png
-        #       href: https://x.com
-        # - YouTube:
-        #     - icon: youtube.png
-        #       href: https://youtube.com
-        # - Instagram:
-        #     - icon: instagram.png
-        #       hfref: https://instagram.com
+        - Twitter:
+            - icon: twitter.png
+              href: https://x.com
+        - YouTube:
+            - icon: youtube.png
+              href: https://youtube.com
+        - Instagram:
+            - icon: instagram.png
+              hfref: https://instagram.com
     - AI: 
         - Ollama:
             - icon: ollama.png
