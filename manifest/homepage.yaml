@@ -174,7 +174,7 @@ data:
             widget:
               type: immich
               url: https://immich.<path:stringreplacesecret#domain>
-              key: x92upwt8nNUF0YHrpEnRtoM1cE71kuTDQfGELN2lNI
+              key: irM1wksYSPI6BwWPK16p3pxHMCe5pwzQ5ohlAupn94
         - Radarr:
             href: https://radarr.<path:stringreplacesecret#domain>
             icon: radarr.svg
