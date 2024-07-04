@@ -36,11 +36,7 @@ spec:
         ollama:
           persistentVolume:
             enabled: true
-            accessModes:
-              - ReadWriteOnce
-            annotations: {}
-            size: 100Gi
-            storageClass: ""
+            existingClaim: "ollama-pvc"
             subPath: "/ollama"
           models:
             - llama3
