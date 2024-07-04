@@ -149,9 +149,6 @@ data:
         - Reddit:
             - icon: reddit.png
               href: https://reddit.com
-        - Twitter:
-            - icon: twitter.png
-              href: https://twitter.com
         - YouTube:
             - icon: youtube.png
               href: https://youtube.com
@@ -173,6 +170,9 @@ data:
         - CloudFlare:
             - icon: cloudflare.png
               href: https://dash.cloudflare.com
+        - ArgoCD: 
+            - icon: argocd.png
+              href: https://argocd.marcthrespot.com
   services.yaml: |
     - Calendar:
         - Agenda:
