@@ -42,6 +42,13 @@ spec:
           enabled: true
           existingClaim: ollama-pvc
         runtimeClassName: "nvidia"
+        resources:
+          requests:
+            memory: 4096Mi
+            cpu: 2000m
+          limits: 
+            memory: 8192Mi
+            cpu: 4000m
         ollama:
           models:
             - llama3
