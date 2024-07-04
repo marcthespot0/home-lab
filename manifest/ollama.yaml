@@ -41,8 +41,11 @@ spec:
           models:
             - llama3
           insecure: false
-          volumeSources:
-            - name: ollama-pvc
+          volumeMounts:
+            - name: ollama-volume
+            mountPath: /ollama
+          volumes:
+            - name: ollama-volume
               persistentVolumeClaim:
                 claimName: ollama-pvc
           runtimeClassName: "nvidia"
