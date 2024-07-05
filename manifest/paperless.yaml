@@ -9,7 +9,7 @@ metadata:
 spec:
   storageClassName: freenas-nfs-csi
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 75G
