@@ -267,10 +267,6 @@ spec:
       remoteRef:
         key: sso
         property: grafana_client_secret
-    - secretKey: mealie_client_id
-      remoteRef:
-        key: sso
-        property: mealie_client_id
     - secretKey: miniflux_client_id
       remoteRef:
         key: sso
