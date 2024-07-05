@@ -241,7 +241,6 @@ spec:
           argocd_client_secret = "{{ .argocd_client_secret | toString }}"
           grafana_client_id = "{{ .grafana_client_id | toString }}"
           grafana_client_secret = "{{ .grafana_client_secret | toString }}"
-          mealie_client_id = "{{ .mealie_client_id | toString }}"
           miniflux_client_id = "{{ .miniflux_client_id | toString }}"
           miniflux_client_secret = "{{ .miniflux_client_secret | toString }}"
           ryot_client_id = "{{ .ryot_client_id | toString }}"
