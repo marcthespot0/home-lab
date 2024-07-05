@@ -6,8 +6,6 @@ metadata:
   namespace: "paperless"
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
-  labels:
-    app.kubernetes.io/name: paperless-pvc
 spec:
   storageClassName: freenas-nfs-csi
   accessModes:
