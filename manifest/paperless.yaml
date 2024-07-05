@@ -1,14 +1,17 @@
+---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: paperless-pvc
   namespace: paperless
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
   labels:
     app.kubernetes.io/name: paperless
 spec:
   storageClassName: freenas-nfs-csi
   accessModes:
-  - ReadWriteMany
+    - ReadWriteMany
   resources:
     requests:
       storage: 100G
