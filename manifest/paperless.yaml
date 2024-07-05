@@ -2,8 +2,8 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: paperless-pvc
-  namespace: paperless
+  name: paperless-ngx
+  namespace: "paperless"
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
   labels:
