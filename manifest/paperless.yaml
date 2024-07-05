@@ -6,8 +6,9 @@ metadata:
   labels:
     app.kubernetes.io/name: paperless
 spec:
+  storageClassName: freenas-nfs-csi
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 100G
