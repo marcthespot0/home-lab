@@ -182,7 +182,7 @@ spec:
   rules:
   - backendRefs:
     - name: paperless
-      port: 80
+      port: 8000
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
