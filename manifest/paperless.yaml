@@ -101,7 +101,7 @@ spec:
             claimName: paperless-consume
       containers:
         - name: paperless
-          image: ghcr.io/paperless-ngx/paperless-ngx:latest
+          image: ghcr.io/paperless-ngx/paperless-ngx:2.10.2
           ports:
             - containerPort: 8000
           imagePullPolicy: Always
