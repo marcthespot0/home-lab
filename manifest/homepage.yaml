@@ -499,14 +499,14 @@ metadata:
   name: homepage
   namespace: homepage
   annotations:
-    external-dns.custom/type: private
+    external-dns.custom/type: public
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: homepage.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - intgw.<path:stringreplacesecret#domain>
+        - extgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"

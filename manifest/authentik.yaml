@@ -320,7 +320,6 @@ spec:
       variable "grafana_client_id" {}
       variable "grafana_client_secret" {}
       variable "miniflux_client_id" {}
-
       variable "miniflux_client_secret" {}
       variable "ryot_client_id" {}
       variable "ryot_client_secret" {}
