@@ -1,0 +1,1318 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: paperless-pvc
+  namespace: paperless
+  labels:
+    app.kubernetes.io/name: paperless
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100G
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+    app.kubernetes.io/component: primary
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    - ports:
+        - port: 5432
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: paperless-ngx-redis
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: redis
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - {}
+  ingress:
+    # Allow inbound connections
+    - ports:
+        - port: 6379
+---
+# Source: paperless-ngx/charts/postgresql/templates/primary/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+    app.kubernetes.io/component: primary
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+---
+# Source: paperless-ngx/charts/redis/templates/master/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: paperless-ngx-redis-master
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+    app.kubernetes.io/component: master
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/component: master
+---
+# Source: paperless-ngx/charts/gotenberg/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: paperless-ngx-gotenberg
+  namespace: default
+  labels:
+    helm.sh/chart: gotenberg-0.0.1
+    app.kubernetes.io/name: gotenberg
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "8.0.1"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: paperless-ngx/charts/postgresql/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+automountServiceAccountToken: false
+---
+# Source: paperless-ngx/charts/redis/templates/master/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+automountServiceAccountToken: false
+metadata:
+  name: paperless-ngx-redis-master
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+---
+# Source: paperless-ngx/charts/tika/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: paperless-ngx-tika
+  labels:
+    helm.sh/chart: tika-2.9.0
+    app.kubernetes.io/name: tika
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.9.0.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: paperless-ngx/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: paperless-ngx
+  namespace: default
+  labels:
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+automountServiceAccountToken: false
+---
+# Source: paperless-ngx/charts/postgresql/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+type: Opaque
+data:
+  postgres-password: "cG9zdGdyZXM="
+  password: "cGFwZXJsZXNz"
+  # We don't auto-generate LDAP password when it's not provided as we do for other passwords
+---
+# Source: paperless-ngx/charts/redis/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-redis
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+type: Opaque
+data:
+  redis-password: "cGFwZXJsZXNz"
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-general
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  secretKey: "WHlYTWo0b0xrSFBmaHZ5eFVzb1VNeWNRMWVXNVhUejY="
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-admin
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: "kubernetes.io/basic-auth"
+data:
+  username: ""
+  password: ""
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-redis-auth
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  uri: "cmVkaXM6Ly86QDo2Mzc5"
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-postgresql-auth
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: "kubernetes.io/basic-auth"
+data:
+  username: ""
+  password: ""
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-smtp-auth
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: "kubernetes.io/basic-auth"
+data:
+  username: ""
+  password: ""
+---
+# Source: paperless-ngx/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: paperless-ngx-allauth
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  accountProviders: ""
+---
+# Source: paperless-ngx/charts/redis/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-ngx-redis-configuration
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+data:
+  redis.conf: |-
+    # User-supplied common configuration:
+    # Enable AOF https://redis.io/topics/persistence#append-only-file
+    appendonly yes
+    # Disable RDB persistence, AOF persistence already enabled.
+    save ""
+    # End of common configuration
+  master.conf: |-
+    dir /data
+    # User-supplied master configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of master configuration
+  replica.conf: |-
+    dir /data
+    # User-supplied replica configuration:
+    rename-command FLUSHDB ""
+    rename-command FLUSHALL ""
+    # End of replica configuration
+---
+# Source: paperless-ngx/charts/redis/templates/health-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-ngx-redis-health
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+data:
+  ping_readiness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 15 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_local.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    [[ -n "$REDIS_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_PASSWORD"
+    response=$(
+      timeout -s 15 $1 \
+      redis-cli \
+        -h localhost \
+        -p $REDIS_PORT \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ] && [ "$responseFirstWord" != "MASTERDOWN" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 15 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    if [ "$response" != "PONG" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_liveness_master.sh: |-
+    #!/bin/bash
+
+    [[ -f $REDIS_MASTER_PASSWORD_FILE ]] && export REDIS_MASTER_PASSWORD="$(< "${REDIS_MASTER_PASSWORD_FILE}")"
+    [[ -n "$REDIS_MASTER_PASSWORD" ]] && export REDISCLI_AUTH="$REDIS_MASTER_PASSWORD"
+    response=$(
+      timeout -s 15 $1 \
+      redis-cli \
+        -h $REDIS_MASTER_HOST \
+        -p $REDIS_MASTER_PORT_NUMBER \
+        ping
+    )
+    if [ "$?" -eq "124" ]; then
+      echo "Timed out"
+      exit 1
+    fi
+    responseFirstWord=$(echo $response | head -n1 | awk '{print $1;}')
+    if [ "$response" != "PONG" ] && [ "$responseFirstWord" != "LOADING" ]; then
+      echo "$response"
+      exit 1
+    fi
+  ping_readiness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_readiness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_readiness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+  ping_liveness_local_and_master.sh: |-
+    script_dir="$(dirname "$0")"
+    exit_status=0
+    "$script_dir/ping_liveness_local.sh" $1 || exit_status=$?
+    "$script_dir/ping_liveness_master.sh" $1 || exit_status=$?
+    exit $exit_status
+---
+# Source: paperless-ngx/charts/redis/templates/scripts-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-ngx-redis-scripts
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+data:
+  start-master.sh: |
+    #!/bin/bash
+
+    [[ -f $REDIS_PASSWORD_FILE ]] && export REDIS_PASSWORD="$(< "${REDIS_PASSWORD_FILE}")"
+    if [[ -f /opt/bitnami/redis/mounted-etc/master.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/master.conf /opt/bitnami/redis/etc/master.conf
+    fi
+    if [[ -f /opt/bitnami/redis/mounted-etc/redis.conf ]];then
+        cp /opt/bitnami/redis/mounted-etc/redis.conf /opt/bitnami/redis/etc/redis.conf
+    fi
+    ARGS=("--port" "${REDIS_PORT}")
+    ARGS+=("--requirepass" "${REDIS_PASSWORD}")
+    ARGS+=("--masterauth" "${REDIS_PASSWORD}")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
+    ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
+    exec redis-server "${ARGS[@]}"
+---
+# Source: paperless-ngx/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-ngx-general
+  namespace: default
+  labels:
+    app.kubernetes.io/component: paperless-ngx
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+data:
+  PAPERLESS_PORT: "8000"
+  USERMAP_UID: "1000"
+  USERMAP_GID: "1000"
+  PAPERLESS_URL: "http://paperless.marcthespot.com"
+  PAPERLESS_BIND_ADDR: "0.0.0.0"
+  PAPERLESS_ENABLE_COMPRESSION: "1"
+  PAPERLESS_INDEX_TASK_CRON: "0 0 * * *"
+  PAPERLESS_REDIS_PREFIX: ""
+  PAPERLESS_DBENGINE: "postgresql"
+  PAPERLESS_DBHOST: ""
+  PAPERLESS_DBPORT: "5432"
+  PAPERLESS_DBNAME: ""
+  PAPERLESS_DBSSLMODE: "prefer"
+  PAPERLESS_TIKA_ENABLED: "true"
+  PAPERLESS_TIKA_ENDPOINT: ""
+  PAPERLESS_TIKA_GOTENBERG_ENDPOINT: ""
+---
+# Source: paperless-ngx/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: paperless-ngx
+  namespace: default
+  labels:
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: paperless-ngx
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get"]
+---
+# Source: paperless-ngx/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: paperless-ngx
+  namespace: default
+  labels:
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: paperless
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: paperless-ngx
+subjects:
+  - kind: ServiceAccount
+    name: paperless-ngx
+    namespace: default
+---
+# Source: paperless-ngx/charts/gotenberg/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-gotenberg
+  labels:
+    helm.sh/chart: gotenberg-0.0.1
+    app.kubernetes.io/name: gotenberg
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "8.0.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: gotenberg
+    app.kubernetes.io/instance: paperless-ngx
+---
+# Source: paperless-ngx/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-postgresql-hl
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: paperless-ngx/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+    app.kubernetes.io/component: primary
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/component: primary
+---
+# Source: paperless-ngx/charts/redis/templates/headless-svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-redis-headless
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+  selector:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: redis
+---
+# Source: paperless-ngx/charts/redis/templates/master/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-redis-master
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+    app.kubernetes.io/component: master
+spec:
+  type: ClusterIP
+  internalTrafficPolicy: Cluster
+  sessionAffinity: None
+  ports:
+    - name: tcp-redis
+      port: 6379
+      targetPort: redis
+      nodePort: null
+  selector:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/component: master
+---
+# Source: paperless-ngx/charts/tika/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx-tika
+  labels:
+    helm.sh/chart: tika-2.9.0
+    app.kubernetes.io/name: tika
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.9.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9998
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: tika
+    app.kubernetes.io/instance: paperless-ngx
+---
+# Source: paperless-ngx/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: paperless-ngx
+  namespace: default
+  labels:
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+  internalTrafficPolicy: Cluster
+  sessionAffinity: None
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+      name: http
+---
+# Source: paperless-ngx/charts/gotenberg/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-gotenberg
+  labels:
+    helm.sh/chart: gotenberg-0.0.1
+    app.kubernetes.io/name: gotenberg
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "8.0.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gotenberg
+      app.kubernetes.io/instance: paperless-ngx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gotenberg
+        app.kubernetes.io/instance: paperless-ngx
+    spec:
+      serviceAccountName: paperless-ngx-gotenberg
+      containers:
+        - name: gotenberg
+          image: "docker.io/gotenberg/gotenberg:8.0.1"
+          imagePullPolicy: IfNotPresent
+          args:
+          - gotenberg
+          - --api-port=3000
+          - --api-start-timeout=30s
+          - --api-timeout=30s
+          - --api-root-path=/
+          - --chromium-start-timeout=20s
+          - --chromium-allow-list=file:///tmp/.*
+          - --chromium-disable-javascript=true
+          - --libreoffice-restart-after=10
+          - --libreoffice-start-timeout=20s
+          - --webhook-max-retry=4
+          - --webhook-retry-min-wait=1s
+          - --webhook-retry-max-wait=30s
+          - --webhook-client-timeout=30s
+          - --prometheus-collect-interval=1s
+          - --prometheus-namespace=gotenberg
+          - --log-format=auto
+          - --log-level=warn
+          - --gotenberg-graceful-shutdown-duration=30s
+---
+# Source: paperless-ngx/charts/tika/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-ngx-tika
+  labels:
+    helm.sh/chart: tika-2.9.0
+    app.kubernetes.io/name: tika
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.9.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tika
+      app.kubernetes.io/instance: paperless-ngx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tika
+        app.kubernetes.io/instance: paperless-ngx
+    spec:
+      serviceAccountName: paperless-ngx-tika
+      securityContext:
+        {}
+      volumes:
+      - name: sec-ctx-vol
+        emptyDir: {}
+      containers:
+        - name: tika
+          securityContext:
+            allowPrivilegeEscalation: true
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 35002
+            runAsNonRoot: true
+            runAsUser: 35002
+          image: "apache/tika:2.9.0.0"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: sec-ctx-vol
+            mountPath: /tmp
+          ports:
+            - name: http
+              containerPort: 9998
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9998
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            failureThreshold: 20
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9998
+              scheme: HTTP
+            initialDelaySeconds: 15
+            timeoutSeconds: 30
+            failureThreshold: 20
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: "2"
+              memory: 2000Mi
+            requests:
+              cpu: "1"
+              memory: 1500Mi
+---
+# Source: paperless-ngx/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: paperless-ngx-postgresql
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/version: 16.3.0
+    helm.sh/chart: postgresql-15.5.11
+    app.kubernetes.io/component: primary
+spec:
+  replicas: 1
+  serviceName: paperless-ngx-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: paperless-ngx-postgresql
+      labels:
+        app.kubernetes.io/instance: paperless-ngx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: postgresql
+        app.kubernetes.io/version: 16.3.0
+        helm.sh/chart: postgresql-15.5.11
+        app.kubernetes.io/component: primary
+    spec:
+      serviceAccountName: paperless-ngx-postgresql
+      
+      automountServiceAccountToken: false
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: paperless-ngx
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      hostNetwork: false
+      hostIPC: false
+      containers:
+        - name: postgresql
+          image: docker.io/bitnami/postgresql:16.3.0-debian-12-r16
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_USER
+              value: "paperless"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-postgresql
+                  key: password
+            - name: POSTGRES_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-postgresql
+                  key: postgres-password
+            - name: POSTGRES_DATABASE
+              value: "paperless"
+            # Replication
+            # Initdb
+            # Standby
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "paperless" -d "dbname=paperless" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  exec pg_isready -U "paperless" -d "dbname=paperless" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 1024Mi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/conf
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /opt/bitnami/postgresql/tmp
+              subPath: app-tmp-dir
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: empty-dir
+          emptyDir: {}
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "5Gi"
+---
+# Source: paperless-ngx/charts/redis/templates/master/application.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: paperless-ngx-redis-master
+  namespace: "paperless"
+  labels:
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/version: 7.2.5
+    helm.sh/chart: redis-19.5.5
+    app.kubernetes.io/component: master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: paperless-ngx
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/component: master
+  serviceName: paperless-ngx-redis-headless
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: paperless-ngx
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: redis
+        app.kubernetes.io/version: 7.2.5
+        helm.sh/chart: redis-19.5.5
+        app.kubernetes.io/component: master
+      annotations:
+        checksum/configmap: 86bcc953bb473748a3d3dc60b7c11f34e60c93519234d4c37f42e22ada559d47
+        checksum/health: aff24913d801436ea469d8d374b2ddb3ec4c43ee7ab24663d5f8ff1a1b6991a9
+        checksum/scripts: 560c33ff34d845009b51830c332aa05fa211444d1877d3526d3599be7543aaa5
+        checksum/secret: 0835094f1082038282ac02be26a5378e16bc135cc5cb80229131af8f49b7860d
+    spec:
+      
+      securityContext:
+        fsGroup: 1001
+        fsGroupChangePolicy: Always
+        supplementalGroups: []
+        sysctls: []
+      serviceAccountName: paperless-ngx-redis-master
+      automountServiceAccountToken: false
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/instance: paperless-ngx
+                    app.kubernetes.io/name: redis
+                    app.kubernetes.io/component: master
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      enableServiceLinks: true
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: redis
+          image: docker.io/bitnami/redis:7.2.5-debian-12-r0
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsGroup: 1001
+            runAsNonRoot: true
+            runAsUser: 1001
+            seLinuxOptions: {}
+            seccompProfile:
+              type: RuntimeDefault
+          command:
+            - /bin/bash
+          args:
+            - -c
+            - /opt/bitnami/scripts/start-scripts/start-master.sh
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: REDIS_REPLICATION_MODE
+              value: master
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "no"
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-redis
+                  key: redis-password
+            - name: REDIS_TLS_ENABLED
+              value: "no"
+            - name: REDIS_PORT
+              value: "6379"
+          ports:
+            - name: redis
+              containerPort: 6379
+          livenessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            # One second longer than command timeout should prevent generation of zombie processes.
+            timeoutSeconds: 6
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_liveness_local.sh 5
+          readinessProbe:
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 5
+            exec:
+              command:
+                - sh
+                - -c
+                - /health/ping_readiness_local.sh 1
+          resources:
+            limits:
+              cpu: 150m
+              ephemeral-storage: 1024Mi
+              memory: 192Mi
+            requests:
+              cpu: 100m
+              ephemeral-storage: 50Mi
+              memory: 128Mi
+          volumeMounts:
+            - name: start-scripts
+              mountPath: /opt/bitnami/scripts/start-scripts
+            - name: health
+              mountPath: /health
+            - name: redis-data
+              mountPath: /data
+            - name: config
+              mountPath: /opt/bitnami/redis/mounted-etc
+            - name: empty-dir
+              mountPath: /opt/bitnami/redis/etc/
+              subPath: app-conf-dir
+            - name: empty-dir
+              mountPath: /tmp
+              subPath: tmp-dir
+      volumes:
+        - name: start-scripts
+          configMap:
+            name: paperless-ngx-redis-scripts
+            defaultMode: 0755
+        - name: health
+          configMap:
+            name: paperless-ngx-redis-health
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: paperless-ngx-redis-configuration
+        - name: empty-dir
+          emptyDir: {}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: redis-data
+        labels:
+          app.kubernetes.io/instance: paperless-ngx
+          app.kubernetes.io/name: redis
+          app.kubernetes.io/component: master
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: paperless-ngx/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: paperless-ngx
+  namespace: default
+  labels:
+    helm.sh/chart: paperless-ngx-0.2.0
+    app.kubernetes.io/name: paperless-ngx
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.10.1"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  serviceName: paperless-ngx
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: paperless-ngx
+      app.kubernetes.io/instance: paperless-ngx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: paperless-ngx
+        app.kubernetes.io/instance: paperless-ngx
+    spec:
+      serviceAccountName: paperless-ngx
+      automountServiceAccountToken: false
+      containers:
+        - name: paperless-ngx
+          image: "ghcr.io/paperless-ngx/paperless-ngx:2.10.1"
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: paperless-ngx-general
+          env:
+            - name: PAPERLESS_REDIS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-redis-auth
+                  key: uri
+            - name: PAPERLESS_DBUSER
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-postgresql-auth
+                  key: username
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-ngx-postgresql-auth
+                  key: password
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          volumeMounts:
+            - name: paperless-ngx-data-pv
+              mountPath: /usr/src/paperless/data
+            - name: paperless-ngx-data-pv
+              mountPath: /usr/src/paperless/media
+      volumes:
+        - name: paperless-ngx-data-pv
+          persistentVolumeClaim:
+            claimName: paperless-pvc
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "paperless-ngx-tika-test-connection"
+  labels:
+    helm.sh/chart: tika-2.9.0
+    app.kubernetes.io/name: tika
+    app.kubernetes.io/instance: paperless-ngx
+    app.kubernetes.io/version: "2.9.0.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['paperless-ngx-tika:9998']
+  restartPolicy: Never
