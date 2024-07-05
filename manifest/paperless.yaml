@@ -14,7 +14,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100G
+      storage: 75G
 ---
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
