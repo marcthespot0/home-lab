@@ -57,18 +57,20 @@ spec:
     requests:
       storage: 4Gi
 ---
-apiVersion: v1
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
   name: paperless-data
   namespace: paperless
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
+  storageClassName: freenas-nfs-csi
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 50Gi
-  storageClassName: free-nfs-csi
 ---
 apiVersion: apps/v1
 kind: Deployment
