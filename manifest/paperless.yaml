@@ -138,10 +138,14 @@ metadata:
   name: paperless
   namespace: paperless
 spec:
-  selector:
-    app: paperless
+  type: ClusterIP
   ports:
     - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: paperless
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
