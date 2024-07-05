@@ -18,11 +18,11 @@ spec:
     chart: crossplane
     repoURL: https://charts.crossplane.io/stable
     targetRevision: 1.16.0
-  # syncPolicy:
-  #   automated:
-  #     allowEmpty: true
-  #     prune: true
-  #     selfHeal: true
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
 ---
 apiVersion: pkg.crossplane.io/v1
 kind: Provider
@@ -53,4 +53,4 @@ metadata:
 spec:
   args:
     - -d
-    - --poll=5m
+    - --poll=15m
