@@ -153,15 +153,9 @@ spec:
             - name: PAPERLESS_CONSUMPTION_DIR
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  name: PAPERLESS_VAR_USER
-                  key: paperless-secret
-            - name: PAPERLESS_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef: 
-                name: PAPERLESS_VAR_PASS
-                key: paperless-secret
+              value: admin
+            - name: PAPERLESS_ADMIN_USER
+              value: password
             - name: PAPERLESS_URL
               value: "https://paperless.marcthespot.com"
             - name: PAPERLESS_BIND_ADDR
