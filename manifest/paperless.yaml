@@ -79,7 +79,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-media
+  name: paperless-data
   namespace: paperless
 spec:
   accessModes:
@@ -91,7 +91,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: paperless-data
+  name: paperless-media
   namespace: paperless
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
