@@ -153,9 +153,13 @@ spec:
             - name: PAPERLESS_CONSUMPTION_DIR
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
-              value: "{{PAPERLESS_VAR_USER}}"
+              valueFrom:
+                secretKeyRef: paperless-secret
+                key:  "{{PAPERLESS_VAR_USER}}"
             - name: PAPERLESS_ADMIN_PASSWORD
-              value: "{{PAPERLESS_VAR_PASS}}"
+              valueFrom:
+                secretRef: paperless-secret
+                key: "{{PAPERLESS_VAR_PASS}}"
             - name: PAPERLESS_URL
               value: "https://paperless.<path:stringreplacesecret#domain>"
             - name: PAPERLESS_BIND_ADDR
