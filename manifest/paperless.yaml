@@ -159,7 +159,7 @@ spec:
                   key: PAPERLESS_VAR_USER
             - name: PAPERLESS_ADMIN_PASSWORD
               valueFrom:
-                secretRef: 
+                secretKeyRef: 
                 name: paperless-secret
                 key: PAPERLESS_VAR_PASS
             - name: PAPERLESS_URL
