@@ -155,13 +155,13 @@ spec:
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: paperless-secret
-                  key: PAPERLESS_VAR_USER
+                  name: PAPERLESS_VAR_USER
+                  key: paperless-secret
             - name: PAPERLESS_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef: 
-                name: paperless-secret
-                key: PAPERLESS_VAR_PASS
+                name: PAPERLESS_VAR_PASS
+                key: paperless-secret
             - name: PAPERLESS_URL
               value: "https://paperless.marcthespot.com"
             - name: PAPERLESS_BIND_ADDR
