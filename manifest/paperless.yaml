@@ -1,4 +1,40 @@
 ---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: paperless
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: paperless-secrets
+  namespace: paperless
+  labels:
+    app.kubernetes.io/part-of: paperless
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        PAPERLESS_VAR_USER: "{{ .paper_username }}"
+        PAPERLESS_VAR_PASS: "{{ .paper_password }}"
+  data:
+    - secretKey: paper_username
+      remoteRef:
+        key: paperless-secret
+        property: paper_user
+    - secretKey: paper_password
+      remoteRef:
+        key: paperless-secret
+        property: paper_pass
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -122,9 +158,9 @@ spec:
             - name: PAPERLESS_CONSUMPTION_DIR
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
-              value: "root"
+              value: "{{ .paper_username }}"
             - name: PAPERLESS_ADMIN_PASSWORD
-              value: "password"
+              value: "{{ .paper_password }}"
             - name: PAPERLESS_URL
               value: "https://paperless.<path:stringreplacesecret#domain>"
             - name: PAPERLESS_BIND_ADDR
