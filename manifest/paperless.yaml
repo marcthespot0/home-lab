@@ -154,7 +154,7 @@ spec:
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
-                secretKeyRef: 
+                secretKeyRef:
                   name: paperless-secret
                   key: PAPERLESS_VAR_USER
             - name: PAPERLESS_ADMIN_PASSWORD
