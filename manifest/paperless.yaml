@@ -154,11 +154,13 @@ spec:
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
               valueFrom:
-                secretKeyRef: paperless-secret
-                key:  "{{PAPERLESS_VAR_USER}}"
+                secretKeyRef: 
+                  name: paperless-secret
+                  key:  "{{PAPERLESS_VAR_USER}}"
             - name: PAPERLESS_ADMIN_PASSWORD
               valueFrom:
-                secretRef: paperless-secret
+                secretRef: 
+                name: paperless-secret
                 key: "{{PAPERLESS_VAR_PASS}}"
             - name: PAPERLESS_URL
               value: "https://paperless.<path:stringreplacesecret#domain>"
