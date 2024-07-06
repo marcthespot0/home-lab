@@ -154,7 +154,7 @@ spec:
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
               value: "admin"
-            - name: PAPERLESS_ADMIN_USER
+            - name: PAPERLESS_ADMIN_PASSWORD
               value: "password"
             - name: PAPERLESS_URL
               value: "https://paperless.marcthespot.com"
