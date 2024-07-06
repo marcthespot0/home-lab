@@ -153,9 +153,9 @@ spec:
             - name: PAPERLESS_CONSUMPTION_DIR
               value: "/data/consume"
             - name: PAPERLESS_ADMIN_USER
-              value: admin
+              value: "admin"
             - name: PAPERLESS_ADMIN_USER
-              value: password
+              value: "password"
             - name: PAPERLESS_URL
               value: "https://paperless.marcthespot.com"
             - name: PAPERLESS_BIND_ADDR
