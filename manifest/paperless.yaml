@@ -142,9 +142,10 @@ spec:
   selector:
     app: paperless
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
+    - port: 8000
+      targetPort: http
+          protocol: TCP
+          name: http
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
