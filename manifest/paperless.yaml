@@ -144,8 +144,8 @@ spec:
   ports:
     - port: 8000
       targetPort: http
-          protocol: TCP
-          name: http
+      protocol: TCP
+      name: http
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
