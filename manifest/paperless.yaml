@@ -156,12 +156,12 @@ spec:
               valueFrom:
                 secretKeyRef: 
                   name: paperless-secret
-                  key:  "{{PAPERLESS_VAR_USER}}"
+                  key: PAPERLESS_VAR_USER
             - name: PAPERLESS_ADMIN_PASSWORD
               valueFrom:
                 secretRef: 
                 name: paperless-secret
-                key: "{{PAPERLESS_VAR_PASS}}"
+                key: PAPERLESS_VAR_PASS
             - name: PAPERLESS_URL
               value: "https://paperless.<path:stringreplacesecret#domain>"
             - name: PAPERLESS_BIND_ADDR
