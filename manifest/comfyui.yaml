@@ -45,3 +45,14 @@ spec:
   - name: model-pvc
     persistentVolumeClaim:
       claimName: comfyui-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: comfyui-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
