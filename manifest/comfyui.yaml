@@ -30,14 +30,13 @@ spec:
     ports:
     - containerPort: 8188
       name: comfyui
-    volumeMounts:
-    - mountPath: /usr/local/ComfyUI/models
-      name: model-folder
-  volumes:
-  - name: model-folder
-    PersistentVolumeClaim:
-      claimName: comfyui
-      path: /usr/local/ai/models/comfyui
+      volumeMounts:
+      - name: model-folder
+        mountPath: /usr/local/ComfyUI/models
+    volumes:
+    - name: model-folder
+      persistentVolumeClaim:
+        claimName: comfyui
   nodeSelector:
     kubernetes.io/hostname: talos-lab-02
 ---
