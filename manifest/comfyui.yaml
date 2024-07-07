@@ -40,10 +40,8 @@ spec:
       name: comfyui
     volumeMounts:
     - mountPath: /usr/local/ComfyUI/models
-      name: model-folder
+      name: model-pvc
   volumes:
-  - name: model-folder
-    hostPath:
-      path: /usr/local/ai/models/comfyui
-  nodeSelector:
-    kubernetes.io/hostname: talos-lab-02
+  - name: model-pvc
+    persistentVolumeClaim:
+      claimName: comfyui-pvc
