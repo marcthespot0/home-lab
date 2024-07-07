@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comfyui
+  namespace: comfyui
+  labels:
+    app: comfyui
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    name: http
+    targetPort: 8188
+  selector:
+    app: comfyui
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: comfyui
+  namespace: comfyui
+  labels:
+    app: comfyui
+spec:
+  runtimeClassName: nvidia
+  tolerations:
+  - key: restriction
+    operator: "Equal"
+    value: "CUDAonly"
+    effect: "NoSchedule"
+  containers:
+  - name: comfyui
+    image: registry.svc.snowgoons.ro/snowgoons/comfyui:2024-07-02
+    args: [ "--listen", "0.0.0.0" ]
+    imagePullPolicy: Always
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+    ports:
+    - containerPort: 8188
+      name: comfyui
+    volumeMounts:
+    - mountPath: /usr/local/ComfyUI/models
+      name: model-folder
+  volumes:
+  - name: model-folder
+    persistentVolumeClaim:
+      claimName: comfyui
+    hostPath:
+      path: /usr/local/ai/models/comfyui
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: comfyui
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
