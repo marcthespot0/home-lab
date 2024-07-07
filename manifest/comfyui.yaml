@@ -56,3 +56,13 @@ spec:
   resources:
     requests:
       storage: 1Gi
+---
+apiVersion: v1
+kind: ResourceRequirements
+metadata:
+  name: comfyui-resource-reqs
+spec:
+  limits:
+    nvidia.com/gpu: 1
+  requests:
+    nvidia.com/gpu: 1
