@@ -491,22 +491,22 @@ spec:
           volumeMounts:
             - name: library
               mountPath: /usr/src/app/upload
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /api/server-info/ping
-              port: http
-            initialDelaySeconds: 0
-            periodSeconds: 10
-            timeoutSeconds: 1
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /api/server-info/ping
-              port: http
-            initialDelaySeconds: 0
-            periodSeconds: 10
-            timeoutSeconds: 1
+          # livenessProbe:
+          #   failureThreshold: 3
+          #   httpGet:
+          #     path: /api/server-info/ping
+          #     port: http
+          #   initialDelaySeconds: 0
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
+          # readinessProbe:
+          #   failureThreshold: 3
+          #   httpGet:
+          #     path: /api/server-info/ping
+          #     port: http
+          #   initialDelaySeconds: 0
+          #   periodSeconds: 10
+          #   timeoutSeconds: 1
       volumes:
         - name: library
           persistentVolumeClaim:
