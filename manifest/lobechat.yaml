@@ -13,10 +13,9 @@ spec:
   selector:
     app: lobe-chat
   ports:
-  - name: http
-    port: 80
-    targetPort: 3210
-  type: LoadBalancer
+    - protocol: TCP
+      port: 80
+      targetPort: 3210
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -42,7 +41,7 @@ spec:
     ports:
       - containerPort: 3210
     env:
-      - name: OLLAMA_HOST
+      - name: OLLAMA_PROXY_URL
         value: "http://192.168.1.164:11434"
     volumeMounts:
     - name: data-volume
@@ -77,7 +76,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: lobe-chat-http
+  name: lobe-chat
   namespace: lobe-chat
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
