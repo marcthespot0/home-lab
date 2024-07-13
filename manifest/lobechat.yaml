@@ -13,9 +13,9 @@ spec:
   selector:
     app: lobe-chat
   ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3210
+    - name: http
+      containerPort: 3210
+      protocol: TCP
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
