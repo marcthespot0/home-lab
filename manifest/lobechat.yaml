@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lobe-chat
+spec:
+  selector:
+    app: lobe-chat
+  ports:
+  - name: http
+    port: 3210
+    targetPort: 3210
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: lobe-chat-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lobe-chat
+spec:
+  containers:
+  - name: lobe-chat
+    image: lobehub/lobe-chat
+    ports:
+      - containerPort: 3210
+    env:
+      - name: OLLAMA_HOST
+        value: 192.168.1.164:11434
+    volumeMounts:
+    - name: data-volume
+      mountPath: /data
+      subPathExpr: .
+  volumes:
+  - name: data-volume
+    persistentVolumeClaim:
+      claimName: lobe-chat-data
