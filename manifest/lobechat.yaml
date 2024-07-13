@@ -71,7 +71,7 @@ spec:
           service:
             name: lobe-chat
             port:
-              number: 3120
+              number: 3210
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
