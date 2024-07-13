@@ -38,7 +38,7 @@ spec:
       - containerPort: 3210
     env:
       - name: OLLAMA_HOST
-        value: 192.168.1.164:11434
+        value: "http://192.168.1.164:11434"
     volumeMounts:
     - name: data-volume
       mountPath: /data
