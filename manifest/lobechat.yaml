@@ -2,34 +2,33 @@ apiVersion: v1
 kind: Service
 metadata:
   name: lobe-chat
+  namespace: lobe-chat
 spec:
   selector:
     app: lobe-chat
   ports:
   - name: http
-    port: 3210
+    port: 80
     targetPort: 3210
   type: LoadBalancer
-
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: lobe-chat-data
+  namespace: lobe-chat
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 40Gi
-
 ---
-
 apiVersion: v1
 kind: Pod
 metadata:
   name: lobe-chat
+  namespace: lobe-chat
 spec:
   containers:
   - name: lobe-chat
@@ -47,3 +46,61 @@ spec:
   - name: data-volume
     persistentVolumeClaim:
       claimName: lobe-chat-data
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lobe-chat-ingress
+  namespace: lobe-chat
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: lobe-chat.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: lobe-chat
+            port:
+              number: 3120
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: lobe-chat-http
+  namespace: lobe-chat
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "lobe-chat.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: lobe-chat
+      port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: lobe-chat
+  namespace: lobe-chat
+  annotations:
+    external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: lobe-chat.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
