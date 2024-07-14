@@ -13,7 +13,8 @@ spec:
   selector:
     app: lobe-chat
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 3210
       targetPort: 3210
 ---
