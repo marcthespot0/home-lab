@@ -1,10 +1,16 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: homepage
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: appflowy-client
 spec:
   destination:
-    namespace: default
+    namespace: appflowy
     server: https://kubernetes.default.svc
   project: default
   source:
@@ -39,11 +45,15 @@ spec:
         valueFrom:
           fieldRef:
             fieldPath: spec.containers[0].env.DISPLAY
+  sync:
+  - type: OnUpdate
+    force: true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: appflowy-data
+  namespace: appflowy
 spec:
   accessModes:
     - ReadWriteOnce
