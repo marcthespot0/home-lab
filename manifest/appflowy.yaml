@@ -23,7 +23,7 @@ spec:
         mountPath: /root/.Xauthority
         subPath: .Xauthority
       - name: tmp-x11-unix
-        mountPath: /tmp/.X11-unix
+        mountPath: /tmp/X11-unix
         subPath: .X11-unix
       - name: dev-dri
         mountPath: /dev/dri
@@ -39,26 +39,20 @@ spec:
         valueFrom:
           fieldRef:
             fieldPath: spec.containers[0].env.DISPLAY
-  volumeTemplates:
-  - name: xauthority
-    type: PersistentVolumeClaim
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
-  - name: tmp-x11-unix
-    type: EmptyDir
-  - name: dev-dri
-    type: EmptyDir
-  - name: dbus-socket
-    type: EmptyDir
+  sync:
+    - type: OnUpdate
+  volumes:
   - name: appflowy-data
-    type: PersistentVolumeClaim
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 20Gi
+    persistentVolumeClaim:
+      claimName: appflowy-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: appflowy-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
