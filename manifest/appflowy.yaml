@@ -18,7 +18,7 @@ spec:
             claimName: appflowy-pvc
       containers:
         - name: appflowy
-          image: appflowyio/appflowy_client:main
+          image: appflowyio/appflowy_client:0.0.5.3
           volumeMounts:
             - name: appflowy-volume
               mountPath: /home/appflowy
