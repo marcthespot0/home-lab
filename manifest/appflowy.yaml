@@ -39,12 +39,6 @@ spec:
         valueFrom:
           fieldRef:
             fieldPath: spec.containers[0].env.DISPLAY
-  sync:
-    - type: OnUpdate
-  volumes:
-  - name: appflowy-data
-    persistentVolumeClaim:
-      claimName: appflowy-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
