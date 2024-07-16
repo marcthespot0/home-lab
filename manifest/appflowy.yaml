@@ -1,0 +1,64 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: appflowy-client
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: 'https://github.com/appflowyio/appflowy_client.git'
+    targetRevision: main
+  syncPolicy:
+    automated:
+      selfHeal: true
+  resources:
+  - name: appflowy-client-pod
+    container:
+      name: appflowy-client
+      image: appflowyio/appflowy_client:main
+      volumeMounts:
+      - name: xauthority
+        mountPath: /root/.Xauthority
+        subPath: .Xauthority
+      - name: tmp-x11-unix
+        mountPath: /tmp/.X11-unix
+        subPath: .X11-unix
+      - name: dev-dri
+        mountPath: /dev/dri
+        subPath: .dri
+      - name: dbus-socket
+        mountPath: /var/run/dbus/system_bus_socket
+        subPath: .system_bus_socket
+      - name: appflowy-data
+        mountPath: /home/appflowy
+        subPath: data
+      env:
+      - name: DISPLAY
+        valueFrom:
+          fieldRef:
+            fieldPath: spec.containers[0].env.DISPLAY
+  volumeTemplates:
+  - name: xauthority
+    type: PersistentVolumeClaim
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  - name: tmp-x11-unix
+    type: EmptyDir
+  - name: dev-dri
+    type: EmptyDir
+  - name: dbus-socket
+    type: EmptyDir
+  - name: appflowy-data
+    type: PersistentVolumeClaim
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 20Gi
