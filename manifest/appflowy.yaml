@@ -1,59 +1,35 @@
----
-kind: Namespace
-apiVersion: v1
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: homepage
----
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: appflowy-client
+  name: appflowy
 spec:
-  destination:
-    namespace: appflowy
-    server: https://kubernetes.default.svc
-  project: default
-  source:
-    repoURL: 'https://github.com/appflowyio/appflowy_client.git'
-    targetRevision: main
-  syncPolicy:
-    automated:
-      selfHeal: true
-  resources:
-  - name: appflowy-client-pod
-    container:
-      name: appflowy-client
-      image: appflowyio/appflowy_client:main
-      volumeMounts:
-      - name: xauthority
-        mountPath: /root/.Xauthority
-        subPath: .Xauthority
-      - name: tmp-x11-unix
-        mountPath: /tmp/X11-unix
-        subPath: .X11-unix
-      - name: dev-dri
-        mountPath: /dev/dri
-        subPath: .dri
-      - name: dbus-socket
-        mountPath: /var/run/dbus/system_bus_socket
-        subPath: .system_bus_socket
-      - name: appflowy-data
-        mountPath: /home/appflowy
-        subPath: data
-      env:
-      - name: DISPLAY
-        valueFrom:
-          fieldRef:
-            fieldPath: spec.containers[0].env.DISPLAY
-  sync:
-  - type: OnUpdate
-    force: true
+  replicas: 1
+  selector:
+    matchLabels:
+      app: appflowy
+  template:
+    metadata:
+      labels:
+        app: appflowy
+    spec:
+      volumes:
+        - name: appflowy-volume
+          persistentVolumeClaim:
+            claimName: appflowy-pvc
+      containers:
+        - name: appflowy
+          image: appflowyio/appflowy_client:main
+          volumeMounts:
+            - name: appflowy-volume
+              mountPath: /home/appflowy
+          env:
+            - name: DISPLAY
+              value: ${DISPLAY}
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: appflowy-data
-  namespace: appflowy
+  name: appflowy-pvc
 spec:
   accessModes:
     - ReadWriteOnce
