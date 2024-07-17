@@ -124,20 +124,16 @@ spec:
             value: changeme123
         expose:
           - port: 3306
-        restartPolicy: Always
         volumeMounts:
         - name: db-data
           mountPath: /var/lib/mysql
         - name: db-import
           mountPath: /docker-entrypoint-initdb.d/
+
       volumes:
       - name: db-data
         persistentVolumeClaim:
           claimName: db-data-pvc
-      - name: db-import
-        configMap:
-          name: db-import-config
-
 
 ---
 apiVersion: v1
