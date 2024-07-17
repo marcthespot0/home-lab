@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     path: charts/obsidian-livesync
-    repoURL: https://github.com/marcthespot0/home-lab
+    repoURL: https://github.com/heywoodlh/gitops
     targetRevision: HEAD
   syncPolicy:
     automated:
@@ -82,7 +82,7 @@ spec:
     spec:
       containers:
       - name: couchdb
-        image: {repository: couchdb, tag: 3.2.2}
+        image: couchdb:3.2.2
         pullPolicy: IfNotPresent
         volumeMounts:
         - name: couchdb-data
@@ -103,7 +103,6 @@ spec:
     app: couchdb
   ports:
   - name: http
-    containerPort: 80
-    protocol: TCP
+    port: 8080
+    targetPort: 8080
   type: LoadBalancer
-
