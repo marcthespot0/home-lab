@@ -15,8 +15,7 @@ spec:
       containers:
       - name: couchdb
         image:
-          repository: couchdb
-          tag: 3.2.2
+          name: couchdb
           pullPolicy: IfNotPresent
         ports:
         - containerPort: 80
@@ -27,11 +26,11 @@ spec:
       - name: couchdb-persistent-storage
         persistentVolumeClaim:
           claimName: obsidian-livesync-couchdb-pvc
-  service:
-    type: LoadBalancer
-    externalTrafficPolicy: Local
-    ports:
-    - port: 80
+service:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+  - port: 80
 --- 
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -43,4 +42,3 @@ spec:
   resources:
     requests:
       storage: 10Gi
-  storageClassName: nfs-client
