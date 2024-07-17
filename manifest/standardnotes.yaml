@@ -64,7 +64,7 @@ spec:
           environment:
             - MYSQL_DATABASE=standard_notes_db
             - MYSQL_USER=std_notes_user
-            - MYSQL_ROOT_PASSWORD=adin
+            - MYSQL_ROOT_PASSWORD=admin
             - MYSQL_PASSWORD=Rangers20!
           ports:
             - containerPort: 3306
@@ -89,9 +89,8 @@ spec:
           networks:
             - standardnotes_self_hosted
 
-networks:
-  standardnotes_self_hosted:
-    name: standardnotes_self_hosted
+      networks:
+        - name: standardnotes_self_hosted
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
