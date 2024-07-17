@@ -21,7 +21,7 @@ spec:
           sourceRef:
             name: bjw-s
             type: HelmRepository
-          repoURL: https://bjw-s-chartmuseum.storage.googleapis.com/
+          repoURL: https://bjw-s.github.io/helm-charts
       values: |  
         controllers:
           obsidian-couchdb:
