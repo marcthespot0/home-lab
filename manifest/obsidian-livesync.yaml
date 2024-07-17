@@ -17,6 +17,11 @@ spec:
         image: "apache/couchdb:latest"
         ports:
         - containerPort: 80
+        env:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: password
         volumeMounts:
         - name: couchdb-persistent-storage
           mountPath: /var/lib/couchdb
