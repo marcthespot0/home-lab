@@ -28,50 +28,35 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          init-config:
-            image:
-              repository: public.ecr.aws/docker/library/busybox
-              tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
-              pullPolicy: IfNotPresent
+          - name: init-config
+            image: public.ecr.aws/docker/library/busybox
             command:
-              - "/bin/sh"
-              - "-c"
-              - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
+              - /bin/sh
+              - -c
+              - cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d/
         containers:
-          app:
-            image:
-              repository: public.ecr.aws/docker/library/couchdb
-              tag: 3.3.3
+          - name: app
+            image: public.ecr.aws/docker/library/couchdb
             env:
-              TZ: ${TZ}
+              - name: TZ
+                value: America/New_York
             envFrom:
-              - secretRef:
+              - configMapKeyRef:
                   name: obsidian-livesync-secret
-            containerPort: 5984
-        service:
-          app:
-            controller: obsidian-livesync
+                  key: password
             ports:
-              http:
-                port: 5984
+              - containerPort: 5984
+        service:
+          - name: app
+            type: ClusterIP
+            selector:
+              app: obsidian-livesync-app
     persistence:
       config:
-        type: configMap
+        type: ConfigMap
         name: obsidian-livesync-configmap
-        advancedMounts:
-          obsidian-livesync:
-            init-config:
-              - path: /tmp/config
-      config-storage:
-        type: emptyDir
-        globalMounts:
-          - path: /opt/couchdb/etc/default.d
       data:
-        existingClaim: obsidian-livesync-data
-        advancedMounts:
-          obsidian-livesync:
-            app:
-              - path: /opt/couchdb/data
+        existingClaim: obsidian-livesync-data-pvc
 ---
 apiVersion: v1
 kind: Service
