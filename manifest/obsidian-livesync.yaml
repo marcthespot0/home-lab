@@ -1,78 +1,63 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: obsidian-livesync
+---
+
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: obsidian-livesync-data
+  name: obsidian-livesync-couchdb-data
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
 
 ---
 
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: data-volume
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  local:
-    path: /mnt/data
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-      - matchExpressions:
-        - key: type
-          operator: In
-          values:
-          - local
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: obsidian-livesync-couchdb
+  name: couchdb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: obsidian-livesync-couchdb
+      app: couchdb
   template:
     metadata:
       labels:
-        app: obsidian-livesync-couchdb
+        app: couchdb
     spec:
       containers:
       - name: couchdb
         image: couchdb:3.2.2
         volumeMounts:
-        - name: obsidian-livesync-data
+        - name: data
           mountPath: /var/lib/couchdb/data
-        ports:
-        - containerPort: 5984
         env:
-        - name: COUCHDB_USER
-          value: "admin"
-        - name: COUCHDB_PASSWORD
-          value: "password"
-        - name: COUCHDB_UUID
-          value: "obsidian-livesync"
-        - name: COUCHDB_SINGLE_NODE
-          value: "true"
+        - name: COUCHDB_URL
+          value: http://couchdb:5984
+
+  volumes:
+  - name: data
+    persistentVolumeClaim:
+      claimName: obsidian-livesync-couchdb-data
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: obsidian-livesync-couchdb
+  name: couchdb
 spec:
   selector:
-    app: obsidian-livesync-couchdb
+    app: couchdb
   ports:
-  - name: couchdb
+  - name: http
     port: 5984
   type: LoadBalancer
+
+---
