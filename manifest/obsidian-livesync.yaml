@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: obsidian-livesync
+spec:
+  destination:
+    namespace: default
+  project: default
+  source:
+    helm:
+      releaseName: obsidian-livesync
+      chart: couchdb
+      version: 2.0.0
+  syncPolicy:
+    automated:
+      prune: true
+  resources:
+  - name: couchdb-pod
+    type: Pod
+    spec:
+      containers:
+      - name: couchdb
+        env:
+        - name: COUCHDB_USER
+          value: "admin"
+        - name: COUCHDB_PASSWORD
+          value: "password"
+        volumeMounts:
+        - name: data
+          mountPath: /opt/couchdb/data
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: couchdb-data-pvc
+  - name: couchdb-data-pvc
+    type: PersistentVolumeClaim
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: couchdb-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
