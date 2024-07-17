@@ -80,9 +80,13 @@ spec:
         app: couchdb
     spec:
       containers:
-      - name: couchdb
-        image: couchdb:3.2.2
-        pullPolicy: IfNotPresent
+      - image: couchdb:3.2.2
+        name: couchdb
+        env:
+          - name: COUCHDB_USER
+            value: admin
+          - name: COUCHDB_PASSWORD
+            value: password
         volumeMounts:
         - name: couchdb-data
           mountPath: /opt/couchdb/data
