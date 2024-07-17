@@ -1,113 +1,59 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: obsidian-livesync
-  namespace: default
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  name: obsidian-couchdb
 spec:
   destination:
-    server: https://kubernetes.default.svc
-    namespace: default
+    namespace: flux-system
   project: default
-  source:
-    path: charts/obsidian-livesync
-    repoURL: https://github.com/heywoodlh/gitops
-    targetRevision: HEAD
+  sources:
+  - git:
+      repoURL: https://github.com/your-username/obsidian-couchdb.git
+      revision: main
+  target:
+    server: https://kubernetes.default.svc
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: couchdb-config
-data:
-  couchdb.yaml: |-
-    {
-      "couchdb": {
-        "single_node": true,
-        "uuid": "obsidian-livesync"
-      },
-      "chttpd": {
-        "bind_address": "any",
-        "require_valid_user": true
-      },
-      "chttpd_auth": {
-        "require_valid_user": true,
-        "authentication_redirect": "/_utils/session.html"
-      },
-      "httpd": {
-        "WWW-Authenticate": 'Basic realm="couchdb"'
-      },
-      "cors": {
-        "origins": ["app://obsidian.md", "capacitor://localhost", "http://localhost"],
-        "credentials": true,
-        "headers": ["accept", "authorization", "content-type", "origin", "referer"],
-        "methods": ["GET", "PUT", "POST", "HEAD", "DELETE"],
-        "max_age": 3600
-      }
-    }
 
----
+helmValues: |
+  controllers.main.annotations.reloader.stakater.com/auto: "true"
+  pod.securityContext.runAsUser: ${APP_UID}
+  pod.securityContext.runAsGroup: ${APP_GID}
+  pod.securityContext.fsGroup: ${APP_GID}
+  pod.securityContext.fsGroupChangePolicy: "OnRootMismatch"
 
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-livesync-couchdb-pvc
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
+  containers.main.image.repository: public.ecr.aws/docker/library/couchdb
+  containers.main.image.tag: 3.3.3
+  env:
+    COUCHDB_USER:
+      value: admin
+    COUCHDB_PASSWORD:
+      value: password
 
----
+  service.main.ports.http.port: &httpPort 5984
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: couchdb
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: couchdb
-  template:
-    metadata:
-      labels:
-        app: couchdb
-    spec:
-      containers:
-      - image: couchdb:3.2.2
-        name: couchdb
-        env:
-          - name: COUCHDB_USER
-            value: admin
-          - name: COUCHDB_PASSWORD
-            value: password
-        command: ["sh", "-c", "sh -c 'couchdb'"]
-        volumeMounts:
-        - name: couchdb-data
-          mountPath: /opt/couchdb/data
-      volumes:
-      - name: couchdb-data
-        persistentVolumeClaim:
-          claimName: obsidian-livesync-couchdb-pvc
+  ingress.main.enabled: true
+  ingress.main.className: "internal"
+  hosts:
+    - host: *host
+      paths:
+        - path: /
+          service:
+            identifier: main
+            port: *httpPort
 
+  persistence.config.type: configMap
+  persistence.config.name: obsidian-couchdb-configmap
+  advancedMounts:
+    main.init-config:
+      - path: /tmp/config
 
----
+  persistence.data.existingClaim: obsidian-data-pvc
+  advancedMounts:
+    main.main:
+      - path: /opt/couchdb/data
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: couchdb
-spec:
-  selector:
-    app: couchdb
-  ports:
-  - name: http
-    port: 8080
-    targetPort: 8080
-  type: LoadBalancer
+  config-storage.type: emptyDir
+  globalMounts:
+    - path: /opt/couchdb/etc/default.d
