@@ -1,0 +1,197 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: server
+  template:
+    metadata:
+      labels:
+        app: server
+    spec:
+      containers:
+      - name: server-self-hosted
+        image: standardnotes/server
+        env_file: .env
+        ports:
+          - containerPort: 3000
+            hostPort: 3000
+          - containerPort: 3104
+            hostPort: 3125
+        volumeMounts:
+        - name: logs
+          mountPath: /var/lib/server/logs
+        - name: uploads
+          mountPath: /opt/server/packages/files/dist/uploads
+      volumes:
+      - name: logs
+        persistentVolumeClaim:
+          claimName: server-logs-pvc
+      - name: uploads
+        persistentVolumeClaim:
+          claimName: server-uploads-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: server-logs-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: server-uploads-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: localstack
+  template:
+    metadata:
+      labels:
+        app: localstack
+    spec:
+      containers:
+      - name: localstack-self-hosted
+        image: localstack/localstack:3.0
+        expose:
+          - port: 4566
+        restartPolicy: Always
+        volumeMounts:
+        - name: localstack-bootstrap
+          mountPath: /etc/localstack/init/ready.d/
+      volumes:
+      - name: localstack-bootstrap
+        configMap:
+          name: localstack-bootstrap-config
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: localstack-bootstrap-config
+data:
+  ready.d/localstack_bootstrap.sh: |
+    #!/bin/bash
+    # Your custom bootstrap script here
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db-self-hosted
+        image: mysql:8
+        env:
+          - name: MYSQL_DATABASE
+            value: standard_notes_db
+          - name: MYSQL_USER
+            value: std_notes_user
+          - name: MYSQL_ROOT_PASSWORD
+            value: changeme123
+          - name: MYSQL_PASSWORD
+            value: changeme123
+        expose:
+          - port: 3306
+        restartPolicy: Always
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        - name: db-import
+          mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+      - name: db-data
+        persistentVolumeClaim:
+          claimName: db-data-pvc
+      - name: db-import
+        configMap:
+          name: db-import-config
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-import-config
+data:
+  docker-entrypoint-initdb.d: |
+    # Your custom import script here
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache
+  template:
+    metadata:
+      labels:
+        app: cache
+    spec:
+      containers:
+      - name: cache-self-hosted
+        image: redis:6.0-alpine
+        volumeMounts:
+        - name: cache-data
+          mountPath: /data
+      volumes:
+      - name: cache-data
+        persistentVolumeClaim:
+          claimName: cache-data-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cache-data-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
