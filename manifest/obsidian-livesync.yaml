@@ -16,12 +16,12 @@ spec:
       releaseName: obsidian-couchdb
       chart:
         spec:
-          chart: app-template
+          chart: "app-template"
           version: 3.2.1
           sourceRef:
             name: bjw-s
             type: HelmRepository
-          repoURL: https://bjw-s.github.io/helm-charts
+          repoURL: "https://bjw-s.github.io/helm-charts"
       values: |  
         controllers:
           obsidian-couchdb:
