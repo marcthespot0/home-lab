@@ -1,125 +1,109 @@
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: obsidian
----
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: obsidian-couchdb
-  namespace: argocd
+  name: obsidian-livesync
+  namespace: default
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
 spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
   project: default
   source:
-    helm:
-      releaseName: obsidian-couchdb
-      chart:
-        spec:
-          chart: "app-template"
-          version: 3.2.1
-          sourceRef:
-            name: bjw-s
-            type: HelmRepository
-          repoURL: "https://bjw-s.github.io/helm-charts"
-      values: |  
-        controllers:
-          obsidian-couchdb:
-            annotations:
-              reloader.stakater.com/auto: "true"
-            initContainers:
-              init-config:
-                image:
-                  repository: public.ecr.aws/docker/library/busybox
-                  tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
-                  pullPolicy: IfNotPresent
-                command:
-                  - "/bin/sh"
-                  - "-c"
-                  - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
-            containers:
-              main:
-                image:
-                  repository: public.ecr.aws/docker/library/couchdb
-                  tag: 3.3.3
-                envFrom:
-                  - secretRef:
-                      name: obsidian-couchdb-secret
-                resources:
-                  requests:
-                    memory: 512Mi
-                    cpu: 10m
-                  limits:
-                    memory: 1024Mi
-        defaultPodOptions:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
-            fsGroupChangePolicy: OnRootMismatch
-  destination:
-    namespace: obsidian
-    server: 'https://kubernetes.default.svc'
+    path: charts/obsidian-livesync
+    repoURL: https://github.com/marcthespot0/home-lab
+    targetRevision: HEAD
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
 ---
 apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-couchdb-configmap
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
----
-
-apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: obsidian-couchdb-configmap
+  name: couchdb-config
 data:
-  config.json: |
-    # Your configuration data here
+  couchdb.yaml: |-
+    {
+      "couchdb": {
+        "single_node": true,
+        "uuid": "obsidian-livesync"
+      },
+      "chttpd": {
+        "bind_address": "any",
+        "require_valid_user": true
+      },
+      "chttpd_auth": {
+        "require_valid_user": true,
+        "authentication_redirect": "/_utils/session.html"
+      },
+      "httpd": {
+        "WWW-Authenticate": 'Basic realm="couchdb"'
+      },
+      "cors": {
+        "origins": ["app://obsidian.md", "capacitor://localhost", "http://localhost"],
+        "credentials": true,
+        "headers": ["accept", "authorization", "content-type", "origin", "referer"],
+        "methods": ["GET", "PUT", "POST", "HEAD", "DELETE"],
+        "max_age": 3600
+      }
+    }
 
 ---
 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: obsidian-couchdb-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: obsidian-couchdb-service
-spec:
-  selector:
-    app: obsidian-couchdb
-  ports:
-  - name: http
-    port: 5984
-    targetPort: 5984
-  type: ClusterIP
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-livesync-couchdb-data
+  name: obsidian-livesync-couchdb-pvc
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
+  storageClassName: "nfs-client"
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchdb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: couchdb
+  template:
+    metadata:
+      labels:
+        app: couchdb
+    spec:
+      containers:
+      - name: couchdb
+        image: {repository: couchdb, tag: 3.2.2}
+        pullPolicy: IfNotPresent
+        volumeMounts:
+        - name: couchdb-data
+          mountPath: /opt/couchdb/data
+      volumes:
+      - name: couchdb-data
+        persistentVolumeClaim:
+          claimName: obsidian-livesync-couchdb-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb
+spec:
+  selector:
+    app: couchdb
+  ports:
+  - name: http
+    containerPort: 80
+    protocol: TCP
+  type: LoadBalancer
 
