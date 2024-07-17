@@ -44,7 +44,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
 
 ---
 apiVersion: v1
@@ -56,7 +56,18 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
+
+---
+apiVersion: env/v1
+kind: Env
+metadata:
+  name: db-host
+spec:
+  env:
+  - name: DB_HOST
+    value: localhost
+    
 ---
 apiVersion: apps/v1
 kind: Deployment
