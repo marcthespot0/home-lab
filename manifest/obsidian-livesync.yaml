@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obsidian-livesync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obsidian-livesync
+  template:
+    metadata:
+      labels:
+        app: obsidian-livesync
+    spec:
+      containers:
+      - name: couchdb
+        image:
+          repository: couchdb
+          tag: 3.2.2
+          pullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: couchdb-persistent-storage
+          mountPath: /var/lib/couchdb
+      volumes:
+      - name: couchdb-persistent-storage
+        persistentVolumeClaim:
+          claimName: obsidian-livesync-couchdb-pvc
+  service:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    ports:
+    - port: 80
+--- 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-livesync-couchdb-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: nfs-client
