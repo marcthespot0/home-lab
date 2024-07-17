@@ -1,36 +1,47 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-livesync-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: obsidian-livesync
+  name: obsidian-livesync-couchdb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: obsidian-livesync
+      app: obsidian-livesync-couchdb
   template:
     metadata:
       labels:
-        app: obsidian-livesync
+        app: obsidian-livesync-couchdb
     spec:
       containers:
       - name: couchdb
-        image: "apache/couchdb:latest"
-        ports:
-        - containerPort: 80
-        env:
-          - name: COUCHDB_USER
-            value: admin
-          - name: COUCHDB_PASSWORD
-            value: password
+        image: couchdb:3.2.2
         volumeMounts:
-        - name: couchdb-data
-          mountPath: /var/lib/couchdb
-        configMap:
-          name: couchdb-config
-      volumes:
-      - name: couchdb-data
-        persistentVolumeClaim:
-          claimName: couchdb-pvc
+        - name: data-volume
+          mountPath: /var/lib/couchdb/data
+        ports:
+        - containerPort: 5984
+        env:
+        - name: COUCHDB_USER
+          value: "admin"
+        - name: COUCHDB_PASSWORD
+          value: "password"
+        - name: COUCHDB_UUID
+          value: "obsidian-livesync"
+        - name: COUCHDB_SINGLE_NODE
+          value: "true"
 
 ---
 
@@ -39,7 +50,7 @@ kind: ConfigMap
 metadata:
   name: couchdb-config
 data:
-  couchdb.config: |
+  couchdb.ini: |
     [couchdb]
     single_node = true
     uuid = obsidian-livesync
@@ -50,27 +61,42 @@ data:
 
     [chttpd_auth]
     require_valid_user = true
-    authentication_redirect = "/e=_/_utils/session.html"
+    authentication_redirect = "/_utils/session.html"
 
     [httpd]
     WWW-Authenticate = 'Basic realm="couchdb"'
     enable_cors = true
 
     [cors]
-    origins = app://obsidian.md,capacitor://localhost,http://localhost
-    credentials = true
-    headers = accept, authorization, content-type, origin, referer
-    methods = GET, PUT, POST, HEAD, DELETE
-    max_age = 3600
+      origins: app://obsidian.md,capacitor://localhost,http://localhost
+      credentials: true
+      headers: accept, authorization, content-type, origin, referer
+      methods: GET, PUT, POST, HEAD, DELETE
+      max_age: 3600
 
---- 
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: obsidian-livesync-couchdb
+spec:
+  selector:
+    app: obsidian-livesync-couchdb
+  ports:
+  - name: couchdb
+    port: 5984
+  type: LoadBalancer
+
+---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: obsidian-livesync-couchdb-pvc
+  name: data-volume
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
