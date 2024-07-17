@@ -91,43 +91,6 @@ spec:
   resources:
     requests:
       storage: 10Gi
-
----
-
-apiVersion: v1
-kind: Pod
-metadata:
-  name: obsidian-couchdb
-spec:
-  containers:
-  - name: couchdb
-    image: <your-couchdb-image>
-    volumeMounts:
-    - name: config
-      mountPath: /tmp/config
-    - name: data
-      mountPath: /opt/couchdb/data
-  volumes:
-  - name: config
-    configMap:
-      name: obsidian-couchdb-configmap
-  - name: data
-    persistentVolumeClaim:
-      claimName: obsidian-couchdb-data-pvc
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-couchdb-etc-default-d-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-
 ---
 apiVersion: v1
 kind: Service
