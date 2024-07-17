@@ -19,9 +19,9 @@ spec:
           chart: app-template
           version: 3.2.1
           sourceRef:
-            kind: HelmRepository
             name: bjw-s
-            # namespace: flux-system
+            type: HelmRepository
+          repoURL: https://bjw-s-chartmuseum.storage.googleapis.com/
       values: |  
         controllers:
           obsidian-couchdb:
@@ -58,8 +58,8 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
   destination:
-    server: https://kubernetes.default.svc
     namespace: obsidian
+    server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
       prune: true
