@@ -118,8 +118,6 @@ spec:
         volumeMounts:
         - name: db-data
           mountPath: /var/lib/mysql
-        - name: db-import
-          mountPath: /docker-entrypoint-initdb.d/
 
       volumes:
       - name: db-data
@@ -136,7 +134,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 3Gi
+      storage: 5Gi
 
 ---
 apiVersion: v1
