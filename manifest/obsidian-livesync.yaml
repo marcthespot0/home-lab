@@ -1,0 +1,97 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: obsidian
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: obsidian-livesync
+  namespace: obsidian
+spec:
+  destination:
+    namespace: default
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: 'https://bjw-s.flux-system:flux'
+    targetRevision: 'HEAD'
+    path: 'app-template/'
+  syncPolicy:
+    automated:
+      prune: true
+  values:
+    controllers:
+      obsidian-livesync:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: public.ecr.aws/docker/library/busybox
+              tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+              - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
+        containers:
+          app:
+            image:
+              repository: public.ecr.aws/docker/library/couchdb
+              tag: 3.3.3
+            env:
+              TZ: ${TZ}
+            envFrom:
+              - secretRef:
+                  name: obsidian-livesync-secret
+    service:
+      app:
+        controller: obsidian-livesync
+        ports:
+          http:
+            port: 5984
+    persistence:
+      config:
+        type: configMap
+        name: obsidian-livesync-configmap
+        advancedMounts:
+          obsidian-livesync:
+            init-config:
+              - path: /tmp/config
+      config-storage:
+        type: emptyDir
+        globalMounts:
+          - path: /opt/couchdb/etc/default.d
+      data:
+        existingClaim: obsidian-livesync-data
+        advancedMounts:
+          obsidian-livesync:
+            app:
+              - path: /opt/couchdb/data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: obsidian-livesync-app
+  namespace: obsidian
+spec:
+  selector:
+    app: obsidian-livesync
+  ports:
+  - name: http
+    port: 5984
+    targetPort: 5984
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-livesync-data
+  namespace: obsidian
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
