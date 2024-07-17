@@ -16,6 +16,13 @@ spec:
         - name: standardnotes-data
           persistentVolumeClaim:
             claimName: standardnotes-pvc
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: redis-pvc
+
       containers:
         - name: server
           image: standardnotes/server
@@ -28,8 +35,60 @@ spec:
           volumeMounts:
             - name: standardnotes-data
               mountPath: /opt/server/packages/files/dist/uploads
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: redis-data
+              mountPath: /data
+
           networks:
             - standardnotes_self_hosted
+
+        - name: localstack
+          image: localstack/localstack:3.0
+          container_name: localstack_self_hosted
+          expose:
+            - 4566
+          restart: unless-stopped
+          environment:
+            - SERVICES=sns,sqs
+            - HOSTNAME_EXTERNAL=localstack
+            - LS_LOG=warn
+          volumes:
+            - ./localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
+          networks:
+            - standardnotes_self_hosted
+
+        - name: db
+          image: mysql:8
+          container_name: db_self_hosted
+          environment:
+            - MYSQL_DATABASE=standard_notes_db
+            - MYSQL_USER=std_notes_user
+            - MYSQL_ROOT_PASSWORD=adin
+            - MYSQL_PASSWORD=Rangers20!
+          ports:
+            - containerPort: 3306
+          restart: unless-stopped
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+            - name: mysql-init
+              mountPath: /docker-entrypoint-initdb.d
+          networks:
+            - standardnotes_self_hosted
+
+        - name: cache
+          image: redis:6.0-alpine
+          container_name: cache_self_hosted
+          volumeMounts:
+            - name: redis-data
+              mountPath: /data
+          ports:
+            - containerPort: 6379
+          restart: unless-stopped
+          networks:
+            - standardnotes_self_hosted
+
 networks:
   standardnotes_self_hosted:
     name: standardnotes_self_hosted
