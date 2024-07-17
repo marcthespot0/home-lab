@@ -1,31 +1,3 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: data-volume
-spec:
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  local:
-    path: /mnt/data
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-livesync-data
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,7 +16,7 @@ spec:
       - name: couchdb
         image: couchdb:3.2.2
         volumeMounts:
-        - name: data-volume
+        - name: obsidian-livesync-data
           mountPath: /var/lib/couchdb/data
         ports:
         - containerPort: 5984
@@ -57,6 +29,19 @@ spec:
           value: "obsidian-livesync"
         - name: COUCHDB_SINGLE_NODE
           value: "true"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-livesync-data
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi
 
 ---
 
