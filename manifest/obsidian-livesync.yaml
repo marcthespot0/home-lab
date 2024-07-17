@@ -21,6 +21,7 @@ spec:
   syncPolicy:
     automated:
       prune: true
+      selfHeal: true
   values:
     controllers:
       obsidian-livesync:
@@ -46,12 +47,13 @@ spec:
             envFrom:
               - secretRef:
                   name: obsidian-livesync-secret
-    service:
-      app:
-        controller: obsidian-livesync
-        ports:
-          http:
-            port: 5984
+            containerPort: 5984
+        service:
+          app:
+            controller: obsidian-livesync
+            ports:
+              http:
+                port: 5984
     persistence:
       config:
         type: configMap
