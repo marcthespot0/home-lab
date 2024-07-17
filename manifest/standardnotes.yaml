@@ -1,40 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server
+  name: standardnotes-self-hosted
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: server
+      app: standardnotes-self-hosted
   template:
     metadata:
       labels:
-        app: server
+        app: standardnotes-self-hosted
     spec:
       containers:
-      - name: server-self-hosted
-        image: standardnotes/server
-        env_file: .env
+      - name: self-hosted
+        image: <your-image-name>
         ports:
-          - containerPort: 3000
-            hostPort: 3000
-          - containerPort: 3104
-            hostPort: 3125
-        volumeMounts:
-        - name: logs
-          mountPath: /var/lib/server/logs
-        - name: uploads
-          mountPath: /opt/server/packages/files/dist/uploads
-      volumes:
-      - name: logs
-        persistentVolumeClaim:
-          claimName: server-logs-pvc
-      - name: uploads
-        persistentVolumeClaim:
-          claimName: server-uploads-pvc
+        - containerPort: 80
 
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -47,28 +32,30 @@ spec:
       storage: 10Gi
 
 ---
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: server-uploads-pvc
+  name: db-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 10Gi
+      storage: 5Gi
 
 ---
-apiVersion: env/v1
-kind: Env
+
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: db-host
-spec:
-  env:
-  - name: DB_HOST
-    value: localhost
-    
+  name: db-import-config
+data:
+  docker-entrypoint-initdb.d: |
+    # Your custom import script here
+
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -98,6 +85,7 @@ spec:
           name: localstack-bootstrap-config
 
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -138,26 +126,7 @@ spec:
           claimName: db-data-pvc
 
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: db-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
 
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: db-import-config
-data:
-  docker-entrypoint-initdb.d: |
-    # Your custom import script here
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -184,17 +153,7 @@ spec:
           claimName: cache-data-pvc
 
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: cache-data-pvc
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 3Gi
----
+
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
