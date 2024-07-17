@@ -80,7 +80,7 @@ spec:
         app: couchdb
     spec:
       containers:
-      - image: couchdb:3.2.2
+      - image: couchdb:3.3.3
         name: couchdb
         env:
           - name: COUCHDB_USER
