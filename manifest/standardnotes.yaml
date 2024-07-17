@@ -138,6 +138,15 @@ spec:
         configMap:
           name: db-import-config
 
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-registry-credentials
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: <base64 encoded Docker config JSON>
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
