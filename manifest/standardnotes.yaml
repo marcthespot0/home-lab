@@ -113,6 +113,8 @@ spec:
             value: changeme123
           - name: MYSQL_PASSWORD
             value: changeme123
+          - name: DB_HOST
+            value: localhost
         expose:
           - port: 3306
         volumeMounts:
