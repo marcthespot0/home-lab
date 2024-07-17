@@ -1,53 +1,143 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: obsidian
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: obsidian-livesync
+  name: obsidian-couchdb
+  namespace: argocd
 spec:
-  destination:
-    namespace: default
   project: default
   source:
     helm:
-      releaseName: obsidian-livesync
-      chart: couchdb
-      version: 2.0.0
-  syncPolicy:
-    automated:
-      prune: true
-  resources:
-  - name: couchdb-pod
-    type: Pod
-    spec:
-      containers:
-      - name: couchdb
-        env:
-        - name: COUCHDB_USER
-          value: "admin"
-        - name: COUCHDB_PASSWORD
-          value: "password"
-        volumeMounts:
-        - name: data
-          mountPath: /opt/couchdb/data
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: couchdb-data-pvc
-  - name: couchdb-data-pvc
-    type: PersistentVolumeClaim
-    spec:
-      accessModes:
-        - ReadWriteOnce
-      resources:
-        requests:
-          storage: 10Gi
+      releaseName: obsidian-couchdb
+      chart:
+        spec:
+          chart: app-template
+          version: 3.2.1
+          sourceRef:
+            kind: HelmRepository
+            name: bjw-s
+            # namespace: flux-system
+      values: |  
+        controllers:
+          obsidian-couchdb:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            initContainers:
+              init-config:
+                image:
+                  repository: public.ecr.aws/docker/library/busybox
+                  tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+                  pullPolicy: IfNotPresent
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
+            containers:
+              main:
+                image:
+                  repository: public.ecr.aws/docker/library/couchdb
+                  tag: 3.3.3
+                envFrom:
+                  - secretRef:
+                      name: obsidian-couchdb-secret
+                resources:
+                  requests:
+                    memory: 512Mi
+                    cpu: 10m
+                  limits:
+                    memory: 1024Mi
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: couchdb-data-pvc
+  name: obsidian-couchdb-configmap
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: obsidian-couchdb-configmap
+data:
+  config.json: |
+    # Your configuration data here
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-couchdb-data-pvc
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: obsidian-couchdb
+spec:
+  containers:
+  - name: couchdb
+    image: <your-couchdb-image>
+    volumeMounts:
+    - name: config
+      mountPath: /tmp/config
+    - name: data
+      mountPath: /opt/couchdb/data
+  volumes:
+  - name: config
+    configMap:
+      name: obsidian-couchdb-configmap
+  - name: data
+    persistentVolumeClaim:
+      claimName: obsidian-couchdb-data-pvc
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-couchdb-etc-default-d-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: obsidian-couchdb-service
+spec:
+  selector:
+    app: obsidian-couchdb
+  ports:
+  - name: http
+    port: 5984
+    targetPort: 5984
+  type: ClusterIP
