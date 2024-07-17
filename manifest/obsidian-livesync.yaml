@@ -87,7 +87,7 @@ spec:
             value: admin
           - name: COUCHDB_PASSWORD
             value: password
-        command: ["sh", "-c", "couchdb -e '_users'"]
+        command: ["sh", "-c", "couchdb -e '_users' && couchdb -e '_replicator'"]
         volumeMounts:
         - name: couchdb-data
           mountPath: /opt/couchdb/data
