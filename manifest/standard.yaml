@@ -82,7 +82,7 @@ spec:
     spec:
       containers:
       - name: db
-        image: mysql:8
+        image: mysql:9
         ports:
           - containerPort: 3306
         environment:
