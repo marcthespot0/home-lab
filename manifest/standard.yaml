@@ -1,0 +1,297 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: valet
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: valet
+  template:
+    metadata:
+      labels:
+        app: valet
+    spec:
+      containers:
+      - name: valet
+        image: standardnotes/valet:${VALET_IMAGE_TAG}
+        env:
+          - name: VALET_TOKEN_SECRET
+            valueFrom: $(VALET_TOKEN_SECRET)
+        volumes:
+        - name: file-upload-path
+          persistentVolumeClaim:
+            claimName: file-upload-pvc
+        restartPolicy: OnFailure
+        networks:
+        - standardnotes-self-hosted
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: file-upload-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: revisions
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: revisions
+  template:
+    metadata:
+      labels:
+        app: revisions
+    spec:
+      containers:
+      - name: revisions
+        image: standardnotes/revisions:${REVISIONS_IMAGE_TAG}
+        command: ["./wait-for.sh", "syncing-server-js", "3000", "./wait-for.sh", "revisions-db", "3306", "./wait-for.sh", "localstack", "4566", "./docker/entrypoint.sh", "start-web"]
+        env:
+          - name: PORT
+            value: 3000
+          - name: AUTH_JWT_SECRET
+            valueFrom: $(AUTH_JWT_SECRET)
+          - name: DB_HOST
+            valueFrom: $(REVISIONS_DB_HOST)
+          - name: DB_PORT
+            valueFrom: $(REVISIONS_DB_PORT)
+          - name: DB_DATABASE
+            valueFrom: $(REVISIONS_DB_DATABASE)
+          - name: DB_USERNAME
+            valueFrom: $(REVISIONS_DB_USERNAME)
+          - name: DB_PASSWORD
+            valueFrom: $(REVISIONS_DB_PASSWORD)
+          - name: DB_DEBUG_LEVEL
+            valueFrom: $(REVISIONS_DB_DEBUG_LEVEL)
+          - name: DB_MIGRATIONS_PATH
+            valueFrom: $(REVISIONS_DB_MIGRATIONS_PATH)
+        volumes:
+        - name: file-upload-path
+          persistentVolumeClaim:
+            claimName: file-upload-pvc
+        restartPolicy: OnFailure
+        networks:
+        - standardnotes-self-hosted
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: revisions-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: revisions-worker
+  template:
+    metadata:
+      labels:
+        app: revisions-worker
+    spec:
+      containers:
+      - name: revisions-worker
+        image: standardnotes/revisions:${REVISIONS_IMAGE_TAG}
+        command: ["./wait-for.sh", "revisions", "3000", "./docker/entrypoint.sh", "start-worker"]
+        env:
+          - name: PORT
+            value: 3000
+          - name: AUTH_JWT_SECRET
+            valueFrom: $(AUTH_JWT_SECRET)
+          - name: DB_HOST
+            valueFrom: $(REVISIONS_DB_HOST)
+          - name: DB_PORT
+            valueFrom: $(REVISIONS_DB_PORT)
+          - name: DB_DATABASE
+            valueFrom: $(REVISIONS_DB_DATABASE)
+          - name: DB_USERNAME
+            valueFrom: $(REVISIONS_DB_USERNAME)
+          - name: DB_PASSWORD
+            valueFrom: $(REVISIONS_DB_PASSWORD)
+          - name: DB_DEBUG_LEVEL
+            valueFrom: $(REVISIONS_DB_DEBUG_LEVEL)
+          - name: DB_MIGRATIONS_PATH
+            valueFrom: $(REVISIONS_DB_MIGRATIONS_PATH)
+          - name: FILE_UPLOAD_PATH
+            value: "uploads/${FILE_UPLOAD_PATH}"
+        volumes:
+        - name: file-upload-path
+          persistentVolumeClaim:
+            claimName: file-upload-pvc
+        restartPolicy: OnFailure
+        networks:
+        - standardnotes-self-hosted
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: db
+        image: mysql:5.6
+        env:
+          - name: MYSQL_DATABASE
+            valueFrom: $(DB_DATABASE)
+          - name: MYSQL_USER
+            valueFrom: $(DB_USERNAME)
+          - name: MYSQL_PASSWORD
+            valueFrom: $(DB_PASSWORD)
+          - name: MYSQL_PORT
+            value: 3306
+        volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-pvc
+        restartPolicy: OnFailure
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: localstack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: localstack
+  template:
+    metadata:
+      labels:
+        app: localstack
+    spec:
+      containers:
+      - name: localstack
+        image: localstack/localstack:${LOCALSTACK_IMAGE_TAG}
+        env:
+          - name: AWS_REGION
+            value: us-east-1
+        ports:
+        - containerPort: 4566
+        restartPolicy: OnFailure
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: localstack
+spec:
+  selector:
+    app: localstack
+  ports:
+  - name: http
+    port: 4566
+    targetPort: 4566
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syncing-server-js
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syncing-server-js
+  template:
+    metadata:
+      labels:
+        app: syncing-server-js
+    spec:
+      containers:
+      - name: syncing-server-js
+        image: syncing-server-js:${SYNCHING_SERVER_JS_IMAGE_TAG}
+        env:
+          - name: PORT
+            value: 3000
+        ports:
+        - containerPort: 3000
+        restartPolicy: OnFailure
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: syncing-server-js
+spec:
+  selector:
+    app: syncing-server-js
+  ports:
+  - name: http
+    port: 3000
+    targetPort: 3000
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: NetworkPolicy
+metadata:
+  name: standardnotes-self-hosted
+spec:
+  podSelector:
+    matchLabels:
+      app: standardnotes-self-hosted
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: syncing-server-js
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: localstack
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: standardnotes-self-hosted
+spec:
+  selector:
+    app: standardnotes-self-hosted
+  type: LoadBalancer
