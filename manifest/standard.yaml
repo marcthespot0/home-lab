@@ -263,28 +263,6 @@ spec:
     port: 3000
     targetPort: 3000
   type: LoadBalancer
-
----
-
-apiVersion: apps/v1
-kind: NetworkPolicy
-metadata:
-  name: standardnotes-self-hosted
-spec:
-  podSelector:
-    matchLabels:
-      app: standardnotes-self-hosted
-  ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: syncing-server-js
-  egress:
-  - to:
-    - podSelector:
-        matchLabels:
-          app: localstack
-
 ---
 
 apiVersion: v1
