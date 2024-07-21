@@ -124,7 +124,7 @@ spec:
     spec:
       containers:
       - name: cache
-        image: redis:6.2-alpine
+        image: redis:7.2-alpine
         ports:
           - containerPort: 6379
         volumeMounts:
