@@ -21,7 +21,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  namespace: obisidian
+  namespace: obsidian
   labels:
     io.kompose.service: couchdb-claim1
   name: couchdb-claim1
