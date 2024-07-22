@@ -215,7 +215,7 @@ spec:
               value: warn
             - name: SERVICES
               value: sns,sqs
-          image: localstack/localstack:3.0
+          image: localstack/localstack:3.5
           name: localstack-self-hosted
           ports:
             - containerPort: 4566
