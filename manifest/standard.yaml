@@ -127,7 +127,7 @@ spec:
               value: changeme123
             - name: MYSQL_USER
               value: std_notes_user
-          image: mysql:8
+          image: mysql:9
           name: db-self-hosted
           ports:
             - containerPort: 3306
