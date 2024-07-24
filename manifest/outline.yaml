@@ -29,7 +29,6 @@ data:
     ARGS+=("--include" "/opt/bitnami/redis/etc/redis.conf")
     ARGS+=("--include" "/opt/bitnami/redis/etc/master.conf")
     exec redis-server "${ARGS[@]}"
----
 
 ---
 # Source: outline/charts/redis/templates/configmap.yaml
