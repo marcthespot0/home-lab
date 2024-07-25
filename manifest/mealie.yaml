@@ -197,13 +197,13 @@ metadata:
   name: mealie
   namespace: mealie
   annotations:
-    external-dns.custom/type: public
+    external-dns.custom/type: private
 spec:
   endpoints:
     - dnsName: mealie.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - ingress.<path:stringreplacesecret#domain>
+        - intgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "true"
