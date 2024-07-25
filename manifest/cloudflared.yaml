@@ -35,7 +35,8 @@ data:
   config.yaml: |
     credentials-file: /etc/cloudflared/creds/credentials.json
     metrics: 0.0.0.0:2000
-    noTLSVerify: true
+    originRequest:
+      noTLSVerify: true
     no-autoupdate: true
     ingress:
       - service: https://cilium-gateway-external.gateway.svc.cluster.local:443
