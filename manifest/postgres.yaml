@@ -120,7 +120,7 @@ spec:
         remoteRef:
           remoteKey: postgres.cluster01.mealie.owner
           property: password
----
+# ---
 # apiVersion: external-secrets.io/v1alpha1
 # kind: PushSecret
 # metadata:
@@ -147,7 +147,7 @@ spec:
 #         remoteRef:
 #           remoteKey: postgres.cluster01.outline.owner
 #           property: password
-# ---
+---
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
 metadata:
