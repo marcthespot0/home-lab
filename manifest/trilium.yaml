@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: trilium
-        image: zadam/trilium:0.63.7-latest
+        image: zadam/trilium:latest
         volumeMounts:
         - name: trilium-vol
           mountPath: /home/node/trilium-data
