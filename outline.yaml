@@ -1,0 +1,194 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: outline
+---
+
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: outline-configsecrets
+  namespace: outline
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: postgrespassword
+      remoteRef:
+        key: postgres.cluster01.outline.owner
+        property: password
+    - secretKey: postgresuser
+      remoteRef:
+        key: postgres.cluster01.outline.owner
+        property: username
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline-deployment
+  namespace: outline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: outline
+  template:
+    metadata:
+      labels:
+        app: outline
+    spec:
+      containers:
+      - name: outline
+        image: docker.getoutline.com/outlinewiki/outline:latest
+        env:
+          - name: DATABASE_URL
+            value: postgres://user:pass@cluster01.postgres:5432/outline
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: postgresuser
+                name: outline-configsecrets
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgrespassword
+                name: outline-configsecrets      
+          - name: POSTGRES_DB
+            value: 'outline'
+        ports:
+          - containerPort: 3000
+        volumeMounts:
+          - name: storage-data
+            mountPath: /var/lib/outline/data
+
+      - name: postgres
+        image: postgres
+        env:
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                key: postgresuser
+                name: outline-configsecrets
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgrespassword
+                name: outline-configsecrets    
+          - name: POSTGRES_DB
+            value: 'outline'
+        ports:
+          - containerPort: 5432
+        volumeMounts:
+          - name: database-data
+            mountPath: /var/lib/postgresql/data
+
+      - name: redis
+        image: redis
+        env:
+          - name: REDIS_PASSWORD
+            value: password
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+          - name: redis-data
+            mountPath: /data
+
+      - name: https-portal
+        image: steveltn/https-portal
+        env:
+          - name: DOMAINS
+            value: 'outline.https://mealie.<path:stringreplacesecret#domain> -> http://outline:3000'
+          - name: STAGE
+            value: 'production'
+          - name: WEBSOCKET
+            value: 'true'
+          - name: CLIENT_MAX_BODY_SIZE
+            value: '0'
+        ports:
+          - containerPort: 80
+          - containerPort: 443
+        volumeMounts:
+          - name: https-portal-data
+            mountPath: /var/lib/https-portal
+
+      - name: healthcheck-postgres
+        image: postgres
+        command:
+          - pg_isready
+          - -d
+          - outline
+          - -U
+          - user
+
+      - name: healthcheck-redis
+        image: redis
+        command:
+          - redis-cli
+          - ping
+
+  volumes:
+  - name: storage-data
+    persistentVolumeClaim:
+      claimName: storage-pvc
+
+  - name: database-data
+    persistentVolumeClaim:
+      claimName: database-pvc
+
+  - name: redis-data
+    persistentVolumeClaim:
+      claimName: redis-pvc
+
+  - name: https-portal-data
+    persistentVolumeClaim:
+      claimName: https-portal-pvc
+
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
