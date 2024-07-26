@@ -32,24 +32,6 @@ spec:
         data:
           defaultRoles: false
           defaultUsers: false
-    miniflux:
-      defaultUsers: true
-      extensions: {}
-      schemas:
-        data:
-          defaultRoles: false
-          defaultUsers: false
-    ryot:
-      defaultUsers: true
-      extensions: {}
-      schemas:
-        data:
-          defaultRoles: false
-          defaultUsers: false
-    vikunja:
-      defaultUsers: true
-      extensions: {}
-      schemas:
         # still uses public schema...
         # https://community.vikunja.io/t/postgres-database-has-error-pq-relation-tasks-does-not-exist/1333
         public:
