@@ -119,14 +119,14 @@ metadata:
   name: open-webui
   namespace: open-webui
   annotations:
-    external-dns.custom/type: public
+    external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: ollama.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - extgw.<path:stringreplacesecret#domain>
+        - intgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "true"
+          value: "false"
