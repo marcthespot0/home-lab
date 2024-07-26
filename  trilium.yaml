@@ -1,0 +1,60 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: trilium
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: trilium-pvc
+  namespace: trilium
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trilium-deployment
+  labels:
+    app: trilium
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trilium
+  template:
+    metadata:
+      labels:
+        app: trilium
+    spec:
+      containers:
+      - name: trilium
+        image: zadam/trilium:0.63.7-latest
+        volumeMounts:
+        - name: trilium-vol
+          mountPath: /home/node/trilium-data
+        ports:
+        - containerPort: 8080
+      volumes:
+        - name: trilium-vol
+          persistentVolumeClaim:
+            claimName: trilium-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trilium-service
+  labels:
+    app: trilium
+spec:
+  selector:
+    app: trilium
+  ports:
+    - protocol: TCP
+      port: 8080
+  type: ClusterIP
