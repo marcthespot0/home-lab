@@ -1,51 +1,3 @@
----
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: outline
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: database-data-pv
-spec:
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-data-pv
-spec:
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: https-portal-data-pv
-spec:
-  capacity:
-    storage: 3Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-
----
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -82,6 +34,51 @@ spec:
   resources:
     requests:
       storage: 3Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: database-data-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis-data-pv
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: https-portal-data-pv
+spec:
+  capacity:
+    storage: 3Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: local-storage
 
 ---
 
@@ -141,17 +138,19 @@ spec:
         ports:
           - containerPort: 3001
         volumeMounts:
-          - name: https-portal-data-pv
-            mountPath: /var/lib/https-portal/data
+          - name: https-portal-data-pvc
+            mountPath: /data
 
-      - name: node-app
-        image: docker.getoutline.com/outlinewiki/node-app:latest
+      - name: web-server
+        image: docker.getoutline.com/outlinewiki/web-server:latest
         env:
+          - name: HTTPS_PORT
+            value: "443"
           - name: POSTGRES_URL
             value: postgres://user:pass@cluster01.postgres:5432/outline
           - name: REDIS_HOST
             value: redis
-          - name: HTTPS_PORTAL_URL
-            value: https://https-portal:3001
+          - name: HTTPS_PORT
+            value: "443"
         ports:
           - containerPort: 80
