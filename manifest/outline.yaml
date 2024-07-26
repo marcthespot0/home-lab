@@ -37,51 +37,6 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: database-data-pv
-spec:
-  capacity:
-    storage: 5Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-  storageClassName: local-storage
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: redis-data-pv
-spec:
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-  storageClassName: local-storage
-
----
-
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: https-portal-data-pv
-spec:
-  capacity:
-    storage: 3Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-  storageClassName: local-storage
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
