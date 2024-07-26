@@ -25,13 +25,13 @@ spec:
         public:
           defaultRoles: false
           defaultUsers: false
-    outline:
-      defaultUsers: true
-      extensions: {}
-      schemas:
-        data:
-          defaultRoles: false
-          defaultUsers: false
+    # outline:
+    #   defaultUsers: true
+    #   extensions: {}
+    #   schemas:
+    #     data:
+    #       defaultRoles: false
+    #       defaultUsers: false
     mealie:
       defaultUsers: true
       extensions: {}
@@ -121,33 +121,33 @@ spec:
           remoteKey: postgres.cluster01.mealie.owner
           property: password
 ---
-apiVersion: external-secrets.io/v1alpha1
-kind: PushSecret
-metadata:
-  name: cluster01.outline.owner
-  namespace: postgres
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRefs:
-    - name: 1password
-      kind: ClusterSecretStore
-  selector:
-    secret:
-      name: outline-owner-user.cluster01.credentials.postgresql.acid.zalan.do
-  data:
-    - match:
-        secretKey: username
-        remoteRef:
-          remoteKey: postgres.cluster01.outline.owner
-          property: username
-    - match:
-        secretKey: password
-        remoteRef:
-          remoteKey: postgres.cluster01.outline.owner
-          property: password
----
+# apiVersion: external-secrets.io/v1alpha1
+# kind: PushSecret
+# metadata:
+#   name: cluster01.outline.owner
+#   namespace: postgres
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   refreshInterval: "5m"
+#   secretStoreRefs:
+#     - name: 1password
+#       kind: ClusterSecretStore
+#   selector:
+#     secret:
+#       name: outline-owner-user.cluster01.credentials.postgresql.acid.zalan.do
+#   data:
+#     - match:
+#         secretKey: username
+#         remoteRef:
+#           remoteKey: postgres.cluster01.outline.owner
+#           property: username
+#     - match:
+#         secretKey: password
+#         remoteRef:
+#           remoteKey: postgres.cluster01.outline.owner
+#           property: password
+# ---
 apiVersion: external-secrets.io/v1alpha1
 kind: PushSecret
 metadata:
