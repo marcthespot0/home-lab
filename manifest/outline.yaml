@@ -29,6 +29,62 @@ spec:
 
 ---
 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: storage-data-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: database-data-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-data-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: https-portal-data-pvc
+  namespace: outline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -80,7 +136,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: postgrespassword
-                name: outline-configsecrets    
+                name: outline-configsecrets      
           - name: POSTGRES_DB
             value: 'outline'
         ports:
@@ -90,10 +146,7 @@ spec:
             mountPath: /var/lib/postgresql/data
 
       - name: redis
-        image: redis
-        env:
-          - name: REDIS_PASSWORD
-            value: password
+        image: redis:alpine
         ports:
           - containerPort: 6379
         volumeMounts:
@@ -101,107 +154,26 @@ spec:
             mountPath: /data
 
       - name: https-portal
-        image: steveltn/https-portal
+        image: docker.getoutline.com/outlinewiki/https-portal:latest
         env:
-          - name: DOMAINS
-            value: 'https://outline.<path:stringreplacesecret#domain> -> http://outline:3000'
-          - name: STAGE
-            value: 'production'
-          - name: WEBSOCKET
-            value: 'true'
-          - name: CLIENT_MAX_BODY_SIZE
-            value: '0'
+          - name: POSTGRES_URL
+            value: postgres://user:pass@cluster01.postgres:5432/outline
+          - name: REDIS_HOST
+            value: redis
         ports:
-          - containerPort: 80
-          - containerPort: 443
+          - containerPort: 3001
         volumeMounts:
           - name: https-portal-data-pvc
-            mountPath: /var/lib/https-portal
+            mountPath: /var/lib/https-portal/data
 
-      - name: healthcheck-postgres
-        image: postgres
-        command:
-          - pg_isready
-          - -d
-          - outline
-          - -U
-          - user
-
-      - name: healthcheck-redis
-        image: redis
-        command:
-          - redis-cli
-          - ping
-
-  volumes:
-    - name: storage-data-pvc
-      persistentVolumeClaim:
-        claimName: storage-pvc
-
-    - name: database-data-pvc
-      persistentVolumeClaim:
-        claimName: database-pvc
-
-    - name: redis-data-pvc
-      persistentVolumeClaim:
-        claimName: redis-pvc
-
-    - name: https-portal-data-pvc
-      persistentVolumeClaim:
-        claimName: https-portal-pvc
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: storage-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: database-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: redis-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: https-portal-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+      - name: node-app
+        image: docker.getoutline.com/outlinewiki/node-app:latest
+        env:
+          - name: POSTGRES_URL
+            value: postgres://user:pass@cluster01.postgres:5432/outline
+          - name: REDIS_HOST
+            value: redis
+          - name: HTTPS_PORTAL_URL
+            value: https://https-portal:3001
+        ports:
+          - containerPort: 80
