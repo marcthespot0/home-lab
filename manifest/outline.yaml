@@ -4,84 +4,42 @@ apiVersion: v1
 metadata:
   name: outline
 ---
-
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
+apiVersion: v1
+kind: PersistentVolume
 metadata:
-  name: outline-configsecrets
-  namespace: outline
+  name: database-data-pv
 spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-  data:
-    - secretKey: postgrespassword
-      remoteRef:
-        key: postgres.cluster01.outline.owner
-        property: password
-    - secretKey: postgresuser
-      remoteRef:
-        key: postgres.cluster01.outline.owner
-        property: username
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
 
 ---
 
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: storage-data-pvc
-  namespace: outline
+  name: redis-data-pv
 spec:
+  capacity:
+    storage: 2Gi
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+  persistentVolumeReclaimPolicy: Retain
 
 ---
 
 apiVersion: v1
-kind: PersistentVolumeClaim
+kind: PersistentVolume
 metadata:
-  name: database-data-pvc
-  namespace: outline
+  name: https-portal-data-pv
 spec:
+  capacity:
+    storage: 3Gi
   accessModes:
     - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: redis-data-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
-
----
-
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: https-portal-data-pvc
-  namespace: outline
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 10Gi
+  persistentVolumeReclaimPolicy: Retain
 
 ---
 
@@ -121,36 +79,15 @@ spec:
         ports:
           - containerPort: 3000
         volumeMounts:
-          - name: storage-data-pvc
-            mountPath: /var/lib/outline/data
-
-      - name: postgres
-        image: postgres
-        env:
-          - name: POSTGRES_USER
-            valueFrom:
-              secretKeyRef:
-                key: postgresuser
-                name: outline-configsecrets
-          - name: POSTGRES_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: postgrespassword
-                name: outline-configsecrets      
-          - name: POSTGRES_DB
-            value: 'outline'
-        ports:
-          - containerPort: 5432
-        volumeMounts:
           - name: database-data-pvc
-            mountPath: /var/lib/postgresql/data
+            mountPath: /var/lib/outline/data
 
       - name: redis
         image: redis:alpine
         ports:
           - containerPort: 6379
         volumeMounts:
-          - name: redis-data-pvc
+          - name: redis-data-pv
             mountPath: /data
 
       - name: https-portal
@@ -163,7 +100,7 @@ spec:
         ports:
           - containerPort: 3001
         volumeMounts:
-          - name: https-portal-data-pvc
+          - name: https-portal-data-pv
             mountPath: /var/lib/https-portal/data
 
       - name: node-app
