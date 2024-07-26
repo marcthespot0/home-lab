@@ -65,7 +65,7 @@ spec:
         ports:
           - containerPort: 3000
         volumeMounts:
-          - name: storage-data
+          - name: storage-data-pvc
             mountPath: /var/lib/outline/data
 
       - name: postgres
@@ -86,7 +86,7 @@ spec:
         ports:
           - containerPort: 5432
         volumeMounts:
-          - name: database-data
+          - name: database-data-pvc
             mountPath: /var/lib/postgresql/data
 
       - name: redis
@@ -97,14 +97,14 @@ spec:
         ports:
           - containerPort: 6379
         volumeMounts:
-          - name: redis-data
+          - name: redis-data-pvc
             mountPath: /data
 
       - name: https-portal
         image: steveltn/https-portal
         env:
           - name: DOMAINS
-            value: 'outline.https://mealie.<path:stringreplacesecret#domain> -> http://outline:3000'
+            value: 'https://outline.<path:stringreplacesecret#domain> -> http://outline:3000'
           - name: STAGE
             value: 'production'
           - name: WEBSOCKET
@@ -115,7 +115,7 @@ spec:
           - containerPort: 80
           - containerPort: 443
         volumeMounts:
-          - name: https-portal-data
+          - name: https-portal-data-pvc
             mountPath: /var/lib/https-portal
 
       - name: healthcheck-postgres
@@ -134,22 +134,21 @@ spec:
           - ping
 
   volumes:
-  - name: storage-data
-    persistentVolumeClaim:
-      claimName: storage-pvc
+    - name: storage-data-pvc
+      persistentVolumeClaim:
+        claimName: storage-pvc
 
-  - name: database-data
-    persistentVolumeClaim:
-      claimName: database-pvc
+    - name: database-data-pvc
+      persistentVolumeClaim:
+        claimName: database-pvc
 
-  - name: redis-data
-    persistentVolumeClaim:
-      claimName: redis-pvc
+    - name: redis-data-pvc
+      persistentVolumeClaim:
+        claimName: redis-pvc
 
-  - name: https-portal-data
-    persistentVolumeClaim:
-      claimName: https-portal-pvc
-
+    - name: https-portal-data-pvc
+      persistentVolumeClaim:
+        claimName: https-portal-pvc
 
 ---
 
