@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: appflowy/appflowy:latest
+        image: appflowy/appflowy:0.6.5
         stdinOpen: true
         tty: true
         env:
