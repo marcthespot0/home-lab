@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: ghcr.io/appflowy/appflowy:0.6.5
+        image: ghcr.io/appflowy:latest
         stdinOpen: true
         tty: true
         env:
