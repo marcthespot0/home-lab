@@ -28,6 +28,8 @@ spec:
 ---
 
 apiVersion: v2
+metadata:
+  namespace: obsidian-livesync
 name: obsidian-livesync
 version: 0.1.0
 dependencies:
@@ -35,8 +37,14 @@ dependencies:
     version: 3.6.1
     repository: https://apache.github.io/couchdb-helm
 
-# couchdb chart values
-couchdb:
+---
+
+apiVersion: couchdb.apache.org/v2
+kind: CouchDBCluster
+metadata:
+  name: obsidian-livesync
+  namespace: obsidian-livesync
+spec:
   clusterSize: 1
   createAdminSecret: false
   persistentVolume:
