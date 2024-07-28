@@ -35,7 +35,7 @@ spec:
       containers:
       - name: main
         image: b3log/siyuan
-        command: ['--accessAuthCode=password', '--workspace=/siyuan/workspace']
+        command: ['--accessAuthCode=YOUR_AUTH_CODE']
         user: "1000"
         ports:
         - containerPort: 6806
@@ -45,7 +45,7 @@ spec:
           mountPath: /siyuan/workspace
         env:
         - name: TZ
-          value: American/New_York
+          value: ${TimeZone}
       volumes:
       - name: siyuan-workspace-pv
         persistentVolumeClaim:
