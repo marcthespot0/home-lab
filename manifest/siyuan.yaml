@@ -37,7 +37,16 @@ spec:
       containers:
       - name: main
         image: b3log/siyuan
-        command: ["--accessAuthCode=password"]
+        command: ["/bin/sh", "-c"]
+        args:
+          - "echo password > /config/access_auth_code.txt && echo access_auth_code=password"
+        volumeMounts:
+          - name: config-volume
+            mountPath: /config
+
+      volumes:
+        - name: config-volume
+          emptyDir: {}
 
 ---
 
@@ -45,11 +54,12 @@ apiVersion: v1
 kind: Service
 metadata:
   name: main-service
+
 spec:
   selector:
     app: main
   ports:
   - protocol: TCP
-    port: 6806
-    targetPort: 6806
-  type: ClusterIP
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
