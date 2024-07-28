@@ -35,7 +35,7 @@ spec:
       containers:
       - name: main
         image: b3log/siyuan
-        command: ['--accessAuthCode=YOUR_AUTH_CODE']
+        command: ['--accessAuthCode=password']
         user: "1000"
         ports:
         - containerPort: 6806
