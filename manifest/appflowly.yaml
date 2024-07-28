@@ -1,0 +1,61 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: appflowy
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appflowy-app
+  namespace: appflowy
+spec:
+  replicas: 1 # adjust as needed
+  selector:
+    matchLabels:
+      app: appflowy-app
+  template:
+    metadata:
+      labels:
+        app: appflowy-app
+    spec:
+      containers:
+      - name: app
+        image: appflowy/appflowy:latest
+        stdinOpen: true
+        tty:
+          enabled: true # add this line to enable pseudo-TTY
+        devices:
+        - path: /dev/dri
+          type: hostDevicePath
+        env:
+        - name: DISPLAY
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-display-secret
+              key: display
+        - name: NO_AT_BRIDGE
+          value: "1"
+        volumeMounts:
+        - name: xauthority
+          mountPath: /root/.Xauthority
+          readOnly: true
+        - name: dev-dri
+          mountPath: /dev/dri
+          readOnly: true
+        - name: tmp-x11-unix
+          mountPath: /tmp/.X11-unix
+          readOnly: true
+      volumes:
+      - name: xauthority
+        secret:
+          secretName: appflowy-display-secret
+      - name: dev-dri
+        hostPath:
+          path: /dev/dri
+      - name: tmp-x11-unix
+        hostPath:
+          path: /tmp/.X11-unix
+      - name: dbus-socket
+        hostPath:
+          path: /var/run/dbus/system_bus_socket
