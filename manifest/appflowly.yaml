@@ -25,10 +25,7 @@ spec:
         tty: true
         env:
         - name: DISPLAY
-          valueFrom:
-            secretKeyRef:
-              name: appflowy-display-secret
-              key: display
+          value: display
         - name: NO_AT_BRIDGE
           value: "1"
         devices:
