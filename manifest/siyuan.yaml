@@ -5,7 +5,6 @@ metadata:
   name: siyuan
 
 ---
-
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -36,6 +35,7 @@ spec:
       containers:
       - name: main
         image: b3log/siyuan
+        command: ['--accessAuthCode=password', '--workspace=/siyuan/workspace']
         user: "1000"
         ports:
         - containerPort: 6806
@@ -45,7 +45,7 @@ spec:
           mountPath: /siyuan/workspace
         env:
         - name: TZ
-          value: ${TimeZone}
+          value: American/New_York
       volumes:
       - name: siyuan-workspace-pv
         persistentVolumeClaim:
