@@ -27,28 +27,15 @@ spec:
 
 ---
 
-apiVersion: v2
-metadata:
-  namespace: obsidian-livesync
-name: obsidian-livesync
-version: 0.1.0
-dependencies:
-  - name: couchdb 
-    version: 3.6.1
-    repository: https://apache.github.io/couchdb-helm
-
----
-
 apiVersion: couchdb.apache.org/v2
 kind: CouchDBCluster
 metadata:
   name: obsidian-livesync
-  namespace: obsidian-livesync
 spec:
   clusterSize: 1
   createAdminSecret: false
   persistentVolume:
-    enabled: true 
+    enabled: true
     accessModes:
       - ReadWriteMany
     size: 10Gi
@@ -58,7 +45,7 @@ spec:
     pullPolicy: IfNotPresent
   service:
     enabled: true
-    type: LoadBalancer 
+    type: LoadBalancer
     externalPort: 80
   couchdbConfig:
     couchdb:
@@ -74,8 +61,21 @@ spec:
       WWW-Authenticate: 'Basic realm="couchdb"'
       enable_cors: true
     cors:
-      origins: app://obsidian.md,capacitor://localhost,http://localhost
+      origins:
+        - app://obsidian.md
+        - capacitor://localhost
+        - http://localhost
       credentials: true
-      headers: accept, authorization, content-type, origin, referer
-      methods: GET, PUT, POST, HEAD, DELETE
+      headers:
+        - accept
+        - authorization
+        - content-type
+        - origin
+        - referer
+      methods:
+        - GET
+        - PUT
+        - POST
+        - HEAD
+        - DELETE
       max_age: 3600
