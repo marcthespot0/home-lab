@@ -1,0 +1,70 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: siyuan
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: siyuan-workspace-pvc
+  namespace: siyuan
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+  namespace: siyuan
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+      - name: main
+        image: b3log/siyuan
+        command: ['--workspace=/siyuan/workspace/', '--accessAuthCode=${AuthCode}']
+        user: "1000"
+        ports:
+        - containerPort: 6806
+          hostPort: 6806
+        volumeMounts:
+        - name: siyuan-workspace-pv
+          mountPath: /siyuan/workspace
+        env:
+        - name: TZ
+          value: America/New_York
+      volumes:
+      - name: siyuan-workspace-pv
+        persistentVolumeClaim:
+          claimName: siyuan-workspace-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: main-service
+spec:
+  selector:
+    app: main
+  ports:
+  - protocol: TCP
+    port: 6806
+    targetPort: 6806
+  type: ClusterIP
