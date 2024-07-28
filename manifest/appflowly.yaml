@@ -23,40 +23,21 @@ spec:
         image: appflowy/appflowy:latest
         stdinOpen: true
         tty: true
-        devices:
-          - path: /dev/dri
-            type: ''
         env:
-          - name: DISPLAY
-            valueFrom:
-              secretKeyRef:
-                name: appflowy-display-secret
-                key: display
-          - name: NO_AT_BRIDGE
-            value: "1"
-        volumeMounts:
-          - name: xauthority
-            mountPath: /root/.Xauthority
-            readOnly: true
-          - name: dev-dri
-            mountPath: /dev/dri
-            readOnly: true
-          - name: tmp-x11-unix
-            mountPath: /tmp/.X11-unix
-            readOnly: true
-          - name: dbus-socket
-            mountPath: /var/run/dbus/system_bus_socket
-            readOnly: true
+        - name: DISPLAY
+          valueFrom:
+            secretKeyRef:
+              name: appflowy-display-secret
+              key: display
+        - name: NO_AT_BRIDGE
+          value: "1"
+        devices:
+        - path: /dev/dri
+          type: ''
       volumes:
-        - name: xauthority
-          secret:
-            secretName: appflowy-display-secret
-        - name: dev-dri
-          hostPath:
-            path: /dev/dri
-        - name: tmp-x11-unix
-          hostPath:
-            path: /tmp/.X11-unix
-        - name: dbus-socket
-          hostPath:
-            path: /var/run/dbus/system_bus_socket
+      - name: xauthority
+        secret:
+          secretName: appflowy-display-secret
+      - name: dev-dri
+        hostPath:
+          path: /dev/dri
