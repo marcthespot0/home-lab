@@ -1,0 +1,74 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: obsidian-livesync
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: obsidian-livesync
+  namespace: obsidian-livesync
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  project: default
+  source:
+    path: charts/obsidian-livesync
+    repoURL: https://git.sr.ht/~heywoodlh/gitops
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+---
+
+apiVersion: v2
+name: obsidian-livesync
+version: 0.1.0
+dependencies:
+  - name: couchdb 
+    version: 3.6.1
+    repository: https://apache.github.io/couchdb-helm
+
+# couchdb chart values
+couchdb:
+  clusterSize: 1
+  createAdminSecret: false
+  persistentVolume:
+    enabled: true 
+    accessModes:
+      - ReadWriteMany
+    size: 10Gi
+  image:
+    repository: couchdb
+    tag: 3.2.1
+    pullPolicy: IfNotPresent
+  service:
+    enabled: true
+    type: LoadBalancer 
+    externalPort: 80
+  couchdbConfig:
+    couchdb:
+      single_node: true
+      uuid: obsidian-livesync
+    chttpd:
+      bind_address: any
+      require_valid_user: true
+    chttpd_auth:
+      require_valid_user: true
+      authentication_redirect: "/e=_/_utils/session.html"
+    httpd:
+      WWW-Authenticate: 'Basic realm="couchdb"'
+      enable_cors: true
+    cors:
+      origins: app://obsidian.md,capacitor://localhost,http://localhost
+      credentials: true
+      headers: accept, authorization, content-type, origin, referer
+      methods: GET, PUT, POST, HEAD, DELETE
+      max_age: 3600
