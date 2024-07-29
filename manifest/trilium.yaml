@@ -89,9 +89,6 @@ metadata:
   namespace: trilium
 spec:
   parentRefs:
-  - name: internal
-    namespace: gateway
-    sectionName: https
   - name: external
     namespace: gateway
     sectionName: https
