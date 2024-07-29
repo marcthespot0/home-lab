@@ -89,6 +89,9 @@ metadata:
   namespace: trilium
 spec:
   parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
   - name: external
     namespace: gateway
     sectionName: https
@@ -109,13 +112,13 @@ metadata:
   name: trilium
   namespace: trilium
   annotations:
-    external-dns.custom/type: public
+    external-dns.custom/type: private
 spec:
   endpoints:
     - dnsName: trilium.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - extgw.<path:stringreplacesecret#domain>
+        - intgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "true"
+          value: "false"
