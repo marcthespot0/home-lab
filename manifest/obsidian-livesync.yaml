@@ -164,7 +164,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: obsidian-livesync
+            name: obsidian-couchdb
             port:
               number: 5984
 ---
