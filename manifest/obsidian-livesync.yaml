@@ -112,3 +112,14 @@ data:
     headers = accept, authorization, content-type, origin, referer
     methods = GET, PUT, POST, HEAD, DELETE
     max_age = 3600
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: obsidian-couchdb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
