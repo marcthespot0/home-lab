@@ -29,7 +29,7 @@ spec:
     - secretKey: OBSIDIAN_COUCHDB_USER
       remoteRef:
         key: obsidian-couchdb-secret
-        property: user
+        property: username
     - secretKey: OBSIDIAN_COUCHDB_PASSOWRD
       remoteRef:
         key: obsidian-couchdb-secret
