@@ -81,17 +81,7 @@ spec:
               type: emptyDir
               globalMounts:
                 - path: /opt/couchdb/etc/default.d
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: obsidian-couchdb-configmap
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 5Gi
+
 ---
 
 apiVersion: v1
