@@ -33,7 +33,7 @@ spec:
     - secretKey: OBSIDIAN_COUCHDB_PASSOWRD
       remoteRef:
         key: obsidian-couchdb-secret
-        property: OUCHDB_PASSWORD
+        property: COUCHDB_PASSWORD
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
