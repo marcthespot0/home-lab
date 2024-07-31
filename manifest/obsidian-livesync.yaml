@@ -7,75 +7,55 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: obsidian-livesync
-  namespace: default
-  finalizers:
-  - resources-finalizer.argocd.argoproj.io
+  name: speedtest
+  namespace: argocd
 spec:
   destination:
+    namespace: obsidian-livesync
     server: https://kubernetes.default.svc
-    namespace: default
-  project: default
+  project: homelab
   source:
-    path: charts/obsidian-livesync
-    repoURL: https://git.sr.ht/~heywoodlh/gitops
-    targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-
----
-
-apiVersion: couchdb.apache.org/v2
-kind: CouchDBCluster
-metadata:
-  name: obsidian-livesync
-spec:
-  clusterSize: 1
-  createAdminSecret: false
-  persistentVolume:
-    enabled: true
-    accessModes:
-      - ReadWriteMany
-    size: 10Gi
-  image:
-    repository: couchdb
-    tag: 3.2.1
-    pullPolicy: IfNotPresent
-  service:
-    enabled: true
-    type: LoadBalancer
-    externalPort: 80
-  couchdbConfig:
-    couchdb:
-      single_node: true
-      uuid: obsidian-livesync
-    chttpd:
-      bind_address: any
-      require_valid_user: true
-    chttpd_auth:
-      require_valid_user: true
-      authentication_redirect: "/e=_/_utils/session.html"
-    httpd:
-      WWW-Authenticate: 'Basic realm="couchdb"'
-      enable_cors: true
-    cors:
-      origins:
-        - app://obsidian.md
-        - capacitor://localhost
-        - http://localhost
-      credentials: true
-      headers:
-        - accept
-        - authorization
-        - content-type
-        - origin
-        - referer
-      methods:
-        - GET
-        - PUT
-        - POST
-        - HEAD
-        - DELETE
-      max_age: 3600
+    chart: app-template 
+    repoURL: http://bjw-s.github.io/helm-charts/
+    targetRevision: 1.5.1
+    helm:
+      releaseName: obsidian-couchdb
+      valuesObject:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-config:
+            image:
+              repository: public.ecr.aws/docker/library/busybox
+              tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+              pullPolicy: IfNotPresent
+            command:
+              - "/bin/sh"
+              - "-c"
+              - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
+        containers:
+          main:
+            image:
+              repository: public.ecr.aws/docker/library/couchdb
+              tag: 3.3.3
+            envFrom:
+              - secretRef:
+                  name: obsidian-couchdb-secret
+            resources:
+              requests:
+                memory: 512Mi
+                cpu: 10m
+              limits:
+                memory: 1024Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: obsidian-couchdb
+        ports:
+          http:
+            port: 5984
