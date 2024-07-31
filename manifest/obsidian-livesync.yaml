@@ -7,7 +7,7 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sobsidian-livesync
+  name: obsidian-livesync
   namespace: argocd
 spec:
   destination:
