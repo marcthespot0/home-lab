@@ -7,14 +7,18 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: obsidian-couchdb
+  name: obsidian-couchdb-secret
   namespace: obsidian-livesync
+  labels:
+    app.kubernetes.io/part-of: obsidian-livesync
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
+  refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
-    name: onepassword-connect
+    name: 1password
   target:
-    name: obsidian-couchdb-secret
     creationPolicy: Owner
     template:
       engineVersion: v2
