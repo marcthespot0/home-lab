@@ -19,43 +19,44 @@ spec:
     repoURL: http://bjw-s.github.io/helm-charts/
     targetRevision: 3.3.1
     helm:
-      releaseName: obsidian-couchdb
-      valuesObject:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        initContainers:
-          init-config:
-            image:
-              repository: public.ecr.aws/docker/library/busybox
-              tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
-              pullPolicy: IfNotPresent
-            command:
-              - "/bin/sh"
-              - "-c"
-              - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
-        containers:
-          main:
-            image:
-              repository: public.ecr.aws/docker/library/couchdb
-              tag: 3.3.3
-            envFrom:
-              - secretRef:
-                  name: obsidian-couchdb-secret
-            resources:
-              requests:
-                memory: 512Mi
-                cpu: 10m
-              limits:
-                memory: 1024Mi
-    defaultPodOptions:
-      securityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-    # service:
-    #   app:
-    #     controller: obsidian-couchdb
-    #     ports:
-    #       http:
-    #         port: 5984
+      values: |
+        controllers:
+          obsidian-couchdb:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            initContainers:
+              init-config:
+                image:
+                  repository: public.ecr.aws/docker/library/busybox
+                  tag: latest@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+                  pullPolicy: IfNotPresent
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - "cp /tmp/config/*.ini /opt/couchdb/etc/default.d/; ls -lrt /opt/couchdb/etc/default.d;"
+            containers:
+              main:
+                image:
+                  repository: public.ecr.aws/docker/library/couchdb
+                  tag: 3.3.3
+                envFrom:
+                  - secretRef:
+                      name: obsidian-couchdb-secret
+                resources:
+                  requests:
+                    memory: 512Mi
+                    cpu: 10m
+                  limits:
+                    memory: 1024Mi
+        defaultPodOptions:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+        service:
+          app:
+            controller: obsidian-couchdb
+            ports:
+              http:
+                port: 5984
