@@ -88,7 +88,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: obsidian-couchdb-configmap
-data:
+  namespace: obsidian-livesync
   couchdb.ini: |
     single_node = true
     max_document_size = 50000000
