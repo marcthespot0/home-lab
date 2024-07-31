@@ -4,6 +4,33 @@ apiVersion: v1
 metadata:
   name: obsidian-livesync
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: obsidian-couchdb
+  namespace: obsidian-livesync
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword-connect
+  target:
+    name: obsidian-couchdb-secret
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        COUCHDB_USER: "{{ .OBSIDIAN_COUCHDB_USER }}"
+        COUCHDB_PASSWORD: "{{ .OBSIDIAN_COUCHDB_PASSWORD }}"
+  data:
+    - secretKey: OBSIDIAN_COUCHDB_USER
+      remoteRef:
+        key: obsidian-couchdb-secret
+        property: COUCHDB_USER
+    - secretKey: OBSIDIAN_COUCHDB_PASSOWRD
+      remoteRef:
+        key: obsidian-couchdb-secret
+        property: COUCHDB_PASSWORD
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -81,13 +108,12 @@ spec:
               type: emptyDir
               globalMounts:
                 - path: /opt/couchdb/etc/default.d
-
 ---
-
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: obsidian-couchdb-configmap
+  namespace: obsidian-livesync
 data:
   couchdb.ini: |
     single_node = true
@@ -117,6 +143,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: obsidian-couchdb
+  namespace: obsidian-livesync
 spec:
   accessModes:
     - ReadWriteOnce
