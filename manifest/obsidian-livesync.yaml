@@ -60,3 +60,24 @@ spec:
             ports:
               http:
                 port: 5984
+         persistence:
+            config:
+              enabled: true
+              type: configMap
+              name: obsidian-couchdb-configmap
+              advancedMounts:
+                obsidian-couchdb:
+                  init-config:
+                    - path: /tmp/config
+            data:
+              enabled: true
+              existingClaim: obsidian-couchdb
+              advancedMounts:
+                obsidian-couchdb:
+                  app:
+                    - path: /opt/couchdb/data
+            config-storage:
+              enabled: true
+              type: emptyDir
+              globalMounts:
+                - path: /opt/couchdb/etc/default.d
