@@ -29,11 +29,11 @@ spec:
     - secretKey: OBSIDIAN_COUCHDB_USER
       remoteRef:
         key: obsidian-couchdb-secret
-        property: obsidian_username
+        property: COUCHDB_USER
     - secretKey: OBSIDIAN_COUCHDB_PASSOWRD
       remoteRef:
         key: obsidian-couchdb-secret
-        property: obsidian_password
+        property: OUCHDB_PASSWORD
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
