@@ -7,7 +7,7 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: speedtest
+  name: sobsidian-livesync
   namespace: argocd
 spec:
   destination:
