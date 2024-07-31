@@ -78,7 +78,7 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
         service:
           app:
-            controller: obsidian-livesync
+            controller: obsidian-couchdb
             ports:
               http:
                 port: 5984
