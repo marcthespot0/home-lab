@@ -79,6 +79,7 @@ spec:
         service:
           app:
             controller: obsidian-couchdb
+            type: LoadBalancer
             ports:
               http:
                 port: 5984
