@@ -4,7 +4,6 @@ apiVersion: v1
 metadata:
   name: obsidian-livesync
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/external-secrets.io/externalsecret_v1beta1.json
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
@@ -165,7 +164,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: obsidian-couchdb
+            name: obsidian-livesync
             port:
               number: 5984
 ---
@@ -185,7 +184,7 @@ spec:
   - "obsidian.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: obsidian-couchdb
+    - name: obsidian-livesync
       port: 5984
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
