@@ -184,7 +184,7 @@ spec:
   - "obsidian.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: obsidian-livesync
+    - name: obsidian-couchdb
       port: 5984
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
