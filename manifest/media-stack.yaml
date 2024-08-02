@@ -592,7 +592,7 @@ spec:
           claimName: transmission-data
       containers:
       - name: unpackerr
-        image: golift/unpackerr:0.14.2
+        image: golift/unpackerr:0.14.5
         env:
         - name: TZ
           value: America/New_York
