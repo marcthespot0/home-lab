@@ -34,7 +34,7 @@ spec:
                   limits:
                     memory: 105M
         service:
-          app:
+          main:
             controller: main
             ports:
               http:
