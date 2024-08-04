@@ -21,9 +21,9 @@ spec:
     helm:
       values: |
         controllers:
-          baikal:
+          main:
             containers:
-              baikal:
+              main:
                 image:
                   repository: docker.io/ckulka/baikal
                   tag: 0.9.5-nginx-php8.2@sha256:89d667ece755bdddfb1ee076c3fd71a72ca165012a113bbcc0601315fe572652
@@ -33,12 +33,12 @@ spec:
                     memory: 105M
                   limits:
                     memory: 105M
-        # service:
-        #   app:
-        #     controller: baikal
-        #     ports:
-        #       http:
-        #         port: 80
+        service:
+          main:
+            controller: main
+            ports:
+              http:
+                port: 80
         persistence:
           data:
             existingClaim: baikal-data-v1
@@ -58,20 +58,6 @@ spec:
     requests:
       storage: 1Mi
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: baikal
-  namespace: baikal
-spec:
-  type: ClusterIP
-  selector:
-    app: baikal
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 80
----
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -87,7 +73,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: baikal
+            identifier: main
             port:
               number: 80
 ---
@@ -107,7 +93,7 @@ spec:
   - "baikal.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: baikal
+    - name: main
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
