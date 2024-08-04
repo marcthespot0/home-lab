@@ -34,7 +34,7 @@ spec:
                   limits:
                     memory: 105M
         service:
-          main:
+          app:
             controller: main
             ports:
               http:
@@ -63,9 +63,6 @@ kind: Ingress
 metadata:
   name: baikal
   namespace: baikal
-  annotations:
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
