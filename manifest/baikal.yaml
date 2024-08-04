@@ -33,12 +33,12 @@ spec:
                     memory: 105M
                   limits:
                     memory: 105M
-        service:
-          app:
-            controller: baikal
-            ports:
-              http:
-                port: 80
+        # service:
+        #   app:
+        #     controller: baikal
+        #     ports:
+        #       http:
+        #         port: 80
         persistence:
           data:
             existingClaim: baikal-data-v1
@@ -57,6 +57,20 @@ spec:
   resources:
     requests:
       storage: 1Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: baikal
+  namespace: baikal
+spec:
+  type: ClusterIP
+  selector:
+    app: baikal
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
