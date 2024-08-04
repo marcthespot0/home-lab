@@ -72,10 +72,9 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          service:
-            identifier: main
-            port:
-              number: 80
+          identifier: main
+          port:
+            number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
