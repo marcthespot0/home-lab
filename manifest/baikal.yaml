@@ -21,9 +21,9 @@ spec:
     helm:
       values: |
         controllers:
-          main:
+          baikal:
             containers:
-              main:
+              app:
                 image:
                   repository: docker.io/ckulka/baikal
                   tag: 0.9.5-nginx-php8.2@sha256:89d667ece755bdddfb1ee076c3fd71a72ca165012a113bbcc0601315fe572652
@@ -34,8 +34,8 @@ spec:
                   limits:
                     memory: 105M
         service:
-          main:
-            controller: main
+          app:
+            controller: baikal
             ports:
               http:
                 port: 80
@@ -72,9 +72,10 @@ spec:
       - path: /
         pathType: Prefix
         backend:
-          identifier: main
-          port:
-            number: 80
+          service:
+            name: bikal
+            port:
+              number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -92,7 +93,7 @@ spec:
   - "baikal.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: main
+    - name: baikal
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
