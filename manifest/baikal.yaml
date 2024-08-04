@@ -35,7 +35,7 @@ spec:
                     memory: 105M
         service:
           app:
-            controller: main
+            controller: baikal
             ports:
               http:
                 port: 80
