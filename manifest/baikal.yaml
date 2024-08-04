@@ -73,7 +73,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: bikal
+            name: baikal
             port:
               number: 80
 ---
