@@ -160,7 +160,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: nextcloud
+  name: nextcloud-data
   namespace: nextcloud
   labels:
     app.kubernetes.io/name: nextcloud
