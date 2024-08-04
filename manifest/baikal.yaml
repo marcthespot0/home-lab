@@ -21,7 +21,7 @@ spec:
     helm:
       values: |
         controllers:
-          main:
+          baikal:
             containers:
               main:
                 image:
@@ -34,8 +34,8 @@ spec:
                   limits:
                     memory: 105M
         service:
-          main:
-            controller: main
+          app:
+            controller: baikal
             ports:
               http:
                 port: 80
@@ -73,7 +73,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: main
+            name: baikal
             port:
               number: 80
 ---
@@ -93,7 +93,7 @@ spec:
   - "baikal.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: main
+    - name: baikal
       port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
