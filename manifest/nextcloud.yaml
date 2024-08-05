@@ -97,12 +97,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: nextclouduser
-                  key: nextcloud
+                  key: nextcloud-secret
             - name: NEXTCLOUD_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: nextcloudpass
-                  key: nextcloud
+                  key: nextcloud-secret
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
             - name: NEXTCLOUD_DATA_DIR
