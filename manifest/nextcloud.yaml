@@ -94,15 +94,9 @@ spec:
             - name: SQLITE_DATABASE
               value: "nextcloud"
             - name: NEXTCLOUD_ADMIN_USER
-              valueFrom:
-                secretKeyRef:
-                  name: NEXTCLOUD_USER
-                  key: nextcloud
+              value: "{{ .NEXTCLOUD_USERNAME }}"
             - name: NEXTCLOUD_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: NEXTCLOUD_PASS
-                  key: nextcloud
+              value: "{{ .NEXTCLOUD_PASSWORD }}"
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
             - name: NEXTCLOUD_DATA_DIR
