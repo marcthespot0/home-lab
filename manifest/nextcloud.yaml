@@ -19,8 +19,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        nextcloud_user: "{{ .nextcloud_username }}"
-        nextcloud_pass: "{{ .nextcloud_password }}"
+        nextclouduser: "{{ .nextcloud_username }}"
+        nextcloudpass: "{{ .nextcloud_password }}"
   data:
     - secretKey: nextcloud_username
       remoteRef:
