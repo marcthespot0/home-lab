@@ -94,9 +94,9 @@ spec:
             - name: SQLITE_DATABASE
               value: "nextcloud"
             - name: NEXTCLOUD_ADMIN_USER
-              value: "{{ .NEXTCLOUD_USERNAME }}"
+              value: "NEXTCLOUD_USER"
             - name: NEXTCLOUD_ADMIN_PASSWORD
-              value: "{{ .NEXTCLOUD_PASSWORD }}"
+              value: "NEXTCLOUD_PASS"
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
             - name: NEXTCLOUD_DATA_DIR
