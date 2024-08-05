@@ -21,15 +21,15 @@ spec:
       data:
         NEXTCLOUD_USER: "{{ .NEXTCLOUD_USERNAME }}"
         NEXTCLOUD_PASS: "{{ .NEXTCLOUD_PASSWORD }}"
-    data:
-      - secretKey: NEXTCLOUD_USERNAME
-        remoteRef:
-          key: nextcloud
-          property: nextclouduser
-      - secretKey: NEXTCLOUD_PASSSWORD
-        remoteRef:
-          key: nextcloud
-          property: nextcloudpass
+  data:
+    - secretKey: NEXTCLOUD_USERNAME
+      remoteRef:
+        key: nextcloud
+        property: nextclouduser
+    - secretKey: NEXTCLOUD_PASSSWORD
+      remoteRef:
+        key: nextcloud
+        property: nextcloudpass
 ---
 apiVersion: v1
 kind: Service
