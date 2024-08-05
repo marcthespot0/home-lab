@@ -19,8 +19,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        NEXTCLOUD_USER: "{{ .NEXTCLOUD_USERNAME }}"
-        NEXTCLOUD_PASS: "{{ .NEXTCLOUD_PASSWORD }}"
+        nextclouduser: "{{ .NEXTCLOUD_USERNAME }}"
+        nextcloudpass: "{{ .NEXTCLOUD_PASSWORD }}"
   dataFrom: 
     - extract:
         key: nextcloud
@@ -90,12 +90,12 @@ spec:
             - name: NEXTCLOUD_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .NEXTCLOUD_USERNAME }}"
+                  name: nextclouduser
                   key: nextcloud
             - name: NEXTCLOUD_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .NEXTCLOUD_PASSWORD }}"
+                  name: nextcloudpass
                   key: nextcloud
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
