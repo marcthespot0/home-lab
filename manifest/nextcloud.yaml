@@ -16,17 +16,17 @@ spec:
   target:
     name: nextcloud-secret
     creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        nextclouduser: "{{ .nextcloud_username }}"
-        nextcloudpass: "{{ .nextcloud_password }}"
+    # template:
+    #   engineVersion: v2
+    #   data:
+    #     nextclouduser: "{{ .nextcloud_username }}"
+    #     nextcloudpass: "{{ .nextcloud_password }}"
   data:
-    - secretKey: nextcloud_username
+    - secretKey: nextclouduser
       remoteRef:
         key: nextcloud
         property: nextclouduser
-    - secretKey: nextcloud_password
+    - secretKey: nextcloudpass
       remoteRef:
         key: nextcloud
         property: nextcloudpass
@@ -96,12 +96,12 @@ spec:
             - name: NEXTCLOUD_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .nextcloud_username }}"
+                  name: nextclouduser
                   key: nextcloud
             - name: NEXTCLOUD_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .nextcloud_password }}"
+                  name: nextcloudpass
                   key: nextcloud
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
