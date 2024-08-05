@@ -10,25 +10,21 @@ metadata:
   name: nextcloud-secret
   namespace: nextcloud
 spec:
+  refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
     name: 1password
   target:
     creationPolicy: Owner
-    # template:
-    #   engineVersion: v2
-    #   data:
-    #     nextclouduser: "{{ .nextcloud_username }}"
-    #     nextcloudpass: "{{ .nextcloud_password }}"
   data:
-    - secretKey: nextclouduser
+    - secretKey: nextcloud_user
       remoteRef:
         key: nextcloud
-        property: nextclouduser
-    - secretKey: nextcloudpass
+        property: nextcloud_user
+    - secretKey: nextcloud_pass
       remoteRef:
         key: nextcloud
-        property: nextcloudpass
+        property: nextcloud_pass
 ---
 apiVersion: v1
 kind: Service
@@ -95,12 +91,12 @@ spec:
             - name: NEXTCLOUD_ADMIN_USER
               valueFrom:
                 secretKeyRef:
-                  name: nextclouduser
+                  name: nextcloud_user
                   key: nextcloud-secret
             - name: NEXTCLOUD_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: nextcloudpass
+                  name: nextcloud_pass
                   key: nextcloud-secret
             - name: NEXTCLOUD_TRUSTED_DOMAINS
               value: nextcloud.kube.home
