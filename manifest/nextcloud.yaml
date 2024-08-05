@@ -192,7 +192,7 @@ spec:
           service:
             name: nextcloud
             port:
-              number: 80
+              number: 8080
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -211,7 +211,7 @@ spec:
   rules:
   - backendRefs:
     - name: nextcloud
-      port: 80
+      port: 8080
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
