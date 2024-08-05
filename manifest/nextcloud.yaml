@@ -108,7 +108,7 @@ spec:
               port:  80
               httpHeaders:
               - name: Host
-                value: "nextcloud.kube.home"
+                value: "nextcloud.marcthespot.com"
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 5
@@ -120,7 +120,7 @@ spec:
               port:  80
               httpHeaders:
               - name: Host
-                value: "nextcloud.kube.home"
+                value: "nextcloud.marcthespot.com"
             initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 5
