@@ -7,14 +7,13 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: nextcloud
+  name: nextcloud-secret
   namespace: nextcloud
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
     name: 1password
   target:
-    name: nextcloud-secret
     creationPolicy: Owner
     # template:
     #   engineVersion: v2
