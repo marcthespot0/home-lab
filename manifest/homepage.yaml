@@ -193,6 +193,12 @@ data:
                   color: zinc
                   params:
                     showName: true
+               - type: ical 
+                  url: http://ical-cdn.teamsnap.com/team_schedule/f82841ba-cd64-4e65-8abe-e71ed2a5a95f.ics
+                  name: My Events
+                  color: blue
+                  params:
+                    showName: true
     - Self-hosted:
         - Immich:
             href: https://immich.<path:stringreplacesecret#domain>
