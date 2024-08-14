@@ -699,9 +699,9 @@ spec:
             limits:
               cpu: 6000m
               memory: 8Gi
-          envFrom:
-            - configMapRef:
-                name: plex-env
+          # envFrom:
+          #   - configMapRef:
+          #       name: plex-env
           ports:
             - name: http
               containerPort: 32400
