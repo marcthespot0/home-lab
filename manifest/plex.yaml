@@ -1,0 +1,137 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: plex
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plex
+  namespace: argocd
+spec:
+  destination:
+    namespace: plex
+    server: https://kubernetes.default.svc
+  project: homelab
+  source:
+    chart: app-template 
+    repoURL: http://bjw-s.github.io/helm-charts/
+    targetRevision: 3.3.2
+    helm:
+      values: |
+        controllers:
+          plex:
+            strategy: Recreate
+            pod:
+              nodeSelector:
+                kubernetes.io/hostname: talos-lab-02
+              securityContext:
+                runAsUser: 568
+                runAsGroup: 568
+                fsGroup: 568
+                runAsNonRoot: true
+                supplementalGroups:
+                  - 44 # video group
+                  - 105 # debian render group
+                  - 109 # ubuntu render group
+              # runtimeClassName: nvidia
+            containers:
+              app:
+                image:
+                  repository: ghcr.io/onedr0p/plex-beta
+                  tag: 1.40.5.8854-f36c552fd@sha256:483bb8b03110e6874b2eea984c15039b7423d01c9fd5b436807aa14fe46ba0f2
+                env:
+                  TZ: "UTC"
+                  ADVERTISE_IP: "https://plex.<path:stringreplacesecret#domain>:32400,https://plex.<path:stringreplacesecret#domain>:443"
+                  NVIDIA_DRIVER_CAPABILITIES: all
+                  NVIDIA_VISIBLE_DEVICES: all
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities: { drop: ["ALL"] }
+                resources:
+                  requests:
+                    cpu: 1000m
+                    memory: 2Gi
+                  limits:
+                    memory: 16Gi
+                    gpu.intel.com/i915: 1
+                    # nvidia.com/gpu: 1
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: true
+                    spec:
+                      failureThreshold: 30
+                      periodSeconds: 5
+        service:
+          app:
+            controller: *app
+            type: LoadBalancer
+            externalTrafficPolicy: Cluster
+            annotations:
+              coredns.io/hostname: plex.<path:stringreplacesecret#domain>
+            ports:
+              http:
+                port: &port 32400
+          envoy:
+            enabled: true
+            annotations:
+              external-dns.alpha.kubernetes.io/target: dummy
+              external-dns.alpha.kubernetes.io/hostname: plex.<path:stringreplacesecret#domain>
+              external-dns.alpha.kubernetes.io/ttl: "120"
+            parentRefs:
+              - name: envoy-external
+                namespace: networking
+                sectionName: https
+            hostnames:
+              - "plex.<path:stringreplacesecret#domain>"
+            rules:
+              - backendRefs:
+                  - port: *port
+                    name: *app
+        persistence:
+          config:
+            enabled: true
+            existingClaim: plex-0
+          plex-cache:
+            existingClaim: plex-cache
+            globalMounts:
+              - path: /config/Library/Application Support/Plex Media Server/Cache
+          logs:
+            type: emptyDir
+            globalMounts:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+          media:
+            enabled: true
+            existingClaim: jellyfin-downloads
+            globalMounts:
+              - path: /downloads
+          backup:
+            enabled: true
+            existingClaim: plex-backup
+            globalMounts:
+              - path: /config/backup
+          tmp:
+            type: emptyDir
+          transcode:
+            type: emptyDir
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: jellyfin-downloads
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
+spec:
+  storageClassName: freenas-nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
