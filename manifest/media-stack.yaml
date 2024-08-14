@@ -729,7 +729,6 @@ metadata:
   name: plex-config
   namespace: media
 spec:
-  volumeName: pv-plex
   accessModes:
     - ReadWriteOnce
   resources:
