@@ -114,18 +114,3 @@ spec:
             type: emptyDir
           transcode:
             type: emptyDir
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: jellyfin-downloads
-  namespace: media
-  annotations:
-    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
-spec:
-  storageClassName: freenas-nfs-csi
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 100Gi
