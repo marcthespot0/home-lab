@@ -26,16 +26,16 @@ spec:
             pod:
               nodeSelector:
                 kubernetes.io/hostname: talos-lab-02
-              # securityContext:
-              #   runAsUser: 568
-              #   runAsGroup: 568
-              #   fsGroup: 568
-              #   runAsNonRoot: true
-              #   supplementalGroups:
-              #     - 44 # video group
-              #     - 105 # debian render group
-              #     - 109 # ubuntu render group
-              # # runtimeClassName: nvidia
+              securityContext:
+                runAsUser: 568
+                runAsGroup: 568
+                fsGroup: 568
+                runAsNonRoot: true
+                supplementalGroups:
+                  - 44 # video group
+                  - 105 # debian render group
+                  - 109 # ubuntu render group
+              # runtimeClassName: nvidia
             containers:
               app:
                 image:
@@ -47,7 +47,7 @@ spec:
                   NVIDIA_DRIVER_CAPABILITIES: all
                   NVIDIA_VISIBLE_DEVICES: all
                 securityContext:
-                  allowPrivilegeEscalation: false
+                  allowPrivilegeEscalation: true
                   readOnlyRootFilesystem: true
                   capabilities: { drop: ["ALL"] }
                 resources:
