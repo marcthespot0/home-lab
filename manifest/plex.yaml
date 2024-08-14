@@ -26,16 +26,16 @@ spec:
             pod:
               nodeSelector:
                 kubernetes.io/hostname: talos-lab-02
-              securityContext:
-                runAsUser: 568
-                runAsGroup: 568
-                fsGroup: 568
-                runAsNonRoot: true
-                supplementalGroups:
-                  - 44 # video group
-                  - 105 # debian render group
-                  - 109 # ubuntu render group
-              # runtimeClassName: nvidia
+              # securityContext:
+              #   runAsUser: 568
+              #   runAsGroup: 568
+              #   fsGroup: 568
+              #   runAsNonRoot: true
+              #   supplementalGroups:
+              #     - 44 # video group
+              #     - 105 # debian render group
+              #     - 109 # ubuntu render group
+              # # runtimeClassName: nvidia
             containers:
               app:
                 image:
@@ -46,10 +46,10 @@ spec:
                   ADVERTISE_IP: "https://plex.<path:stringreplacesecret#domain>:32400,https://plex.<path:stringreplacesecret#domain>:443"
                   NVIDIA_DRIVER_CAPABILITIES: all
                   NVIDIA_VISIBLE_DEVICES: all
-                securityContext:
-                  allowPrivilegeEscalation: true
-                  readOnlyRootFilesystem: true
-                  capabilities: { drop: ["ALL"] }
+                # securityContext:
+                #   allowPrivilegeEscalation: f
+                #   readOnlyRootFilesystem: true
+                #   capabilities: { drop: ["ALL"] }
                 resources:
                   requests:
                     cpu: 1000m
@@ -78,22 +78,6 @@ spec:
             ports:
               http:
                 port: &port 32400
-          # envoy:
-          #   enabled: true
-          #   annotations:
-          #     external-dns.alpha.kubernetes.io/target: dummy
-          #     external-dns.alpha.kubernetes.io/hostname: plex.<path:stringreplacesecret#domain>
-          #     external-dns.alpha.kubernetes.io/ttl: "120"
-          #   parentRefs:
-          #     - name: envoy-external
-          #       namespace: networking
-          #       sectionName: https
-          #   hostnames:
-          #     - "plex.<path:stringreplacesecret#domain>"
-          #   rules:
-          #     - backendRefs:
-          #         - port: *port
-          #           name: *app
         persistence:
           config:
             enabled: true
