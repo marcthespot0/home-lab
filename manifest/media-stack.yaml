@@ -680,11 +680,6 @@ spec:
         seccompProfile:
           type: RuntimeDefault
       containers:
-        - env:
-          - name: TZ
-            value: America_New_York
-          - name: PLEX_ADVERTISE_URL
-            value: https://plex.<path:stringreplacesecret#domain>
         - name: plex
           image: ghcr.io/onedr0p/plex:1.40.5.8854-f36c552fd 
           securityContext:
@@ -692,6 +687,11 @@ spec:
             readOnlyRootFilesystem: true
             capabilities:
               drop: [ "ALL" ]
+          env:
+            - name: TZ
+              value: America_New_York
+            - name: PLEX_ADVERTISE_URL
+              value: https://plex.<path:stringreplacesecret#domain>
           resources:
             requests:
               cpu: 500m
