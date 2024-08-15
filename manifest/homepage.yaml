@@ -222,8 +222,8 @@ data:
               showEpisodeNumber: true # optional, defaults to false
               expandOneStreamToTwoRows: false # optional, defaults to true
         - Plex:
-          href:// https://plex.<path:stringreplacesecret#domain>
-          icon: Plex.svg
+          href: https://plex.<path:stringreplacesecret#domain>
+          icon: plex.svg
           widget:
             type: Plex
             url: https://plex.<path:stringreplacesecret#domain>
