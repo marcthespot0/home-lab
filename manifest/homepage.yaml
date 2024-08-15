@@ -221,7 +221,7 @@ data:
               enableUser: true # optional, defaults to false
               showEpisodeNumber: true # optional, defaults to false
               expandOneStreamToTwoRows: false # optional, defaults to true
-        - Plex
+        - Plex:
           href:// https://plex.<path:stringreplacesecret#domain>
           icon: Plex.svg
           widget:
