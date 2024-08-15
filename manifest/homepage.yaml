@@ -225,7 +225,7 @@ data:
             href: https://plex.<path:stringreplacesecret#domain>
             icon: plex.svg
             widget:
-              type: Plex
+              type: tautulli
               url: https://plex.<path:stringreplacesecret#domain>
               key: xDsJb9xYJRtp7Sr2mBKc
               enableUser: true # optional, defaults to false
