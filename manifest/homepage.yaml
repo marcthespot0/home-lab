@@ -223,7 +223,7 @@ data:
               expandOneStreamToTwoRows: false # optional, defaults to true
         - Plex
           href:// https://plex.<path:stringreplacesecret#domain>
-          icon: plex.svc
+          icon: plex.svg
           widget:
             type: Plex
             url: https://plex.<path:stringreplacesecret#domain>
