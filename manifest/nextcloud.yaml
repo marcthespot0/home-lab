@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
         - name: nextcloud
-          image: nextcloud:29.0.4-apache
+          image: nextcloud:29.0.5-apache
           imagePullPolicy: IfNotPresent
           env:
             
