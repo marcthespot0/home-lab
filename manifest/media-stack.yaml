@@ -551,7 +551,7 @@ metadata:
   name: prowlarr-storage
   namespace: media
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes: ReadWriteMany
   resources:
     requests:
       storage: 2Gi
