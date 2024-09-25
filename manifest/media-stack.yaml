@@ -506,7 +506,7 @@ spec:
     spec:
       containers:
         - name: prowlarr
-          image: ghcr.io/hotio/prowlarr:release-1.19.0.4568 
+          image: ghcr.io/hotio/prowlarr:latest
           envFrom:
             - configMapRef:
                 name: prowlarr-cm
