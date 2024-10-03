@@ -741,7 +741,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: redis
-          image: docker.io/bitnami/redis:7.4.0-debian-12-r4
+          image: docker.io/bitnami/redis:7.4.1-debian-12-r0
           imagePullPolicy: "IfNotPresent"
           securityContext:
             allowPrivilegeEscalation: false
