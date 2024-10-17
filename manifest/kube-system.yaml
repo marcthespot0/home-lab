@@ -1,5 +1,3 @@
-HomeLab - Kubesystem
-
 ---
 kind: Namespace
 apiVersion: v1
