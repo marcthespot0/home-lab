@@ -113,7 +113,7 @@ spec:
           persistentVolumeClaim:
             claimName: jellyfin-downloads
       nodeSelector:
-        kubernetes.io/hostname: talos-lab-02
+        kubernetes.io/hostname: talos-03
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -669,7 +669,7 @@ spec:
         app: plex
     spec:
       nodeSelector:
-        kubernetes.io/hostname: talos-lab-02
+        kubernetes.io/hostname: talos-03
       securityContext:
         runAsNonRoot: true
         runAsUser: 2501
