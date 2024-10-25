@@ -420,7 +420,6 @@ metadata:
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
-  claimName: pvc-6cd90f9e-b021-43ac-914c-ed1ef1f8d481
   storageClassName: freenas-nfs-csi
   accessModes:
     - ReadWriteMany
