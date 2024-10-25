@@ -142,7 +142,7 @@ metadata:
   name: jellyfin
   namespace: media
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
@@ -162,7 +162,7 @@ metadata:
   namespace: media
   annotations:
     external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: jellyfin.<path:stringreplacesecret#domain>
@@ -280,7 +280,7 @@ metadata:
   name: radarr
   namespace: media
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
@@ -300,7 +300,7 @@ metadata:
   namespace: media
   annotations:
     external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: radarr.<path:stringreplacesecret#domain>
@@ -319,7 +319,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: transmission
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
   secretStoreRef:
@@ -454,7 +454,7 @@ metadata:
   name: transmission
   namespace: media
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
@@ -474,7 +474,7 @@ metadata:
   namespace: media
   annotations:
     external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: transmission.<path:stringreplacesecret#domain>
@@ -633,7 +633,7 @@ metadata:
   labels:
     app.kubernetes.io/part-of: homepage
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
   secretStoreRef:
@@ -781,7 +781,7 @@ metadata:
   name: plex
   namespace: media
   annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
@@ -801,7 +801,7 @@ metadata:
   namespace: media
   annotations:
     external-dns.custom/type: private
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: plex.<path:stringreplacesecret#domain>
