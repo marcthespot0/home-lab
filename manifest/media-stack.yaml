@@ -70,7 +70,7 @@ spec:
         app.kubernetes.io/name: jellyfin
     spec:
       restartPolicy: Always
-      # runtimeClassName: nvidia
+      runtimeClassName: nvidia
       containers:
         - name: jellyfin
           image: jellyfin/jellyfin:10.9.11
