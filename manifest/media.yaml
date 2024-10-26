@@ -691,7 +691,7 @@ spec:
             - name: TZ
               value: America_New_York
             - name: PLEX_ADVERTISE_URL
-              value: https://plex.<path:stringreplacesecret#domain>,https://192.168.1.172:32400
+              value: https://plex.<path:stringreplacesecret#domain>,https://192.168.1.165:32400
           resources:
             requests:
               cpu: 500m
