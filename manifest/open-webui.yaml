@@ -33,7 +33,7 @@ spec:
             memory: "4Gi"
         env:
         - name: OLLAMA_BASE_URL
-          value: "http://192.168.1.164:11434"
+          value: "http://192.168.1.169:11434"
         tty: true
         volumeMounts:
         - name: webui-volume
