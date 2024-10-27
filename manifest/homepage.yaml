@@ -263,12 +263,12 @@ data:
               key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
               enablePools: true
         - Proxmox:
-            href: https://proxmox00.<path:stringreplacesecret#domain>:8006
+            href: https://proxmox01.<path:stringreplacesecret#domain>:8006
             icon: proxmox.png
             description: Hypervisor
             widget:
               type: proxmox
-              url: https://proxmox00.<path:stringreplacesecret#domain>:8006
+              url: https://proxmox01.<path:stringreplacesecret#domain>:8006
               username: {{HOMEPAGE_VAR_PROXMOX_TOKEN_ID}}
               password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
   widgets.yaml: |
