@@ -488,7 +488,7 @@ spec:
               value: "true"
           ports:
             - name: http
-              containerPort: 8082
+              containerPort: 2283
               protocol: TCP
           volumeMounts:
             - name: library
