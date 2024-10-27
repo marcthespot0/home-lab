@@ -681,7 +681,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: plex
-          image: ghcr.io/onedr0p/plex-beta:1.40.5.8854-f36c552fd@sha256:483bb8b03110e6874b2eea984c15039b7423d01c9fd5b436807aa14fe46ba0f2
+          # image: ghcr.io/onedr0p/plex-beta:1.40.5.8854-f36c552fd@sha256:483bb8b03110e6874b2eea984c15039b7423d01c9fd5b436807aa14fe46ba0f2
+            image: ghcr.io/onedr0p/plex-beta:latest
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
