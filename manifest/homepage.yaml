@@ -194,33 +194,21 @@ data:
                   params:
                     showName: true
     - Self-hosted:
-        - Immich:
-            href: https://immich.<path:stringreplacesecret#domain>
-            icon: immich.svg
-            widget:
-              type: immich
-              url: https://immich.<path:stringreplacesecret#domain>
-              key: irM1wksYSPI6BwWPK16p3pxHMCe5pwzQ5ohlAupn94
+        # - Immich:
+        #     href: https://immich.<path:stringreplacesecret#domain>
+        #     icon: immich.svg
+        #     widget:
+        #       type: immich
+        #       url: https://immich.<path:stringreplacesecret#domain>
+        #       key: irM1wksYSPI6BwWPK16p3pxHMCe5pwzQ5ohlAupn94
         - Radarr:
             href: https://radarr.<path:stringreplacesecret#domain>
             icon: radarr.svg
             widget:
               type: radarr
               url: https://radarr.<path:stringreplacesecret#domain>
-              key: aa059cca511a43759bf433eceaa159c5
+              key: 1520c66e60964a53be40e7bb73bce985
               enableQueue: true
-        - Jellyfin:
-            href: https://jellyfin.<path:stringreplacesecret#domain>
-            icon: jellyfin.svg
-            widget:
-              type: jellyfin
-              url: https://jellyfin.<path:stringreplacesecret#domain>
-              key: 11401999788f4501ad9e2e8c48f0b5fb
-              enableBlocks: true # optional, defaults to false
-              enableNowPlaying: true # optional, defaults to true
-              enableUser: true # optional, defaults to false
-              showEpisodeNumber: true # optional, defaults to false
-              expandOneStreamToTwoRows: false # optional, defaults to true
         - Plex:
             href: https://plex.<path:stringreplacesecret#domain>
             icon: plex.svg
