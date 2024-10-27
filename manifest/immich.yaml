@@ -352,7 +352,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 2281
+    - port: 2283
       targetPort: http
       protocol: TCP
       name: http
