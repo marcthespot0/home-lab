@@ -861,7 +861,7 @@ spec:
           name: config
         - mountPath: "/var/lib/transmission-daemon/downloads"
           name: appdata
-        - mountPath: "/media"    # Adjusted mount path
+        - mountPath: "/media/shows"    # Adjusted mount path
           name: media
 ---
 apiVersion: v1
