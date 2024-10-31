@@ -898,7 +898,7 @@ metadata:
   name: sonarr
   namespace: media
   annotations:
-  nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
@@ -919,7 +919,7 @@ metadata:
   name: sonarr
   namespace: media
   annotations:
-    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
   - name: internal
@@ -939,7 +939,7 @@ metadata:
   namespace: media
   annotations:
     external-dns.custom/type: private
-    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: sonarr.<path:stringreplacesecret#domain>
