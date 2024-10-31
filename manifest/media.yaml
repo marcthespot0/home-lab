@@ -721,6 +721,9 @@ spec:
         - name: media
           persistentVolumeClaim:
             claimName: jellyfin-downloads
+        - name: shows
+          persistentVolumeClaim:
+            claimName: sonarr-shows
         - name: transcode
           emptyDir:
             medium: Memory
@@ -836,7 +839,7 @@ spec:
           claimName: transmission-data
       - name: shows
         persistentVolumeClaim:
-          claimName: jellyfin-downloads
+          claimName: sonarr-shows
       containers:
       - name: sonarr
         image: binhex/arch-sonarr:4.0.10.2544-6-01
@@ -949,3 +952,18 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonarr-shows
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
+spec:
+  storageClassName: freenas-nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
