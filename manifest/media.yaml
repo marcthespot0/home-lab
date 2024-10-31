@@ -862,7 +862,7 @@ spec:
         - mountPath: "/var/lib/transmission-daemon/downloads"
           name: appdata
         - mountPath: "/shows"    # Adjusted mount path
-          name: media
+          name: shows
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
