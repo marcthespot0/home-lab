@@ -834,7 +834,7 @@ spec:
       - name: appdata
         persistentVolumeClaim:
           claimName: transmission-data
-      - name: media
+      - name: shows
         persistentVolumeClaim:
           claimName: jellyfin-downloads
       containers:
@@ -861,7 +861,7 @@ spec:
           name: config
         - mountPath: "/var/lib/transmission-daemon/downloads"
           name: appdata
-        - mountPath: "/media/shows"    # Adjusted mount path
+        - mountPath: "/shows"    # Adjusted mount path
           name: media
 ---
 apiVersion: v1
