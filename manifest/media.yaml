@@ -596,11 +596,11 @@ spec:
         env:
         - name: TZ
           value: America/New_York
-        - name: UN_SONARR_URL
+        - name: UN_SONARR_1_URL
           value: "http://192.168.1.169:8989"
-        - name: UN_SONARR_PATHS_0
+        - name: UN_SONARR_1_PATHS_1
           value: "/var/lib/transmission-daemon/downloads"
-        - name: UN_SONARR_API_KEY
+        - name: UN_SONARR_1_API_KEY
           value: "238b9c3221904e518ebcaa3aa4fa404f"
         - name: UN_RADARR_0_URL
           value: "http://192.168.1.167:7878"
