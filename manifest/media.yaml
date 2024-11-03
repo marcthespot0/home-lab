@@ -606,7 +606,7 @@ spec:
               name: media-configsecrets
               key: MEDIA_VAR_RADARR_API
         - name: UN_SONARR_URL
-          value: https://192.168.1.169:8989
+          value: "https://192.168.1.169:8989"
         - name: UN_SONARR_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
         - name: UN_SONARR_API_KEY
