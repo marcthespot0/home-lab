@@ -601,7 +601,7 @@ spec:
         - name: UN_SONARR_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
         - name: UN_SONARR_API_KEY
-          value: 238b9c3221904e518ebcaa3aa4fa404f
+          value: "238b9c3221904e518ebcaa3aa4fa404f"
         - name: UN_RADARR_0_URL
           value: "http://192.168.1.167:7878"
         - name: UN_RADARR_0_PATHS_0
