@@ -978,3 +978,41 @@ spec:
   resources:
     requests:
       storage: 500Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unpackerr-sonarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unpackerr-sonarr
+  template:
+    metadata:
+      labels:
+        app: unpackerr-sonarr
+    spec:
+      volumes:
+      - name: transmission-downloads
+        persistentVolumeClaim:
+          claimName: transmission-data
+      containers:
+      - name: unpackerr-sonarr
+        image: golift/unpackerr:0.14.5
+        env:
+        - name: TZ
+          value: America/New_York
+        - name: UN_SONARR_0_URL
+          value: "http://192.168.1.169:8989"
+        - name: UN_SONARR_0_PATHS_0
+          value: "/var/lib/transmission-daemon/downloads"
+        - name: UN_SONARR_0_API_KEY
+          value: "238b9c3221904e518ebcaa3aa4fa404f"
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        volumeMounts:
+        - name: transmission-downloads
+          mountPath: "/var/lib/transmission-daemon/downloads"
