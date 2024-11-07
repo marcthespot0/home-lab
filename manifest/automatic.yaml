@@ -19,12 +19,12 @@ spec:
       - name: automatic1111-container
         image: ghcr.io/ai-dock/stable-diffusion-webui:latest
         ports:
-        - containerPort: 7860
+        - containerPort: 1111
         env:
         - name: WEB_ENABLE_AUTH
           value: "false"
         - name: PORT
-          value: "7860"
+          value: "1111"
         - name: WEBUI_ARGS
           value: "--api --listen --always-batch-cond-uncond --opt-split-attention --device-id=0"
         volumeMounts:
@@ -48,7 +48,7 @@ spec:
   ports:
     - protocol: TCP
       port: 7860  # External port you want to use
-      targetPort: 7860  # Port on the pod where Automatic 1111 is listening
+      targetPort: 1111  # Port on the pod where Automatic 1111 is listening
   type: LoadBalancer
 ---
 kind: PersistentVolumeClaim
