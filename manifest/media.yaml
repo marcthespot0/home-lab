@@ -720,6 +720,8 @@ spec:
               mountPath: /transcode
             - name: tmp
               mountPath: /tmp
+            - mountPath: "/shows"
+              name: shows
       volumes:
         - name: config
           persistentVolumeClaim:
@@ -736,6 +738,9 @@ spec:
         - name: tmp
           emptyDir:
             medium: Memory
+        - name: shows
+          persistentVolumeClaim:
+            claimName: sonarr-shows
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
