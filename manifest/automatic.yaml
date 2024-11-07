@@ -20,7 +20,6 @@ spec:
         image: ghcr.io/ai-dock/stable-diffusion-webui:latest
         ports:
         - containerPort: 18384
-
         env:
         - name: WEB_ENABLE_AUTH
           value: "false"
