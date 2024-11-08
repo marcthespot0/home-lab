@@ -92,6 +92,13 @@ spec:
                   repository: ollama/ollama
                   pullPolicy: IfNotPresent
                   tag: "0.4.0"
+                  deploy:
+                    resources:
+                      reservations:
+                        devices:
+                        - driver: nvidia
+                          capabilities: ["gpu"]
+                          count: all  
         imagePullSecrets: []
         nameOverride: ""
         fullnameOverride: ""
