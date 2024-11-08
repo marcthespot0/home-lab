@@ -109,8 +109,8 @@ spec:
             port:
               http:
                 port: 11434
-          nodeSelector:
-            kubernetes.io/hostname: talos-03
+          # nodeSelector:
+          #   kubernetes.io/hostname: talos-03
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
