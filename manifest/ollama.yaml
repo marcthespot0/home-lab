@@ -92,9 +92,9 @@ spec:
                   repository: ollama/ollama
                   pullPolicy: IfNotPresent
                   tag: "0.4.0"
-              env:
-                OLLAMA_MODELS: /models
-                OLLAMA_DEBUG: 1
+                env:
+                  OLLAMA_MODELS: /models
+                  OLLAMA_DEBUG: 1
             pod:
               runtimeClassName: nvidia
               nodeSelector:
