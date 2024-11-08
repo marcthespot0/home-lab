@@ -80,6 +80,12 @@ spec:
           timeoutSeconds: 300
           responseStartTimeoutSeconds: 300
           idleTimeoutSeconds: 300
+        controllers:
+          ollama:
+          type: deployment
+          strategy: Recreate
+          annotations:
+            reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
@@ -104,6 +110,7 @@ spec:
           insecure: false
         service:
           app:
+            controller: ollama
             type: LoadBalancer
             ports:
               http:
