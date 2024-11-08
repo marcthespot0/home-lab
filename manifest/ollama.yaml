@@ -82,14 +82,16 @@ spec:
           idleTimeoutSeconds: 300
         controllers:
           ollama:
+            annotations:
+              reloader.stakater.com/auto: "true"
             type: deployment
             strategy: Recreate
-        containers:
-          app:
-            image:
-              repository: ollama/ollama
-              pullPolicy: IfNotPresent
-              tag: "0.4.0"
+            containers:
+              app:
+                image:
+                  repository: ollama/ollama
+                  pullPolicy: IfNotPresent
+                  tag: "0.4.0"
         imagePullSecrets: []
         nameOverride: ""
         fullnameOverride: ""
