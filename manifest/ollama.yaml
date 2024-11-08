@@ -100,7 +100,9 @@ spec:
           config:
             enabled: true
             existingClaim: ollama-pvc
-            GlobalMounts:
+            advancedMounts:
+              ollama: 
+                app:
                   - path: /root./ollama
         service:
           app:
