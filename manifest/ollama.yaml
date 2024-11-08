@@ -68,9 +68,9 @@ metadata:
 spec:
   project: default
   source:
+    chart: app-template
     repoURL: http://bjw-s.github.io/helm-charts/
     targetRevision: 3.5.1
-    chart: ollama
     helm:
       values: |
         replicaCount: 1
