@@ -104,7 +104,6 @@ spec:
           insecure: false
         service:
           app:
-            controller: ollama
             type: LoadBalancer
             ports:
               http:
