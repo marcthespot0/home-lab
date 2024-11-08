@@ -106,7 +106,7 @@ spec:
           app:
             controller: ollama
             type: LoadBalancer
-            port:
+            ports:
               http:
                 port: 11434
           # nodeSelector:
