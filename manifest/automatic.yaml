@@ -48,7 +48,7 @@ spec:
     app: automatic1111
   ports:
     - protocol: TCP
-      port: 7860  # External port you want to use
+      port: 1111  # External port you want to use
       targetPort: 1111  # Port on the pod where Automatic 1111 is listening
   type: LoadBalancer
 ---
