@@ -103,15 +103,14 @@ spec:
             - llama3
           insecure: false
         service:
-          controller: ''
-          type:
-            object:
-              value: LoadBalancer
-          port:
-            object:
-              value: 11434
-            nodeSelector:
-              kubernetes.io/hostname: talos-03
+          app:
+            controller: ollama
+            type: LoadBalancer
+            port:
+              http:
+                port: 11434
+          nodeSelector:
+            kubernetes.io/hostname: talos-03
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
