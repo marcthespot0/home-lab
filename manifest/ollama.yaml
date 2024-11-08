@@ -84,8 +84,6 @@ spec:
           ollama:
           type: deployment
           strategy: Recreate
-          annotations:
-            reloader.stakater.com/auto: "true"
         containers:
           app:
             image:
