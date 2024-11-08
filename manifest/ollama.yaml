@@ -82,8 +82,8 @@ spec:
           idleTimeoutSeconds: 300
         controllers:
           ollama:
-          type: deployment
-          strategy: Recreate
+            type: deployment
+            strategy: Recreate
         containers:
           app:
             image:
