@@ -85,7 +85,7 @@ spec:
             image:
               repository: ollama/ollama
               pullPolicy: IfNotPresent
-              tag: "latest"  # Specify version or "latest"
+              tag: 0.4.0
             imagePullSecrets: []
             nameOverride: ""
             fullnameOverride: ""
