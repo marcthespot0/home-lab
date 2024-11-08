@@ -96,22 +96,12 @@ spec:
               runtimeClassName: nvidia
               nodeSelector:
                 kubernetes.io/hostname: talos-03
-        imagePullSecrets: []
-        nameOverride: ""
-        fullnameOverride: ""
-        volumeMounts:
-          - name: ollama-volume
-            mountPath: /ollama
-        volumes:
-          - name: ollama-volume
-        persistentVolume:
-          enabled: true
-          existingClaim: ollama-pvc
-        runtimeClassName: "nvidia"
-        ollama:
-          models:
-            - llama3
-          insecure: false
+        persistence:
+          config:
+            enabled: true
+            existingClaim: ollama-pvc
+            GlobalMounts:
+                  - path: /root./ollama
         service:
           app:
             controller: ollama
@@ -119,8 +109,25 @@ spec:
             ports:
               http:
                 port: 11434
-          # nodeSelector:
-          #   kubernetes.io/hostname: talos-03
+        # imagePullSecrets: []
+        # nameOverride: ""
+        # fullnameOverride: ""
+        # volumeMounts:
+        #   - name: ollama-volume
+        #     mountPath: /ollama
+        # volumes:
+        #   - name: ollama-volume
+        # persistentVolume:
+        #   enabled: true
+        #   existingClaim: ollama-pvc
+        # runtimeClassName: "nvidia"
+        # service:
+        #   app:
+        #     controller: ollama
+        #     type: LoadBalancer
+        #     ports:
+        #       http:
+        #         port: 11434
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
