@@ -104,7 +104,8 @@ spec:
           insecure: false
         service:
           type: LoadBalancer
-          port: 11434
+          port:
+            value: 11434
         nodeSelector:
           kubernetes.io/hostname: talos-03
   destination:
