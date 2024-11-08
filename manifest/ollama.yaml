@@ -103,6 +103,7 @@ spec:
             - llama3
           insecure: false
         service:
+          controller: ''
           type: LoadBalancer
           port:
             value: 11434
