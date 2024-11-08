@@ -26,7 +26,7 @@ spec:
         - name: PORT
           value: "1111"
         - name: WEBUI_ARGS
-          value: "--api -medvram --autolaunch --deepdanbooru --xformers --no-gradio-queue --device-id=0"
+          value: "--allow-code --medvram --xformers --enable-insecure-extension-access --api --listen --api-auth open:open"
           # --always-batch-cond-uncond --opt-split-attention
         volumeMounts:
         - name: models-volume
