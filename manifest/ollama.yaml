@@ -81,17 +81,17 @@ spec:
           responseStartTimeoutSeconds: 300
           idleTimeoutSeconds: 300
         containers:
-          app: 
+          app:
             image:
               repository: ollama/ollama
               pullPolicy: IfNotPresent
-              tag: 0.4.0
-            imagePullSecrets: []
-            nameOverride: ""
-            fullnameOverride: ""
-            volumeMounts:
-              - name: ollama-volume
-                mountPath: /ollama
+              tag: "0.4.0"
+        imagePullSecrets: []
+        nameOverride: ""
+        fullnameOverride: ""
+        volumeMounts:
+          - name: ollama-volume
+            mountPath: /ollama
         volumes:
           - name: ollama-volume
         persistentVolume:
@@ -104,11 +104,14 @@ spec:
           insecure: false
         service:
           controller: ''
-          type: LoadBalancer
+          type:
+            object:
+              value: LoadBalancer
           port:
-            value: 11434
-        nodeSelector:
-          kubernetes.io/hostname: talos-03
+            object:
+              value: 11434
+            nodeSelector:
+              kubernetes.io/hostname: talos-03
   destination:
     server: https://kubernetes.default.svc
     namespace: ollama
