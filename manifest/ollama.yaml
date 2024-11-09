@@ -1,4 +1,3 @@
----
 kind: Namespace
 apiVersion: v1
 metadata:
@@ -9,82 +8,83 @@ kind: Application
 metadata:
   name: ollama
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+annotations:
+  argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
   source:
     chart: app-template
     repoURL: http://bjw-s.github.io/helm-charts/
     targetRevision: 3.5.1
-    helm:
-      values: |
-        replicaCount: 1
-        knative:
-          enabled: false
-          containerConcurrency: 1
-          timeoutSeconds: 300
-          responseStartTimeoutSeconds: 300
-          idleTimeoutSeconds: 300
-        controllers:
-          ollama:
-            annotations:
-              reloader.stakater.com/auto: "true"
-            type: deployment
-            strategy: Recreate
-            containers:
-              app:
-                image:
-                  repository: ollama/ollama
-                  pullPolicy: IfNotPresent
-                  tag: "0.4.0"
-                env:
-                  OLLAMA_MODELS: /models
-                  OLLAMA_DEBUG: 1
-            pod:
-              runtimeClassName: nvidia
-              nodeSelector:
-                kubernetes.io/hostname: talos-03
-        persistence:
-          config:
-            enabled: true
-            existingClaim: ollama-pvc
+  helm:
+    values: |
+      replicaCount: 1
+      knative:
+        enabled: false
+        containerConcurrency: 1
+        timeoutSeconds: 300
+        responseStartTimeoutSeconds: 300
+        idleTimeoutSeconds: 300
+      controllers:
+        ollama:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          type: deployment
+          strategy: Recreate
+          containers:
+            app:
+              image:
+                repository: ollama/ollama
+                pullPolicy: IfNotPresent
+                tag: "0.4.0"
+              env:
+                OLLAMA_MODELS: /models
+                OLLAMA_DEBUG: 1
+              pod:
+                runtimeClassName: nvidia
+                nodeSelector:
+                  kubernetes.io/hostname: talos-03
+          persistence:
+            config:
+              enabled: true
+              existingClaim: ollama-pvc
             advancedMounts:
-              ollama: 
+              ollama:
                 app:
                   - path: /models
-        service:
-          app:
-            controller: ollama
-            type: LoadBalancer
-            ports:
-              http:
-                port: 11434
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: ollama
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+          service:
+            app:
+              controller: ollama
+              type: LoadBalancer
+              ports:
+                http:
+                  port: 11434
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: ollama
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: ollama-pvc
-namespace: ollama
+  namespace: ollama
 labels:
   app.kubernetes.io/name: ollama
 spec:
-  accessModes: ["ReadWriteOnce"]
+  accessModes:
+    - ReadWriteOnce
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-          - key: kubernetes.io/hostname
-            operator: In
-            values:
-              - talos-03
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - talos-03
   storageClassName: local-storage
   resources:
     requests:
@@ -102,11 +102,11 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   local:
     path: /models
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - talos-03
+    nodeAffinity:
+      required:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                  - talos-03
