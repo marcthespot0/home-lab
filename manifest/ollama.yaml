@@ -82,7 +82,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: local-storage
   local:
-    path: /dev/sda
+    path: /dev/sdb
   nodeAffinity:
     required:
       nodeSelectorTerms:
