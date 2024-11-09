@@ -676,6 +676,7 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: talos-03
+      runtimeClassName: nvidia
       securityContext:
         runAsNonRoot: true
         runAsUser: 2501
