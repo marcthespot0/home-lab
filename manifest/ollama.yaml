@@ -72,20 +72,16 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: ollama-pvc
-  namespace: ollama
-  labels:
-    app.kubernetes.io/name: ollama
+namespace: ollama
+labels:
+  app.kubernetes.io/name: ollama
 spec:
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - talos-03
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - talos-03
   storageClassName: local-storage
-  accessModes:
-  - ReadWriteOnce
-  capacity:
-      storage: 400G
