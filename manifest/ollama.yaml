@@ -40,15 +40,20 @@ spec:
                 OLLAMA_DEBUG: 1
               pod:
                 runtimeClassName: nvidia
-          nodeSelector:
-            kubernetes.io/hostname: talos-03
+          nodeAffinity:
+            required:
+              - matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - talos-03
   persistence:
     config:
       enabled: true
       existingClaim: ollama-pvc
     advancedMounts:
       ollama:
-        - path: /models
+        path: /models
   service:
     app:
       controller: ollama
@@ -88,3 +93,10 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   local:
     path: /models
+    nodeAffinity:
+      required:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - talos-03
