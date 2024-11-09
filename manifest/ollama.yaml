@@ -92,19 +92,23 @@ spec:
     requests:
       storage: 400Gi
 ---
-kind: PersistentVolume
 apiVersion: v1
+kind: PersistentVolume
 metadata:
   name: ollama-pvc
-namespace: ollama
-labels:
-  app.kubernetes.io/name: ollama
+  namespace: ollama
 spec:
-  accessModes: ["ReadWriteOnce"]
-  nodeSelector:
-    kubernetes.io/hostname: talos-03
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage 
-  volumeMode: Filesystem
   capacity:
     storage: 400Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentStorageClass:
+    - local-storage
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - talos-03
