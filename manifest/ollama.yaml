@@ -68,7 +68,7 @@ spec:
       prune: true
       selfHeal: true
 ---
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: ollama-pvc
@@ -76,6 +76,7 @@ metadata:
   labels:
     app.kubernetes.io/name: ollama
 spec:
+
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -87,6 +88,5 @@ spec:
   storageClassName: local-storage
   accessModes:
   - ReadWriteOnce
-  resources:
-    requests:
+  capacity:
       storage: 400G
