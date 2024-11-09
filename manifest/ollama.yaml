@@ -112,6 +112,5 @@ spec:
   #             values:
   #               - talos-03
   storageClassName: local-storage
-  resources:
-    requests:
-      storage: 400Gi
+  capacity:
+    storage: 400Gi
