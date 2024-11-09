@@ -84,7 +84,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ollama-pv
+  name: ollama-pvc
 spec:
   capacity:
     storage: "400Gi"
@@ -93,3 +93,10 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   local:
     path: /models
+    nodeAffinity:
+      required:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - talos-03
