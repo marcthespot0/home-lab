@@ -103,15 +103,8 @@ spec:
   accessModes: ["ReadWriteOnce"]
   nodeSelector:
     kubernetes.io/hostname: talos-03
-  # nodeAffinity:
-  #   required:
-  #     nodeSelectorTerms:
-  #       - matchExpressions:
-  #           - key: kubernetes.io/hostname
-  #             operator: In
-  #             values:
-  #               - talos-03
   storageClassName: local-storage
   volumeMode: Filesystem
   capacity:
     storage: 400Gi
+  persistentVolumeReclaimPolicy: Retain
