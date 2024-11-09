@@ -103,6 +103,8 @@ spec:
               mountPath: /cache
             - name: jellyfin-downloads
               mountPath: /downloads
+            - mountPath: "/shows"
+              name: shows
       volumes:
         - name: jellyfin-config
           persistentVolumeClaim:
@@ -112,6 +114,9 @@ spec:
         - name: jellyfin-downloads
           persistentVolumeClaim:
             claimName: jellyfin-downloads
+        - name: shows
+          persistentVolumeClaim:
+            claimName: sonarr-shows
       nodeSelector:
         kubernetes.io/hostname: talos-03
 ---
