@@ -104,8 +104,7 @@ spec:
   nodeSelector:
     kubernetes.io/hostname: talos-03
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage # This line was already there
-  class: DirectorOrCreate # Add this line to specify the volume type
+  storageClassName: local-storage 
   volumeMode: Filesystem
   capacity:
     storage: 400Gi
