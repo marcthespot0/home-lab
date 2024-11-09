@@ -40,8 +40,6 @@ spec:
                 OLLAMA_DEBUG: 1
               pod:
                 runtimeClassName: nvidia
-                nodeSelector:
-                  kubernetes.io/hostname: talos-03
           persistence:
             config:
               enabled: true
@@ -75,6 +73,7 @@ spec:
   resources:
     requests:
       storage: "400Gi"
+  storageClassName: local-storage
 ---
 apiVersion: v1
 kind: PersistentVolume
