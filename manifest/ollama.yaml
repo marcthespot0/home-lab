@@ -76,6 +76,14 @@ metadata:
   labels:
     app.kubernetes.io/name: ollama
 spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - talos-03
   storageClassName: local-storage
   accessModes:
   - ReadWriteOnce
