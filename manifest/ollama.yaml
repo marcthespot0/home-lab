@@ -112,5 +112,6 @@ spec:
   #             values:
   #               - talos-03
   storageClassName: local-storage
+  volumeMode: Filesystem
   capacity:
     storage: 400Gi
