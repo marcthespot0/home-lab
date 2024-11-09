@@ -8,8 +8,6 @@ kind: Application
 metadata:
   name: ollama
   namespace: argocd
-annotations:
-  argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
   source:
@@ -71,21 +69,9 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: ollama-pvc
-  namespace: ollama
-labels:
-  app.kubernetes.io/name: ollama
 spec:
   accessModes:
     - ReadWriteOnce
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - talos-03
-  storageClassName: local-storage
   resources:
     requests:
       storage: "400Gi"
