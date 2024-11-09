@@ -84,7 +84,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: ollama-pvc
+  name: ollama-pv
 spec:
   capacity:
     storage: "400Gi"
