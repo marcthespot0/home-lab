@@ -68,7 +68,7 @@ spec:
       prune: true
       selfHeal: true
 ---
-kind: PersistentVolume
+kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: ollama-pvc
