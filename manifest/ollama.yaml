@@ -68,47 +68,26 @@ spec:
       prune: true
       selfHeal: true
 ---
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: ollama-pvc
-namespace: ollama
-labels:
-  app.kubernetes.io/name: ollama
-spec:
-  accessModes: ["ReadWriteOnce"]
-  nodeSelector:
-    kubernetes.io/hostname: talos-03
-  # nodeAffinity:
-  #   required:
-  #     nodeSelectorTerms:
-  #       - matchExpressions:
-  #           - key: kubernetes.io/hostname
-  #             operator: In
-  #             values:
-  #               - talos-03
-  storageClassName: local-storage
-  resources:
-    requests:
-      storage: 400Gi
----
 apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: ollama-pvc
+  namespace: ollama
 spec:
   capacity:
-    storage: 400Gi
+    storage: 60Gi
+  volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
-  persistentStorageClass:
-    - local-storage
-  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /dev/sda
   nodeAffinity:
     required:
       nodeSelectorTerms:
-      - matchExpressions:
-        - key: kubernetes.io/hostname
-          operator: In
-          values:
-          - talos-03
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - talos-03
