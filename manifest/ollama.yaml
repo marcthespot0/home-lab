@@ -40,28 +40,29 @@ spec:
                 OLLAMA_DEBUG: 1
               pod:
                 runtimeClassName: nvidia
-          persistence:
-            config:
-              enabled: true
-              existingClaim: ollama-pvc
-            advancedMounts:
-              ollama:
-                app:
-                  - path: /models
-          service:
-            app:
-              controller: ollama
-              type: LoadBalancer
-              ports:
-                http:
-                  port: 11434
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: ollama
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+          nodeSelector:
+            kubernetes.io/hostname: talos-03
+  persistence:
+    config:
+      enabled: true
+      existingClaim: ollama-pvc
+    advancedMounts:
+      ollama:
+        - path: /models
+  service:
+    app:
+      controller: ollama
+      type: LoadBalancer
+      ports:
+        http:
+          port: 11434
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ollama
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -87,11 +88,3 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   local:
     path: /models
-    nodeAffinity:
-      required:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                  - talos-03
