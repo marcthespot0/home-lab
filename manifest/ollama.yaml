@@ -76,7 +76,6 @@ namespace: ollama
 labels:
   app.kubernetes.io/name: ollama
 spec:
-  accessModes: ["ReadWriteOnce"]
   nodeAffinity:
     required:
       nodeSelectorTerms:
