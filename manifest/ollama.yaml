@@ -82,10 +82,7 @@ spec:
               ports:
                 http:
                   port: 11434
-          destination:
-            server: https://kubernetes.default.svc
-            namespace: ollama
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
