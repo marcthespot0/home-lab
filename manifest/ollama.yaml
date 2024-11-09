@@ -73,11 +73,10 @@ apiVersion: v1
 metadata:
   name: ollama-pvc
   namespace: ollama
-  annotations:
-    volume.beta.kubernetes.io/storage-class: local-storage
   labels:
     app.kubernetes.io/name: ollama
 spec:
+  storageClassName: local-storage
   accessModes:
   - ReadWriteOnce
   resources:
