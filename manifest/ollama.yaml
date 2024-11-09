@@ -93,10 +93,3 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   local:
     path: /models
-    nodeAffinity:
-      required:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - talos-03
