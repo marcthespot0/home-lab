@@ -96,7 +96,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: ollama-pvc
-  namespace: ollama
 spec:
   capacity:
     storage: 400Gi
@@ -104,6 +103,7 @@ spec:
     - ReadWriteOnce
   persistentStorageClass:
     - local-storage
+  volumeMode: Filesystem
   nodeAffinity:
     required:
       nodeSelectorTerms:
