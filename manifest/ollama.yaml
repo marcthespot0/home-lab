@@ -68,30 +68,6 @@ spec:
       prune: true
       selfHeal: true
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: ollama-pv
-  namespace: ollama
-spec:
-  capacity:
-    storage: 60Gi
-  volumeMode: Filesystem
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  storageClassName: local-storage
-  local:
-    path: /dev/sdb
-  nodeAffinity:
-    required:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values:
-                - talos-03
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
