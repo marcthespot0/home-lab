@@ -92,15 +92,17 @@ spec:
               values:
                 - talos-03
 ---
-apiVersion: v1
 kind: PersistentVolumeClaim
+apiVersion: v1
 metadata:
   name: ollama-pvc
   namespace: ollama
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
+  storageClassName: freenas-nfs-csi
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 60Gi
-  storageClassName: local-storage
+      storage: 300G
