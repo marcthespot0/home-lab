@@ -20,81 +20,81 @@ spec:
     helm:
       values: |
       controllers:
-      app:
-        replicas: 1
-        strategy: RollingUpdate
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          app:
-            image:
-              repository: searxng/searxng
-              tag: 2024.11.10-dfaf5868e
-            env:
-              BASE_URL: https://search.marcthespot.com
-            probes:
-              liveness: &probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /stats
-                    port: &port 8080
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
-                add:
-                  - CHOWN
-                  - SETGID
-                  - SETUID
-                  - DAC_OVERRIDE
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 3Gi
-      defaultPodOptions:
-        topologySpreadConstraints:
-          - maxSkew: 1
-            topologyKey: kubernetes.io/hostname
-            whenUnsatisfiable: DoNotSchedule
-            labelSelector:
-              matchLabels:
-                app.kubernetes.io/name: *app
-    service:
         app:
-          controller: app
-          ports:
-            http:
-              port: *port
-    persistence:
-        config:
-          type: configMap
-          name: searxng-configmap
-          advancedMounts:
+          replicas: 1
+          strategy: RollingUpdate
+          annotations:
+            reloader.stakater.com/auto: "true"
+          containers:
             app:
+              image:
+                repository: searxng/searxng
+                tag: 2024.11.10-dfaf5868e
+              env:
+                BASE_URL: https://search.marcthespot.com
+              probes:
+                liveness: &probes
+                  enabled: true
+                  custom: true
+                  spec:
+                    httpGet:
+                      path: /stats
+                      port: &port 8080
+                    initialDelaySeconds: 0
+                    periodSeconds: 10
+                    timeoutSeconds: 1
+                    failureThreshold: 3
+                readiness: *probes
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+                  add:
+                    - CHOWN
+                    - SETGID
+                    - SETUID
+                    - DAC_OVERRIDE
+              resources:
+                requests:
+                  cpu: 10m
+                limits:
+                  memory: 3Gi
+        defaultPodOptions:
+          topologySpreadConstraints:
+            - maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
+              labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: *app
+      service:
+          app:
+            controller: app
+            ports:
+              http:
+                port: *port
+      persistence:
+          config:
+            type: configMap
+            name: searxng-configmap
+            advancedMounts:
               app:
-                - path: /etc/searxng/settings.yml
-                  subPath: settings.yml
-                  readOnly: true
-                - path: /etc/searxng/limiter.toml
-                  subPath: limiter.toml
-                  readOnly: true
-        tmp:
-          type: emptyDir
-          advancedMounts:
-            app:
+                app:
+                  - path: /etc/searxng/settings.yml
+                    subPath: settings.yml
+                    readOnly: true
+                  - path: /etc/searxng/limiter.toml
+                    subPath: limiter.toml
+                    readOnly: true
+          tmp:
+            type: emptyDir
+            advancedMounts:
               app:
-                - path: /etc/searxng
-                - path: /tmp
+                app:
+                  - path: /etc/searxng
+                  - path: /tmp
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
