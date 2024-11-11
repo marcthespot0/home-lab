@@ -20,7 +20,7 @@ spec:
     helm:
       values: |
         controllers:
-          searxng:
+          searchxng:
             annotations:
               reloader.stakater.com/auto: "true"
             containers:
