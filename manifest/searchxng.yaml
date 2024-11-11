@@ -70,11 +70,10 @@ spec:
               matchLabels:
                 app.kubernetes.io/name: *app
       service:
-          app:
-            controller: app
+          main:
             ports:
               http:
-                port: *port
+                port: 8080
       persistence:
           config:
             type: configMap
