@@ -25,6 +25,8 @@ spec:
               reloader.stakater.com/auto: "true"
             containers:
               searxng:
+                ports:
+                  - containerPort: 8080
                 image:
                   repository: docker.io/searxng/searxng
                   tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
