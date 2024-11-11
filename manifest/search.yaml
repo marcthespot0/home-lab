@@ -20,47 +20,47 @@ spec:
     helm:
       values: |
         controllers:
-        searxng:
-          annotations:
-            reloader.stakater.com/auto: "true"
-          containers:
-            app:
-              image:
-                repository: docker.io/searxng/searxng
-                tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
-              env:
-                TZ: America/New_York
-                SEARXNG_BASE_URL: https://search.<path:stringreplacesecret#domain>
-                SEARXNG_URL: https://search.<path:stringreplacesecret#domain>
-                SEARXNG_PORT: 8080
-              # envFrom:
-              #   - secretRef:
-              #       name: searxng-secret
-              probes:
-                liveness: &probes
-                  enabled: true
-                  custom: true
-                  spec:
-                    httpGet:
-                      path: /stats
-                      port: 8080
-                    initialDelaySeconds: 0
-                    periodSeconds: 10
-                    timeoutSeconds: 1
-                    failureThreshold: 3
-                readiness: *probes
-              securityContext:
-                allowPrivilegeEscalation: false
-                readOnlyRootFilesystem: true
-                capabilities:
-                  add: ["CHOWN", "SETGID" ,"SETUID", "DAC_OVERRIDE"]
-                  drop: ["ALL"]
-              resources:
-                requests:
-                  cpu: 10m
-                  memory: 256Mi
-                limits:
-                  memory: 2000Mi
+          searxng:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            containers:
+              app:
+                image:
+                  repository: docker.io/searxng/searxng
+                  tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
+                env:
+                  TZ: America/New_York
+                  SEARXNG_BASE_URL: https://search.<path:stringreplacesecret#domain>
+                  SEARXNG_URL: https://search.<path:stringreplacesecret#domain>
+                  SEARXNG_PORT: 8080
+                # envFrom:
+                #   - secretRef:
+                #       name: searxng-secret
+                probes:
+                  liveness: &probes
+                    enabled: true
+                    custom: true
+                    spec:
+                      httpGet:
+                        path: /stats
+                        port: 8080
+                      initialDelaySeconds: 0
+                      periodSeconds: 10
+                      timeoutSeconds: 1
+                      failureThreshold: 3
+                  readiness: *probes
+                securityContext:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities:
+                    add: ["CHOWN", "SETGID" ,"SETUID", "DAC_OVERRIDE"]
+                    drop: ["ALL"]
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 256Mi
+                  limits:
+                    memory: 2000Mi
           service:
             app:
               controller: searxng
