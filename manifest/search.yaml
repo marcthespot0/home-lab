@@ -61,13 +61,13 @@ spec:
                     memory: 256Mi
                   limits:
                     memory: 2000Mi
-          service:
+        service:
             app:
               controller: searxng
               ports:
                 http:
                   port: 8080
-          persistence:
+        persistence:
             config:
               enabled: true
               existingClaim: searxng-configmap
