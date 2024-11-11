@@ -68,13 +68,14 @@ spec:
                 http:
                   port: 8080
         persistence:
-              enabled: true
-              existingClaim: searchxng-configmap
-              advancedMounts:
-                searchxng:
-                  app:
-                    - path: /etc/searxng/settings.yml
-                    - path: /etc/searxng/limiter.toml
+          config: 
+            enabled: true
+            existingClaim: searchxng-configmap
+            advancedMounts:
+              searchxng:
+                app:
+                  - path: /etc/searxng/settings.yml
+                  - path: /etc/searxng/limiter.toml
   destination:
     server: https://kubernetes.default.svc
     namespace: searchxng
