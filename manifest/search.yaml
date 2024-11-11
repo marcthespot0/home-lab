@@ -65,6 +65,7 @@ spec:
         service:
             app:
               controller: searxng
+              type: LoadBalancer
               ports:
                 http:
                   port: 8080
