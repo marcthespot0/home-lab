@@ -42,13 +42,13 @@ spec:
                     custom: true
                     spec:
                       port: 8080
-                      httpGet:
-                        path: /stats
-                        port: 8080
-                      initialDelaySeconds: 0
-                      periodSeconds: 10
-                      timeoutSeconds: 1
-                      failureThreshold: 3
+                      # # httpGet:
+                      # #   path: /stats
+                      # #   port: 8080
+                      # initialDelaySeconds: 0
+                      # periodSeconds: 10
+                      # timeoutSeconds: 1
+                      # failureThreshold: 3
                   readiness: *probes
                 securityContext:
                   allowPrivilegeEscalation: false
