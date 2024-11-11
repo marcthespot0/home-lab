@@ -41,6 +41,7 @@ spec:
                     enabled: true
                     custom: true
                     spec:
+                      port: 8080
                       httpGet:
                         path: /stats
                         port: 8080
