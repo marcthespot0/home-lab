@@ -63,7 +63,7 @@ spec:
                     memory: 2000Mi
         service:
             app:
-              controller: searxng
+              controller: searchxng
               ports:
                 http:
                   port: 8080
