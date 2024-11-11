@@ -70,7 +70,7 @@ spec:
         persistence:
             config:
               enabled: true
-              existingClaim: searxng-configmap
+              existingClaim: searchxng-configmap
               advancedMounts:
                 searchxng:
                   app:
@@ -89,7 +89,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: searchxng
-  name: searchxng-config
+  name: searchxng-configmap
   namespace: searchxng
 spec:
   accessModes: ["ReadWriteOnce"]
