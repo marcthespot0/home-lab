@@ -369,7 +369,6 @@ metadata:
     app.kubernetes.io/name: homepage
   annotations:
 spec:
-  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 3000
