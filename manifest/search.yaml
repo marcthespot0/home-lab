@@ -96,3 +96,61 @@ spec:
   resources:
     requests:
       storage: 2Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: searchxng-ingress
+  namespace: searchxng
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: search.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: searchxng
+            port:
+              number: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: searchxng-http
+  namespace: searchxng
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "search.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: searchxng
+      port: 8080
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: searchxng
+  namespace: searchxng
+  annotations:
+    external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: search.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
