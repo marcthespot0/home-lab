@@ -97,7 +97,7 @@ spec:
                   - path: /tmp
   destination:
     server: https://kubernetes.default.svc
-    namespace: ollama
+    namespace: searchxng
   syncPolicy:
     automated:
       prune: true
