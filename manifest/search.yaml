@@ -75,11 +75,7 @@ spec:
                 searchxng:
                   app:
                     - path: /etc/searxng/settings.yml
-                      subPath: settings.yml
-                      readOnly: true
                     - path: /etc/searxng/limiter.toml
-                      subPath: limiter.toml
-                      readOnly: true
   destination:
     server: https://kubernetes.default.svc
     namespace: searchxng
@@ -87,3 +83,16 @@ spec:
     automated:
       prune: true
       selfHeal: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: searchxng
+  name: searchxng-config
+  namespace: searchxng
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
