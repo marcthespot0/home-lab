@@ -69,13 +69,13 @@ spec:
             labelSelector:
               matchLabels:
                 app.kubernetes.io/name: *app
-      service:
+    service:
         app:
           controller: app
           ports:
             http:
               port: *port
-      persistence:
+    persistence:
         config:
           type: configMap
           name: searxng-configmap
