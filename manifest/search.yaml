@@ -2,12 +2,12 @@
 kind: Namespace
 apiVersion: v1
 metadata:
-  name: searchxng
+  name: searxng
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: searchxng
+  name: searxng
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
@@ -20,11 +20,11 @@ spec:
     helm:
       values: |
         controllers:
-          searchxng:
+          searxng:
             annotations:
               reloader.stakater.com/auto: "true"
             containers:
-              searchxng:
+              searxng:
                 image:
                   repository: docker.io/searxng/searxng
                   tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
@@ -63,22 +63,22 @@ spec:
                     memory: 2000Mi
         service:
             app:
-              controller: searchxng
+              controller: searxng
               ports:
                 http:
                   port: 8080
         persistence:
           config: 
             enabled: true
-            existingClaim: searchxng-configmap
+            existingClaim: searxng-configmap
             advancedMounts:
-              searchxng:
+              searxng:
                 app:
                   - path: /etc/searxng/settings.yml
                   - path: /etc/searxng/limiter.toml
   destination:
     server: https://kubernetes.default.svc
-    namespace: searchxng
+    namespace: searxng
   syncPolicy:
     automated:
       prune: true
@@ -88,9 +88,9 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: searchxng
-  name: searchxng-configmap
-  namespace: searchxng
+    app: searxng
+  name: searxng-configmap
+  namespace: searxng
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -100,8 +100,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: searchxng-ingress
-  namespace: searchxng
+  name: searxng-ingress
+  namespace: searxng
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
 spec:
@@ -114,15 +114,15 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: searchxng
+            name: searxng
             port:
               number: 8080
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: searchxng-http
-  namespace: searchxng
+  name: searxng-http
+  namespace: searxng
   annotations:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
@@ -134,14 +134,14 @@ spec:
   - "search.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
-    - name: searchxng
+    - name: searxng
       port: 8080
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: searchxng
-  namespace: searchxng
+  name: searxng
+  namespace: searxng
   annotations:
     external-dns.custom/type: private
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
