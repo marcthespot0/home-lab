@@ -20,7 +20,7 @@ spec:
     helm:
       values: |
       controllers:
-        app:
+        searchxng:
           replicas: 1
           strategy: RollingUpdate
           annotations:
