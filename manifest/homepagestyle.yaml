@@ -11,6 +11,9 @@ metadata:
   namespace: homepagestyle
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: homepage-css-editor
   template:
     metadata:
       labels:
