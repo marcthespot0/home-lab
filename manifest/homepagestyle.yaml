@@ -1,0 +1,44 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: homepagestyle
+--- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage-css-editor
+  namespace: homepagestyle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homepage-css-editor
+  template:
+    metadata:
+      labels:
+        app: homepage-css-editor
+    spec:
+      containers:
+      - name: homepage-css-editor
+        image: ghcr.io/10mfox/gethomepage-custom-css:latest
+        ports:
+        - containerPort: 5555
+        environment:
+        - name: PORT
+          value: "5555"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homepage-css-editor-service
+  namespace: homepagestyle
+spec:
+  selector:
+    app: homepage-css-editor
+  ports:
+  - name: http-port
+    port: 5555
+    targetPort: 5555
+    protocol: TCP
+  type: ClusterIP
