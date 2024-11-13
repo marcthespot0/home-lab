@@ -7,7 +7,6 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: homepagestyle
   annotations:
     kompose.cmd: kompose convert
     kompose.version: 1.34.0 (HEAD)
@@ -28,11 +27,14 @@ spec:
         io.kompose.service: homepage-css-editor
     spec:
       containers:
-        image: ghcr.io/10mfox/gethomepage-custom-css:latest
-        name: homepage-css-editor
-        ports:
-          - containerPort: 5555
-            protocol: TCP
+        - env:
+            - name: PORT
+              value: "5555"
+          image: ghcr.io/10mfox/gethomepage-custom-css:latest
+          name: homepage-css-editor
+          ports:
+            - containerPort: 5555
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
