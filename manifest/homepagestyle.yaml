@@ -10,9 +10,6 @@ metadata:
   name: homepage-css-editor
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      io.kompose.service: homepage-css-editor
     spec:
       containers:
         - env:
