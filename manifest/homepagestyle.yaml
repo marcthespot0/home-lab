@@ -28,15 +28,11 @@ spec:
         io.kompose.service: homepage-css-editor
     spec:
       containers:
-        - env:
-            - name: PORT
-              value: "5555"
-          image: ghcr.io/10mfox/gethomepage-custom-css:latest
-          name: homepage-css-editor
-          ports:
-            - containerPort: 5555
-              protocol: TCP
-      restartPolicy: Always
+        image: ghcr.io/10mfox/gethomepage-custom-css:latest
+        name: homepage-css-editor
+        ports:
+          - containerPort: 5555
+            protocol: TCP
 ---
 apiVersion: v1
 kind: Service
