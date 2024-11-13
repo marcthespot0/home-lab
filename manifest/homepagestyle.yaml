@@ -7,38 +7,51 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: homepage-css-editor
   namespace: homepagestyle
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.34.0 (HEAD)
+  labels:
+    io.kompose.service: homepage-css-editor
+  name: homepage-css-editor
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: homepage-css-editor
+      io.kompose.service: homepage-css-editor
   template:
     metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.34.0 (HEAD)
       labels:
-        app: homepage-css-editor
+        io.kompose.service: homepage-css-editor
     spec:
       containers:
-      - name: homepage-css-editor
-        image: ghcr.io/10mfox/gethomepage-custom-css:latest
-        ports:
-        - containerPort: 5173
-        environment:
-        - name: PORT
-          value: "5173"
+        - env:
+            - name: PORT
+              value: "5555"
+          image: ghcr.io/10mfox/gethomepage-custom-css:latest
+          name: homepage-css-editor
+          ports:
+            - containerPort: 5555
+              protocol: TCP
+      restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: homepage-css-editor-service
   namespace: homepagestyle
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.34.0 (HEAD)
+  labels:
+    io.kompose.service: homepage-css-editor
+  name: homepage-css-editor
 spec:
-  selector:
-    app: homepage-css-editor
   ports:
-  - name: http-port
-    port: 5173
-    targetPort: 5173
-    protocol: TCP
-  type: ClusterIP
+    - name: "5555"
+      port: 5555
+      targetPort: 5555
+  selector:
+    io.kompose.service: homepage-css-editor
