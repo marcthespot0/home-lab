@@ -8,6 +8,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: homepage-css-editor
+  namespace: homepagestyle
 spec:
   replicas: 1
     spec:
