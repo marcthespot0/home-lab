@@ -1,7 +1,13 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: auth_outpost
+---
 apiVersion: v1
 kind: Secret
 metadata:
-  namespace: authentik
+  namespace: auth_outpost
   labels:
     app.kubernetes.io/instance: mtsoutpost
     app.kubernetes.io/managed-by: goauthentik.io
@@ -16,7 +22,7 @@ apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: authentik
-  namespace: authentik
+  namespace: auth_outpost
   labels:
     app.kubernetes.io/part-of: homepage
   annotations:
@@ -46,7 +52,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: authentik
+  namespace: auth_outpost
   labels:
     app.kubernetes.io/instance: mtsoutpost
     app.kubernetes.io/managed-by: goauthentik.io
@@ -71,7 +77,7 @@ spec:
 ---
 apiVersion: apps/v1
 kind: Deployment
-namespace: authentik
+namespace: auth_outpost
 metadata:
   labels:
     app.kubernetes.io/instance: mtsoutpost
@@ -124,7 +130,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-namespace: authentik
+namespace: auth_outpost
   annotations:
     nginx.ingress.kubernetes.io/affinity: cookie
     nginx.ingress.kubernetes.io/proxy-buffer-size: 16k
