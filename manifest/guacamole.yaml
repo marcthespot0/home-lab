@@ -3,95 +3,145 @@ kind: Namespace
 metadata:
   name: guacamole
 ---
+---
+# Source: guacamole/templates/configmaps.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-guacamole-guacd-configs
+data:
+---
+# Source: guacamole/templates/configmaps.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-guacamole-app-configs
+data:
+---
+# Source: guacamole/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: guacd
-  namespace: guacamole
+  name: my-guacamole-guacd
+  labels:
+    app: guacamole-guacd
+    chart: guacamole-1.0.0
+    release: my-guacamole
+    heritage: Helm
 spec:
-  selector:
-    app: guacd
+  type: ClusterIP
   ports:
-    - protocol: TCP
-      port: 4822
+    - port: 4822
       targetPort: 4822
-  type: ClusterIP
+      protocol: TCP
+      name: guacd
+  selector:
+    app: guacamole-guacd
+    release: my-guacamole
 ---
+# Source: guacamole/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
-  namespace: guacamole
+  name: my-guacamole-app
+  labels:
+    app: guacamole-app
+    chart: guacamole-1.0.0
+    release: my-guacamole
+    heritage: Helm
 spec:
-  selector:
-    app: postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
   type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: guacamole
-  namespace: guacamole
-spec:
-  selector:
-    app: guacamole
   ports:
-    - protocol: TCP
-      port: 80
+    - port: 8080
       targetPort: 8080
-  type: LoadBalancer
+      protocol: TCP
+      name: guacamole
+  selector:
+    app: guacamole-app
+    release: my-guacamole
 ---
+# Source: guacamole/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: guacd
-  namespace: guacamole
+  name: my-guacamole-guacd
+  labels:
+    app: guacamole-guacd
+    chart: guacamole-1.0.0
+    draft: draft-app
+    release: my-guacamole
+    heritage: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: guacd
+      app: guacamole-guacd
+      release: my-guacamole
   template:
     metadata:
       labels:
-        app: guacd
+        app: guacamole-guacd
+        draft: draft-app
+        release: my-guacamole
+      annotations:
+        buildID: ""
     spec:
       containers:
-      - name: guacd
-        image: linuxserver/guacd:latest
-        volumeMounts:
-        - name: guac-drive
-          mountPath: /drive
-        - name: guac-record
-          mountPath: /record
-      volumes:
-      - name: guac-drive
-        persistentVolumeClaim:
-          claimName: guac-drive
-          path: /guacamole/drive
-      - name: guac-record
-        persistentVolumeClaim:
-          claimName: guac-record
-          path: /guacamole/record
+        - name: guacd
+          image: "guacamole/guacd:1.5.5"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: guacd
+              containerPort: 4822
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            tcpSocket:
+              port: 4822
+          readinessProbe:
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            tcpSocket:
+              port: 4822
+          envFrom:
+            - configMapRef:
+                name: my-guacamole-guacd-configs
+          resources:
+            limits:
+              cpu: 40m
+              memory: 512Mi
+            requests:
+              cpu: 20m
+              memory: 300Mi
+          securityContext:
+            allowPrivilegeEscalation: false
 ---
+# Source: guacamole/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
-  namespace: guacamole
+  name: my-guacamole-app
+  labels:
+    app: guacamole-app
+    chart: guacamole-1.0.0
+    draft: draft-app
+    release: my-guacamole
+    heritage: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: guacamole-app
+      release: my-guacamole
   template:
     metadata:
       labels:
-        app: postgres
+        app: guacamole-app
+        draft: draft-app
+        release: my-guacamole
+      annotations:
+        buildID: ""
     spec:
       containers:
       - name: postgres
