@@ -164,10 +164,15 @@ spec:
         volumeMounts:
         - name: guac-drive
           mountPath: /drive
+        - name: guac-config
+          mountPath: /config
       volumes:
       - name: guac-drive
         persistentVolumeClaim:
           claimName: guac-drive
+      - name: guac-config
+        persistentVolumeClaim:
+          claimName: guac-config
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -251,6 +256,19 @@ spec:
   resources:
     requests:
       storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: guacamole
+  name: guac-config
+  namespace: guacamole
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
