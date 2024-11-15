@@ -3,7 +3,6 @@ kind: Namespace
 metadata:
   name: guacamole
 ---
----
 # Source: guacamole/templates/configmaps.yml
 apiVersion: v1
 kind: ConfigMap
