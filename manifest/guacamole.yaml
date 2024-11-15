@@ -72,11 +72,9 @@ spec:
       - name: guac-drive
         persistentVolumeClaim:
           claimName: guac-drive
-          path: /drive
       - name: guac-record
         persistentVolumeClaim:
           claimName: guac-record
-          path: /record
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -120,11 +118,9 @@ spec:
       - name: guac-init
         persistentVolumeClaim:
           claimName: guac-init
-          path: /init
       - name: guac-data
         persistentVolumeClaim:
           claimName: guac-data
-          path: /data
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -172,7 +168,6 @@ spec:
       - name: guac-drive
         persistentVolumeClaim:
           claimName: guac-drive
-          path: /drive
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
