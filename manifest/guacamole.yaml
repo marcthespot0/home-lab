@@ -72,11 +72,11 @@ spec:
       - name: guac-drive
         persistentVolumeClaim:
           claimName: guac-drive
-          path: /guacamole/drive
+          path: /drive
       - name: guac-record
         persistentVolumeClaim:
           claimName: guac-record
-          path: /guacamole/record
+          path: /record
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -120,11 +120,11 @@ spec:
       - name: guac-init
         persistentVolumeClaim:
           claimName: guac-init
-          path: /guacamole/init
+          path: /init
       - name: guac-data
         persistentVolumeClaim:
           claimName: guac-data
-          path: /guacamole/data
+          path: /data
 ---
 apiVersion: apps/v1
 kind: Deployment
