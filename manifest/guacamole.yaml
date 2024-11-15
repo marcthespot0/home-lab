@@ -206,7 +206,7 @@ metadata:
   labels:
     app: postgres
   name: guac-init
-  namespace: media
+  namespace: guacamole
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -219,7 +219,7 @@ metadata:
   labels:
     app: postgres
   name: guac-data
-  namespace: media
+  namespace: guacamole
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
@@ -232,7 +232,7 @@ metadata:
   labels:
     app: guacd
   name: guac-drive
-  namespace: media
+  namespace: guacamole
 spec:
   accessModes: ["ReadWriteMany"]
   resources:
@@ -245,7 +245,7 @@ metadata:
   labels:
     app: guacamole
   name: guac-record
-  namespace: media
+  namespace: guacamole
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
