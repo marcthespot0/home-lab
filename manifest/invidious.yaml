@@ -574,13 +574,13 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: invidious-postgresql
+                  name: invidious-configsecrets
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: invidious-postgresql
-                  key: postgres-password
+                  name: invidious-configsecrets
+                  key: POSTGRES_PASSWORD
             - name: POSTGRES_DATABASE
               value: "invidious"
             # Replication
