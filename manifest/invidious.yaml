@@ -464,7 +464,7 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: PASSWORD
+                name: password
           resources:
             {}
           readinessProbe:
