@@ -576,11 +576,11 @@ spec:
                 secretKeyRef:
                   name: invidious-configsecrets
                   key: POSTGRES_PASSWORD
-            - name: POSTGRES_POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: invidious-configsecrets
-                  key: POSTGRES_PASSWORD
+            # - name: POSTGRES_POSTGRES_PASSWORD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: invidious-configsecrets
+            #       key: POSTGRES_PASSWORD
             - name: POSTGRES_DATABASE
               value: "invidious"
             # Replication
@@ -672,7 +672,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
+    app: invidious-postgresql
   name: invidious-data
   namespace: invidious
 spec:
