@@ -271,7 +271,7 @@ spec:
           service:
             name: guacamole
             port:
-              number: 8080
+              number: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
