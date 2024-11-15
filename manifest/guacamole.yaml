@@ -118,7 +118,7 @@ spec:
       - name: guac-init
         persistentVolumeClaim:
           claimName: guac-init
-      - name: data
+      - name: guac-data
         persistentVolumeClaim:
           claimName: guac-data
 ---
