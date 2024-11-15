@@ -1,7 +1,3 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: guacamole
 ---
 # Source: guacamole/templates/configmaps.yml
 apiVersion: v1
@@ -143,165 +139,32 @@ spec:
         buildID: ""
     spec:
       containers:
-      - name: postgres
-        image: postgres:13.17
-        env:
-        - name: PGDATA
-          value: /var/lib/postgresql/data/guacamole
-        - name: POSTGRES_DB
-          value: guacamole_db
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: guacamole-configsecrets
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: guacamole-configsecrets
-              key: POSTGRES_USER
-        volumeMounts:
-        - name: guac-init
-          mountPath: /docker-entrypoint-initdb.d
-        - name: guac-data
-          mountPath: /var/lib/postgresql/data
-      volumes:
-      - name: guac-init
-        persistentVolumeClaim:
-          claimName: guac-init
-          path: /guacamole/init
-      - name: guac-data
-        persistentVolumeClaim:
-          claimName: guac-data
-          path: /guacamole/data
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: guacamole
-  namespace: guacamole
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: guacamole
-  template:
-    metadata:
-      labels:
-        app: guacamole
-    spec:
-      containers:
-      - name: guacamole
-        image: jwetzell/guacamole:latest
-        env:
-        - name: EXTENSIONS
-          value: auth-totp
-        - name: GUACD_HOSTNAME
-          value: guacd
-        - name: POSTGRES_DATABASE
-          value: guacamole_db
-        - name: POSTGRES_HOSTNAME
-          value: postgres
-        - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: guacamole-configsecrets
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: guacamole-configsecrets
-              key: POSTGRES_USER
-        - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
-          value: "true"
-        volumeMounts:
-        - name: guac-drive
-          mountPath: /drive
-      volumes:
-      - name: guac-drive
-        persistentVolumeClaim:
-          claimName: guac-drive
-          path: drive
----
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: guacamole-configsecrets
-  namespace: guacamole
-  labels:
-    app.kubernetes.io/part-of: guacamole
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        POSTGRES_USER: "{{ .user }}"
-        POSTGRES_PASSWORD: "{{ .pass }}"
-  data:
-    - secretKey: user
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRES_USER
-    - secretKey: pass
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRES_PASSWORD
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: postgres
-  name: guac-init
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: postgres
-  name: guac-data
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: guacd
-  name: guac-drive
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteMany"]
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: guacamole
-  name: guac-record
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 5Gi
+        - name: guacamole
+          image: "guacamole/guacamole:1.5.5"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: guacamole
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            tcpSocket:
+              port: 8080
+          readinessProbe:
+            initialDelaySeconds: 300
+            periodSeconds: 60
+            tcpSocket:
+              port: 8080
+          envFrom:
+            - configMapRef:
+                name: my-guacamole-app-configs
+          resources:
+            limits:
+              cpu: 40m
+              memory: 512Mi
+            requests:
+              cpu: 20m
+              memory: 300Mi
+          securityContext:
+            allowPrivilegeEscalation: false
