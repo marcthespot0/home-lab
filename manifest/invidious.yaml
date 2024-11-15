@@ -65,7 +65,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        PASSWORD: "{{ .password }}"
+        password: "{{ .password }}"
         POSTGRES_PASSWORD: "{{ .pass }}"
   data:
     - secretKey: password
@@ -94,9 +94,9 @@ stringData:
     db:
       dbname: invidious
       host: invidious-postgresql
-      password: kemal
+      password: mts
       port: 5432
-      user: kemal
+      user: mts
     domain: ""
     feed_threads: 1
     full_refresh: false
@@ -664,14 +664,19 @@ spec:
         - name: dshm
           emptyDir:
             medium: Memory
-  volumeClaimTemplates:
-    - apiVersion: v1
-      kind: PersistentVolumeClaim
-      metadata:
-        name: data
-      spec:
-        accessModes:
-          - "ReadWriteOnce"
-        resources:
-          requests:
-            storage: "8Gi"
+        - name: data
+        persistentVolumeClaim:
+          claimName: invidious-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: invidious-data
+  namespace: invidious
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
