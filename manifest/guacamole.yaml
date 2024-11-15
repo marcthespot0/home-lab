@@ -1,170 +1,258 @@
----
-# Source: guacamole/templates/configmaps.yml
 apiVersion: v1
-kind: ConfigMap
+kind: Namespace
 metadata:
-  name: my-guacamole-guacd-configs
-data:
+  name: guacamole
 ---
-# Source: guacamole/templates/configmaps.yml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: my-guacamole-app-configs
-data:
----
-# Source: guacamole/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-guacamole-guacd
-  labels:
-    app: guacamole-guacd
-    chart: guacamole-1.0.0
-    release: my-guacamole
-    heritage: Helm
+  name: guacd
+  namespace: guacamole
 spec:
-  type: ClusterIP
+  selector:
+    app: guacd
   ports:
-    - port: 4822
+    - protocol: TCP
+      port: 4822
       targetPort: 4822
-      protocol: TCP
-      name: guacd
-  selector:
-    app: guacamole-guacd
-    release: my-guacamole
+  type: ClusterIP
 ---
-# Source: guacamole/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: my-guacamole-app
-  labels:
-    app: guacamole-app
-    chart: guacamole-1.0.0
-    release: my-guacamole
-    heritage: Helm
+  name: postgres
+  namespace: guacamole
 spec:
-  type: ClusterIP
+  selector:
+    app: postgres
   ports:
-    - port: 8080
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacamole
+  namespace: guacamole
+spec:
+  selector:
+    app: guacamole
+  ports:
+    - protocol: TCP
+      port: 80
       targetPort: 8080
-      protocol: TCP
-      name: guacamole
-  selector:
-    app: guacamole-app
-    release: my-guacamole
+  type: LoadBalancer
 ---
-# Source: guacamole/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-guacamole-guacd
-  labels:
-    app: guacamole-guacd
-    chart: guacamole-1.0.0
-    draft: draft-app
-    release: my-guacamole
-    heritage: Helm
+  name: guacd
+  namespace: guacamole
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: guacamole-guacd
-      release: my-guacamole
+      app: guacd
   template:
     metadata:
       labels:
-        app: guacamole-guacd
-        draft: draft-app
-        release: my-guacamole
-      annotations:
-        buildID: ""
+        app: guacd
     spec:
       containers:
-        - name: guacd
-          image: "guacamole/guacd:1.5.5"
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: guacd
-              containerPort: 4822
-              protocol: TCP
-          livenessProbe:
-            initialDelaySeconds: 300
-            periodSeconds: 60
-            tcpSocket:
-              port: 4822
-          readinessProbe:
-            initialDelaySeconds: 300
-            periodSeconds: 60
-            tcpSocket:
-              port: 4822
-          envFrom:
-            - configMapRef:
-                name: my-guacamole-guacd-configs
-          resources:
-            limits:
-              cpu: 40m
-              memory: 512Mi
-            requests:
-              cpu: 20m
-              memory: 300Mi
-          securityContext:
-            allowPrivilegeEscalation: false
+      - name: guacd
+        image: linuxserver/guacd:latest
+        volumeMounts:
+        - name: guac-drive
+          mountPath: /drive
+        - name: guac-record
+          mountPath: /record
+      volumes:
+      - name: guac-drive
+        persistentVolumeClaim:
+          claimName: guac-drive
+          path: /guacamole/drive
+      - name: guac-record
+        persistentVolumeClaim:
+          claimName: guac-record
+          path: /guacamole/record
 ---
-# Source: guacamole/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-guacamole-app
-  labels:
-    app: guacamole-app
-    chart: guacamole-1.0.0
-    draft: draft-app
-    release: my-guacamole
-    heritage: Helm
+  name: postgres
+  namespace: guacamole
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: guacamole-app
-      release: my-guacamole
+      app: postgres
   template:
     metadata:
       labels:
-        app: guacamole-app
-        draft: draft-app
-        release: my-guacamole
-      annotations:
-        buildID: ""
+        app: postgres
     spec:
       containers:
-        - name: guacamole
-          image: "guacamole/guacamole:1.5.5"
-          imagePullPolicy: IfNotPresent
-          ports:
-            - name: guacamole
-              containerPort: 8080
-              protocol: TCP
-          livenessProbe:
-            initialDelaySeconds: 300
-            periodSeconds: 60
-            tcpSocket:
-              port: 8080
-          readinessProbe:
-            initialDelaySeconds: 300
-            periodSeconds: 60
-            tcpSocket:
-              port: 8080
-          envFrom:
-            - configMapRef:
-                name: my-guacamole-app-configs
-          resources:
-            limits:
-              cpu: 40m
-              memory: 512Mi
-            requests:
-              cpu: 20m
-              memory: 300Mi
-          securityContext:
-            allowPrivilegeEscalation: false
+      - name: postgres
+        image: postgres:13.4
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/guacamole
+        - name: POSTGRES_DB
+          value: guacamole_db
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_USER
+        volumeMounts:
+        - name: guac-init
+          mountPath: /docker-entrypoint-initdb.d
+        - name: guac-data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: guac-init
+        persistentVolumeClaim:
+          claimName: guac-init
+          path: /guacamole/init
+      - name: guac-data
+        persistentVolumeClaim:
+          claimName: guac-data
+          path: /guacamole/data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacamole
+  namespace: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guacamole
+  template:
+    metadata:
+      labels:
+        app: guacamole
+    spec:
+      containers:
+      - name: guacamole
+        image: jwetzell/guacamole:latest
+        env:
+        - name: EXTENSIONS
+          value: auth-totp
+        - name: GUACD_HOSTNAME
+          value: guacd
+        - name: POSTGRES_DATABASE
+          value: guacamole_db
+        - name: POSTGRES_HOSTNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_USER
+        - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
+          value: "true"
+        volumeMounts:
+        - name: guac-drive
+          mountPath: /drive
+      volumes:
+      - name: guac-drive
+        persistentVolumeClaim:
+          claimName: guac-drive
+          path: /drive
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: guacamole-configsecrets
+  namespace: guacamole
+  labels:
+    app.kubernetes.io/part-of: guacamole
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        POSTGRES_USER: "{{ .user }}"
+        POSTGRES_PASSWORD: "{{ .pass }}"
+  data:
+    - secretKey: user
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRES_USER
+    - secretKey: pass
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRES_PASSWORD
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: guac-init
+  namespace: guacamole
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: guac-data
+  namespace: guacamole
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: guacd
+  name: guac-drive
+  namespace: guacamole
+spec:
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: guacamole
+  name: guac-record
+  namespace: guacamole
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
