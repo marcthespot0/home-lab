@@ -65,13 +65,13 @@ spec:
     template:
       engineVersion: v2
       data:
-        password: "{{ .password }}"
+        PASSWORD: "{{ .pass }}"
         POSTGRES_PASSWORD: "{{ .pass }}"
   data:
-    - secretKey: password
+    - secretKey: pass
       remoteRef:
         key: invidious-configsecrets
-        property: PASSWORD
+        property: password
     - secretKey: pass
       remoteRef:
         key: invidious-configsecrets
@@ -665,8 +665,8 @@ spec:
           emptyDir:
             medium: Memory
         - name: data
-        persistentVolumeClaim:
-          claimName: invidious-data
+          persistentVolumeClaim:
+            claimName: invidious-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
