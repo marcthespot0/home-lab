@@ -69,12 +69,12 @@ spec:
         - name: record
           mountPath: /record
       volumes:
-      - name: drive
-        hostPath:
-          path: /guacamole/drive
-      - name: record
-        hostPath:
-          path: /guacamole/record
+      - name: guac-drive
+        persistentVolumeClaim:
+          claimName: guac-drive
+      - name: guac-record
+        persistentVolumeClaim:
+          claimName: guac-record
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -115,12 +115,12 @@ spec:
         - name: data
           mountPath: /var/lib/postgresql/data
       volumes:
-      - name: init
-        hostPath:
-          path: /guacamole/init
+      - name: guac-init
+        persistentVolumeClaim:
+          claimName: guac-init
       - name: data
-        hostPath:
-          path: /guacamole/data
+        persistentVolumeClaim:
+          claimName: guac-data
 ---
 apiVersion: apps/v1
 kind: Deployment
