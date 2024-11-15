@@ -188,8 +188,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        GUAC_VAR_POSTGRES_USER: "{{ .pass }}"
-        GUAC_VAR_POSTGRES_PASSWORD: "{{ .user }}"
+        POSTGRES_USER: "{{ .user }}"
+        POSTGRES_PASSWORD: "{{ .pass }}"
   data:
     - secretKey: user
       remoteRef:
