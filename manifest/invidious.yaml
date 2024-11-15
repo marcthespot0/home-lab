@@ -66,13 +66,13 @@ spec:
       engineVersion: v2
       data:
         PASSWORD: "{{ .pass }}"
-        POSTGRES_PASSWORD: "{{ .pass }}"
+        POSTGRES_PASSWORD: "{{ .password }}"
   data:
     - secretKey: pass
       remoteRef:
         key: invidious-configsecrets
-        property: password
-    - secretKey: pass
+        property: PASSWORD
+    - secretKey: password
       remoteRef:
         key: invidious-configsecrets
         property: POSTGRES_PASSWORD
