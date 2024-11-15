@@ -110,9 +110,9 @@ spec:
               name: guacamole-configsecrets
               key: POSTGRES_USER
         volumeMounts:
-        - name: init
+        - name: guac-init
           mountPath: /docker-entrypoint-initdb.d
-        - name: data
+        - name: guac-data
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: guac-init
