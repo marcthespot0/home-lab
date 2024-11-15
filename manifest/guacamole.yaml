@@ -165,9 +165,9 @@ spec:
         - name: drive
           mountPath: /drive
       volumes:
-      - name: drive
-        hostPath:
-          path: /guacamole/drive
+      - name: guac-drive
+        persistentVolumeClaim:
+          claimName: guac-drive
 ---
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -199,13 +199,55 @@ spec:
       remoteRef:
         key: guacamole-configsecrets
         property: POSTGRES_PASSWORD
-# ---
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: postgres-secret
-#   namespace: guacamole
-# type: Opaque
-# data:
-#   POSTGRES_USER: Z3VhY2Ftb2xl
-#   POSTGRES_PASSWORD: Z3VhY2Ftb2xl
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: guac-init
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: postgres
+  name: guac-data
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: guacd
+  name: guac-drive
+  namespace: media
+spec:
+  accessModes: ["ReadWriteMany"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: guacamole
+  name: guac-record
+  namespace: media
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 5Gi
