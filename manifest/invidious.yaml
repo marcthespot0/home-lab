@@ -637,33 +637,9 @@ spec:
                   exec pg_isready -U "kemal" -d "dbname=invidious" -h 127.0.0.1 -p 5432
                   [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
           volumeMounts:
-            - name: empty-dir
-              mountPath: /tmp
-              subPath: tmp-dir
-            - name: empty-dir
-              mountPath: /opt/bitnami/postgresql/conf
-              subPath: app-conf-dir
-            - name: empty-dir
-              mountPath: /opt/bitnami/postgresql/tmp
-              subPath: app-tmp-dir
-            - name: empty-dir
-              mountPath: /opt/bitnami/postgresql/logs
-              subPath: app-logs-dir
-            - name: custom-init-scripts
-              mountPath: /docker-entrypoint-initdb.d/
-            - name: dshm
-              mountPath: /dev/shm
             - name: data
-              mountPath: /bitnami/postgresql
+              mountPath: / 
       volumes:
-        - name: empty-dir
-          emptyDir: {}
-        - name: custom-init-scripts
-          configMap:
-            name: invidious-postgresql-init
-        - name: dshm
-          emptyDir:
-            medium: Memory
         - name: data
           PersistentVolumeClaim:
             claimName: data
