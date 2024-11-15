@@ -162,7 +162,7 @@ spec:
         - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
           value: "true"
         volumeMounts:
-        - name: drive
+        - name: guac-drive
           mountPath: /drive
       volumes:
       - name: guac-drive
