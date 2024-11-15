@@ -93,7 +93,7 @@ spec:
     spec:
       containers:
       - name: postgres
-        image: postgres:13.4
+        image: postgres:13.17
         env:
         - name: PGDATA
           value: /var/lib/postgresql/data/guacamole
