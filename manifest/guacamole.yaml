@@ -146,7 +146,7 @@ spec:
         image: jwetzell/guacamole:latest
         env:
         - name: EXTENSIONS
-          value: auth-totp
+          value: auth-duo
         - name: GUACD_HOSTNAME
           value: guacd
         - name: POSTGRES_DATABASE
