@@ -1,0 +1,211 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: guacamole
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacd
+  namespace: guacamole
+spec:
+  selector:
+    app: guacd
+  ports:
+    - protocol: TCP
+      port: 4822
+      targetPort: 4822
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: guacamole
+spec:
+  selector:
+    app: postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: guacamole
+  namespace: guacamole
+spec:
+  selector:
+    app: guacamole
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacd
+  namespace: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guacd
+  template:
+    metadata:
+      labels:
+        app: guacd
+    spec:
+      containers:
+      - name: guacd
+        image: linuxserver/guacd:latest
+        volumeMounts:
+        - name: drive
+          mountPath: /drive
+        - name: record
+          mountPath: /record
+      volumes:
+      - name: drive
+        hostPath:
+          path: /guacamole/drive
+      - name: record
+        hostPath:
+          path: /guacamole/record
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:13.4
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/guacamole
+        - name: POSTGRES_DB
+          value: guacamole_db
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_USER
+        volumeMounts:
+        - name: init
+          mountPath: /docker-entrypoint-initdb.d
+        - name: data
+          mountPath: /var/lib/postgresql/data
+      volumes:
+      - name: init
+        hostPath:
+          path: /guacamole/init
+      - name: data
+        hostPath:
+          path: /guacamole/data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guacamole
+  namespace: guacamole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guacamole
+  template:
+    metadata:
+      labels:
+        app: guacamole
+    spec:
+      containers:
+      - name: guacamole
+        image: jwetzell/guacamole:arm64
+        env:
+        - name: EXTENSIONS
+          value: auth-totp
+        - name: GUACD_HOSTNAME
+          value: guacd
+        - name: POSTGRES_DATABASE
+          value: guacamole_db
+        - name: POSTGRES_HOSTNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: guacamole-configsecrets
+              key: POSTGRES_USER
+        - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
+          value: "true"
+        volumeMounts:
+        - name: drive
+          mountPath: /drive
+      volumes:
+      - name: drive
+        hostPath:
+          path: /guacamole/drive
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: guacamole-configsecrets
+  namespace: guacamole
+  labels:
+    app.kubernetes.io/part-of: guacamole
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        GUAC_VAR_POSTGRES_USER: "{{ .pass }}"
+        GUAC_VAR_POSTGRES_PASSWORD: "{{ .user }}"
+  data:
+    - secretKey: user
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRES_USER
+    - secretKey: pass
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRES_PASSWORD
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: postgres-secret
+#   namespace: guacamole
+# type: Opaque
+# data:
+#   POSTGRES_USER: Z3VhY2Ftb2xl
+#   POSTGRES_PASSWORD: Z3VhY2Ftb2xl
