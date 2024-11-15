@@ -574,13 +574,13 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: invidious-configsecrets
+                  name: invidious-postgresql
                   key: POSTGRES_PASSWORD
-            # - name: POSTGRES_POSTGRES_PASSWORD
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: invidious-configsecrets
-            #       key: POSTGRES_PASSWORD
+            - name: POSTGRES_POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: invidious-postgresql
+                  key: postgres-password
             - name: POSTGRES_DATABASE
               value: "invidious"
             # Replication
@@ -665,18 +665,18 @@ spec:
           emptyDir:
             medium: Memory
         - name: data
-          persistentVolumeClaim:
-            claimName: invidious-data
+          PersistentVolumeClaim:
+            claimName: data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
     app: invidious-postgresql
-  name: invidious-data
+  name: data
   namespace: invidious
 spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 1Gi
+      storage: 8Gi
