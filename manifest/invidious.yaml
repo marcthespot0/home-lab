@@ -77,31 +77,31 @@ spec:
         key: invidious-configsecrets
         property: POSTGRES_PASSWORD
 ---
-# # Source: invidious/templates/secret.yaml
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: invidious
-#   labels:
-#     helm.sh/chart: invidious-2.0.4
-#     app.kubernetes.io/name: invidious
-#     app.kubernetes.io/instance: invidious
-#     app.kubernetes.io/version: "v2.20240427"
-#     app.kubernetes.io/managed-by: Helm
-# stringData:
-#   INVIDIOUS_CONFIG: |
-#     channel_threads: 1
-#     db:
-#       dbname: invidious
-#       host: invidious-postgresql
-#       password: mts
-#       port: 5432
-#       user: mts
-#     domain: ""
-#     feed_threads: 1
-#     full_refresh: false
-#     https_only: false
-#     port: 3000
+# Source: invidious/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: invidious
+  labels:
+    helm.sh/chart: invidious-2.0.4
+    app.kubernetes.io/name: invidious
+    app.kubernetes.io/instance: invidious
+    app.kubernetes.io/version: "v2.20240427"
+    app.kubernetes.io/managed-by: Helm
+stringData:
+  INVIDIOUS_CONFIG: |
+    channel_threads: 1
+    db:
+      dbname: invidious
+      host: invidious-postgresql
+      password: mts
+      port: 5432
+      user: mts
+    domain: ""
+    feed_threads: 1
+    full_refresh: false
+    https_only: false
+    port: 3000
 ---
 apiVersion: v1
 kind: ConfigMap
