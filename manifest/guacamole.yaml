@@ -64,9 +64,9 @@ spec:
       - name: guacd
         image: linuxserver/guacd:latest
         volumeMounts:
-        - name: drive
+        - name: guac-drive
           mountPath: /drive
-        - name: record
+        - name: guac-record
           mountPath: /record
       volumes:
       - name: guac-drive
