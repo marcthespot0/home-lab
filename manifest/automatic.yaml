@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: automatic1111-container
-        image: ghcr.io/ai-dock/stable-diffusion-webui:latest
+        image: ghcr.io/ai-dock/stable-diffusion-webui:latest-cuda
         ports:
         - containerPort: 1111
         env:
