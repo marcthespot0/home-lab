@@ -37,7 +37,7 @@ spec:
         - name: AUTOMATIC1111_BASE_URL
           value: "http://192.168.1.164:7860"
         - name: ENABLE_IMAGE_GENERATION
-          value: true
+          value: "true"
         tty: true
         volumeMounts:
         - name: webui-volume
