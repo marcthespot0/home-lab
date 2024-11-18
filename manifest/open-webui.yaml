@@ -34,7 +34,10 @@ spec:
         env:
         - name: OLLAMA_BASE_URL
           value: "http://192.168.1.170:11434"
-      
+        - name: AUTOMATIC1111_BASE_URL
+          value: "http://192.168.1.164:7860"
+        - name: ENABLE_IMAGE_GENERATION=True
+          value: true
         tty: true
         volumeMounts:
         - name: webui-volume
