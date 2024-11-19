@@ -73,7 +73,7 @@ spec:
       runtimeClassName: nvidia
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:10.10.2
+          image: jellyfin/jellyfin:10.10.3
           resources:
             requests:
               memory: 4096Mi
