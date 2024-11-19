@@ -300,7 +300,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   parentRefs:
-  - name: internal
+  - name: external
     namespace: gateway
     sectionName: https
   hostnames:
@@ -323,7 +323,7 @@ spec:
     - dnsName: guac.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - intgw.<path:stringreplacesecret#domain>
+        - extgw.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "false"
+          value: "true"
