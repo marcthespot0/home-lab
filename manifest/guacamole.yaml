@@ -316,14 +316,14 @@ metadata:
   name: guacamole
   namespace: guacamole
   annotations:
-    external-dns.custom/type: private
+    external-dns.custom/type: public
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
     - dnsName: guac.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - extgw.<path:stringreplacesecret#domain>
+        - ingress.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "true"
