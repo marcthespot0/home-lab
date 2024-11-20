@@ -310,7 +310,7 @@ spec:
   rules:
     - backendRefs:
       - name: guacamole
-        port: 8080
+        port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
@@ -328,3 +328,18 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "true"
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: guacamole
+  namespace: guacamole
+  annotations:
+    external-dns.custom/type: private
+spec:
+  endpoints:
+    - dnsName: guac.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
