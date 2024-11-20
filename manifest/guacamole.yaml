@@ -308,13 +308,9 @@ spec:
   hostnames:
   - "guac.<path:stringreplacesecret#domain>"
   rules:
-    - matches: 
-      - path:
-        type: PathPrefix
-        value: /
-      backendRefs:
-        - name: guacamole
-          port: 8080
+    - backendRefs:
+      - name: guacamole
+        port: 8080
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
