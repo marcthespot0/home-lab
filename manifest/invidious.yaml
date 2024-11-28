@@ -53,7 +53,7 @@ spec:
                   tag: latest@sha256:6ff95432b1e3b0f21592d581dbe1589c8d8ad2a6dc2792e17cdb102308e438e6
                 env:
                   database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@cluster01.postgres:5432/invidious
-                  check_tables: true
+                  check_tables: false
                   port: 3000
                   domain: invidious.<path:stringreplacesecret#domain>
                   https_only: false
