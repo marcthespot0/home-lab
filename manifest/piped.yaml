@@ -74,8 +74,8 @@ metadata:
     helm.sh/chart: postgresql-15.5.38
 type: Opaque
 data:
-  postgres-password: "THBxT1RLUldwOA=s="
-  password: "Y2hhbmdlbWVwaXBlZA=s="
+  postgres-password: "THBxT1RLUldwOA=="
+  password: "Y2hhbmdlbWVwaXBlZA=="
 ---
 apiVersion: v1
 kind: ConfigMap
