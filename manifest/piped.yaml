@@ -322,7 +322,7 @@ spec:
       enableServiceLinks: 
       containers:
         - name: piped-frontend
-          image: "1337kavin/piped-frontend:latest@sha256:96b746dc7a538d0f5a658864d9162be542c2db49f16f3cc8214878e39dec8504"
+          image: "1337kavin/piped-frontend:latest@sha256:bcc7c8ce27d89195c916512d853123fd8bd2060b8a15eea40aa592e89dab9d52"
           imagePullPolicy: IfNotPresent
           command:
             - /bin/ash
