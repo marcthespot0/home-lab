@@ -105,13 +105,13 @@ spec:
                     memory: 256Mi
         service:
           app:
-            controller: *app
+            controller: invidious
             ports:
               http:
                 port: 3000
   destination:
     server: https://kubernetes.default.svc
-    namespace: ollama
+    namespace: invidious
   syncPolicy:
     automated:
       prune: true
