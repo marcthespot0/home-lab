@@ -117,6 +117,11 @@ spec:
                   domain: invidious.<path:stringreplacesecret#domain>
                   https_only: false
                   hmac_key: {{ .HMAC_KEY }}
+                  - name: hmac_key
+                    valueFrom:
+                      secretKeyRef:
+                        key: HMAK_KEY
+                        name: invidious-configsecrets
                 resources:
                   requests:
                     cpu: 50m
