@@ -25,39 +25,6 @@ spec:
       remoteRef:
         key: postgres.cluster01.invidious.owner
         property: username
-# apiVersion: external-secrets.io/v1beta1
-# kind: ExternalSecret
-# metadata:
-#   name: invidious-secrets
-#   namespace: invidious
-# spec:
-#   secretStoreRef:
-#     kind: ClusterSecretStore
-#     name: 1password
-#   target:
-#     name: invidious-secrets
-#     template:
-#       engineVersion: v2
-#       data:
-#         # App
-#         INVIDIOUS_CONFIG: |
-#           database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres16:5432/invidious
-#           check_tables: true
-#           port: 3000
-#           domain: invidious.<path:stringreplacesecret#domain>
-#           https_only: false
-#           hmac_key: {{ .HMAC_KEY }}
-#         # Postgres Init
-#         INIT_POSTGRES_DBNAME: invidious
-#         INIT_POSTGRES_HOST: postgres16
-#         INIT_POSTGRES_USER: "{{ .POSTGRES_USER }}"
-#         INIT_POSTGRES_PASS: "{{ .POSTGRES_PASS }}"
-#         INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
-#   dataFrom:
-#     # - extract:
-#     #     key: cloudnative-pg
-#     - extract:
-#         key: invidious
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -79,34 +46,6 @@ spec:
             strategy: RollingUpdate
             annotations:
               reloader.stakater.com/auto: "true"
-            # initContainers:
-            #   init-db:
-            #     image:
-            #       repository: ghcr.io/onedr0p/postgres-init
-            #       tag: 16
-            #     env:
-            #       - name: INIT_POSTGRES_USER
-            #         value: invidious_owner_user
-            #       - name: INIT_POSTGRES_PASS
-            #         valueFrom:
-            #           secretKeyRef:
-            #             key: postgrespassword
-            #             name: invidious-configsecrets
-            #       - name: INIT_POSTGRES_SUPER_PASS
-            #         valueFrom:
-            #           secretKeyRef:
-            #             key: postgrespassword
-            #             name: invidious-configsecrets
-            #       - name: INIT_POSTGRES_HOST
-            #         value: "cluster01.postgres"
-            #       - name: POSTGRES_PORT
-            #         value: "5432"
-            #       - name: INIT_POSTGRES_DBNAME
-            #         value: "invidious"
-            #       - name: TZ
-            #         value: "America/New_York"
-            #       - name: BASE_URL
-            #         value: "https://invidious.<path:stringreplacesecret#domain>"
             containers:
               app:
                 image:
@@ -123,12 +62,12 @@ spec:
                   requests:
                     cpu: 50m
                     memory: 256Mi
-        # service:
-        #   app:
-        #     controller: invidious
-        #     ports:
-        #       http:
-        #         port: 3000
+        service:
+          app:
+            controller: invidious
+            ports:
+              http:
+                port: 3000
   destination:
     server: https://kubernetes.default.svc
     namespace: invidious
@@ -136,4 +75,4 @@ spec:
     automated:
       prune: true
       selfHeal: true
----
+
