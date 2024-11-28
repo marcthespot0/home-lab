@@ -119,28 +119,6 @@ spec:
                   domain: invidious.<path:stringreplacesecret#domain>
                   https_only: false
                   hmac_key: a95b58c845092c334087e4c02911a14accf50cd3
-                  - name: INIT_POSTGRES_USER
-                    value: invidious_owner_user
-                  - name: INIT_POSTGRES_PASS
-                    valueFrom:
-                      secretKeyRef:
-                        key: postgrespassword
-                        name: invidious-configsecrets
-                  - name: INIT_POSTGRES_SUPER_PASS
-                    valueFrom:
-                      secretKeyRef:
-                        key: postgrespassword
-                        name: invidious-configsecrets
-                  - name: INIT_POSTGRES_HOST
-                    value: "cluster01.postgres"
-                  - name: POSTGRES_PORT
-                    value: "5432"
-                  - name: INIT_POSTGRES_DBNAME
-                    value: "invidious"
-                  - name: TZ
-                    value: "America/New_York"
-                  - name: BASE_URL
-                    value: "https://invidious.<path:stringreplacesecret#domain>"
                 resources:
                   requests:
                     cpu: 50m
