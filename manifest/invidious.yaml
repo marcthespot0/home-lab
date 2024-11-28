@@ -103,12 +103,12 @@ spec:
                   requests:
                     cpu: 50m
                     memory: 256Mi
-        service:
-          app:
-            controller: invidious
-            ports:
-              http:
-                port: 3000
+        # service:
+        #   app:
+        #     controller: invidious
+        #     ports:
+        #       http:
+        #         port: 3000
   destination:
     server: https://kubernetes.default.svc
     namespace: invidious
