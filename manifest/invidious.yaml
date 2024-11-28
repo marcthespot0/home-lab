@@ -86,10 +86,7 @@ spec:
                   tag: 16
                 env:
                   - name: INIT_POSTGRES_USER
-                    valueFrom:
-                      secretKeyRef:
-                        key: postgresuser
-                        name: invidious-configsecrets
+                    value: invidious_owner_user
                   - name: INIT_POSTGRES_PASS
                     valueFrom:
                       secretKeyRef:
