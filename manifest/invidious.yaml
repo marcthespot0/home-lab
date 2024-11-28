@@ -7,8 +7,8 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: indvidious-configsecrets
-  namespace: indvidious
+  name: invidious-configsecrets
+  namespace: invidious
 spec:
   refreshInterval: "5m"
   secretStoreRef:
@@ -19,11 +19,11 @@ spec:
   data:
     - secretKey: postgrespassword
       remoteRef:
-        key: postgres.cluster01.indvidious.owner
+        key: postgres.cluster01.invidious.owner
         property: password
     - secretKey: postgresuser
       remoteRef:
-        key: postgres.cluster01.indvidious.owner
+        key: postgres.cluster01.invidious.owner
         property: username
 # apiVersion: external-secrets.io/v1beta1
 # kind: ExternalSecret
@@ -89,22 +89,22 @@ spec:
                     valueFrom:
                       secretKeyRef:
                         key: postgresuser
-                        name: indvidious-configsecrets
+                        name: invidious-configsecrets
                   - name: POSTGRES_PASSWORD
                     valueFrom:
                       secretKeyRef:
                         key: postgrespassword
-                        name: indvidious-configsecrets
+                        name: invidious-configsecrets
                   - name: POSTGRES_SERVER
                     value: "cluster01.postgres"
                   - name: POSTGRES_PORT
                     value: "5432"
                   - name: POSTGRES_DB
-                    value: "indvidious"
+                    value: "invidious"
                   - name: TZ
                     value: "America/New_York"
                   - name: BASE_URL
-                    value: "https://indvidious.<path:stringreplacesecret#domain>"
+                    value: "https://invidious.<path:stringreplacesecret#domain>"
             containers:
               app:
                 image:
