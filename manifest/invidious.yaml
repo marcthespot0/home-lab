@@ -116,7 +116,7 @@ spec:
                   port: 3000
                   domain: invidious.<path:stringreplacesecret#domain>
                   https_only: false
-                  hmac_key: {{ .HMAC_KEY }}
+                  # hmac_key: {{ .HMAC_KEY }}
                   - name: hmac_key
                     valueFrom:
                       secretKeyRef:
