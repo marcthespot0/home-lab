@@ -7,36 +7,57 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: invidious-secrets
-  namespace: invidious
+  name: indvidious-configsecrets
+  namespace: indvidious
 spec:
+  refreshInterval: "5m"
   secretStoreRef:
     kind: ClusterSecretStore
     name: 1password
   target:
-    name: invidious-secrets
-    template:
-      engineVersion: v2
-      data:
-        # App
-        INVIDIOUS_CONFIG: |
-          database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres16:5432/invidious
-          check_tables: true
-          port: 3000
-          domain: invidious.<path:stringreplacesecret#domain>
-          https_only: false
-          hmac_key: {{ .HMAC_KEY }}
-        # Postgres Init
-        INIT_POSTGRES_DBNAME: invidious
-        INIT_POSTGRES_HOST: postgres16
-        INIT_POSTGRES_USER: "{{ .POSTGRES_USER }}"
-        INIT_POSTGRES_PASS: "{{ .POSTGRES_PASS }}"
-        INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
-  dataFrom:
-    # - extract:
-    #     key: cloudnative-pg
-    - extract:
-        key: invidious
+    creationPolicy: Owner
+  data:
+    - secretKey: postgrespassword
+      remoteRef:
+        key: postgres.cluster01.indvidious.owner
+        property: password
+    - secretKey: postgresuser
+      remoteRef:
+        key: postgres.cluster01.indvidious.owner
+        property: username
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: invidious-secrets
+#   namespace: invidious
+# spec:
+#   secretStoreRef:
+#     kind: ClusterSecretStore
+#     name: 1password
+#   target:
+#     name: invidious-secrets
+#     template:
+#       engineVersion: v2
+#       data:
+#         # App
+#         INVIDIOUS_CONFIG: |
+#           database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres16:5432/invidious
+#           check_tables: true
+#           port: 3000
+#           domain: invidious.<path:stringreplacesecret#domain>
+#           https_only: false
+#           hmac_key: {{ .HMAC_KEY }}
+#         # Postgres Init
+#         INIT_POSTGRES_DBNAME: invidious
+#         INIT_POSTGRES_HOST: postgres16
+#         INIT_POSTGRES_USER: "{{ .POSTGRES_USER }}"
+#         INIT_POSTGRES_PASS: "{{ .POSTGRES_PASS }}"
+#         INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
+#   dataFrom:
+#     # - extract:
+#     #     key: cloudnative-pg
+#     - extract:
+#         key: invidious
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -63,15 +84,39 @@ spec:
                 image:
                   repository: ghcr.io/onedr0p/postgres-init
                   tag: 16
-                envFrom: &envFrom
-                  - secretRef:
-                      name: invidious-secrets
+                env:
+                  - name: POSTGRES_USER
+                    valueFrom:
+                      secretKeyRef:
+                        key: postgresuser
+                        name: indvidious-configsecrets
+                  - name: POSTGRES_PASSWORD
+                    valueFrom:
+                      secretKeyRef:
+                        key: postgrespassword
+                        name: indvidious-configsecrets
+                  - name: POSTGRES_SERVER
+                    value: "cluster01.postgres"
+                  - name: POSTGRES_PORT
+                    value: "5432"
+                  - name: POSTGRES_DB
+                    value: "indvidious"
+                  - name: TZ
+                    value: "America/New_York"
+                  - name: BASE_URL
+                    value: "https://indvidious.<path:stringreplacesecret#domain>"
             containers:
               app:
                 image:
                   repository: quay.io/invidious/invidious
                   tag: latest@sha256:6ff95432b1e3b0f21592d581dbe1589c8d8ad2a6dc2792e17cdb102308e438e6
-                envFrom: *envFrom
+                env:
+                  database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@cluster01.postgres:5432/invidious
+                  check_tables: true
+                  port: 3000
+                  domain: invidious.<path:stringreplacesecret#domain>
+                  https_only: false
+                  hmac_key: {{ .HMAC_KEY }}
                 resources:
                   requests:
                     cpu: 50m
