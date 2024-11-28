@@ -389,7 +389,7 @@ spec:
       enableServiceLinks: 
       containers:
         - name: piped-ytproxy
-          image: "1337kavin/piped-proxy:latest@sha256:833ca24c048619c9cd6fe58e2d210bfc7b1e43875ba5108aeddea0b171f04dbd"
+          image: "1337kavin/piped-proxy:latest@sha256:cddde49d7030b18f5ab81577498f5fd9ac67a4b15d36031a9c1a39c22ad22fae"
           imagePullPolicy: IfNotPresent
           command:
             - /app/piped-proxy
