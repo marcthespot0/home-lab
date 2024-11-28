@@ -116,12 +116,7 @@ spec:
                   port: 3000
                   domain: invidious.<path:stringreplacesecret#domain>
                   https_only: false
-                  # hmac_key: {{ .HMAC_KEY }}
-                  - name: hmac_key
-                    valueFrom:
-                      secretKeyRef:
-                        key: HMAK_KEY
-                        name: invidious-configsecrets
+                  hmac_key: a95b58c845092c334087e4c02911a14accf50cd3
                 resources:
                   requests:
                     cpu: 50m
