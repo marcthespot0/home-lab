@@ -1,0 +1,111 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: invidious
+---
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: invidious-secrets
+#   namespace: invidious
+#   labels:
+#     app.kubernetes.io/part-of: invidious
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   refreshInterval: "5m"
+#   secretStoreRef:
+#     kind: ClusterSecretStore
+#     name: 1password
+#   target:
+#     creationPolicy: Owner
+#     template:
+#       engineVersion: v2
+#       data:
+#         POSTGRES_USER: "{{ .user }}"
+#         POSTGRES_PASSWORD: "{{ .pass }}"
+#   data:
+#     - secretKey: user
+#       remoteRef:
+#         key: guacamole-configsecrets
+#         property: POSTGRES_USER
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: invidious-secrets
+  namespace: invidious
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    name: invidious-secrets
+    template:
+      engineVersion: v2
+      data:
+        # App
+        INVIDIOUS_CONFIG: |
+          database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres16-rw.database.svc.cluster.local.:5432/invidious
+          check_tables: true
+          port: 3000
+          domain: invidious.<path:stringreplacesecret#domain>
+          https_only: false
+          hmac_key: {{ .HMAC_KEY }}
+        # Postgres Init
+        INIT_POSTGRES_DBNAME: invidious
+        INIT_POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
+        INIT_POSTGRES_USER: "{{ .POSTGRES_USER }}"
+        INIT_POSTGRES_PASS: "{{ .POSTGRES_PASS }}"
+        INIT_POSTGRES_SUPER_PASS: "{{ .POSTGRES_SUPER_PASS }}"
+  dataFrom:
+    # - extract:
+    #     key: cloudnative-pg
+    - extract:
+        key: invidious
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: invidious
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    chart: app-template
+    repoURL: http://bjw-s.github.io/helm-charts/
+    targetRevision: 3.5.1
+    helm:
+      values: |
+        controllers:
+          invidious-server:
+            strategy: RollingUpdate
+            annotations:
+              reloader.stakater.com/auto: "true"
+            initContainers:
+              init-db:
+                image:
+                  repository: ghcr.io/onedr0p/postgres-init
+                  tag: 16
+                envFrom: &envFrom
+                  - secretRef:
+                      name: invidious-secrets
+            containers:
+              app:
+                image:
+                  repository: quay.io/invidious/invidious
+                  tag: latest@sha256:6ff95432b1e3b0f21592d581dbe1589c8d8ad2a6dc2792e17cdb102308e438e6
+                envFrom: *envFrom
+                resources:
+                  requests:
+                    cpu: 50m
+                    memory: 256Mi
+        service:
+          app:
+            controller: *app
+            ports:
+              http:
+                port: 3000
