@@ -20,7 +20,7 @@ spec:
       data:
         # App
         INVIDIOUS_CONFIG: |
-          database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres16:5432/invidious
+          database_url: postgres://{{ .POSTGRES_USER }}:{{ .POSTGRES_PASS }}@postgres:5432/invidious
           check_tables: true
           port: 3000
           domain: invidious.<path:stringreplacesecret#domain>
@@ -62,7 +62,7 @@ spec:
               init-db:
                 image:
                   repository: ghcr.io/onedr0p/postgres-init
-                  tag: 16
+                  # tag: 16
                 envFrom: &envFrom
                   - secretRef:
                       name: invidious-secrets
