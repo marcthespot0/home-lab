@@ -100,11 +100,11 @@ spec:
                       secretKeyRef:
                         key: postgrespassword
                         name: invidious-configsecrets
-                  - name: POSTGRES_SERVER
+                  - name: INIT_POSTGRES_HOST
                     value: "cluster01.postgres"
                   - name: POSTGRES_PORT
                     value: "5432"
-                  - name: POSTGRES_DB
+                  - name: INIT_POSTGRES_DBNAME
                     value: "invidious"
                   - name: TZ
                     value: "America/New_York"
