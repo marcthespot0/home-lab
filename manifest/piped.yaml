@@ -50,9 +50,9 @@ spec:
                   PROXY_PART: https://piped-proxy.<path:stringreplacesecret#domain>
                   SENTRY_DSN:
                   hibernate.connection.driver_class: org.postgresql.Driver
-                  hibernate.connection.url: jdbc:postgresql://{{ index . "host" }}:5432/{{ index . "dbname" }}
-                  hibernate.connection.username: {{ index . "user" }}
-                  hibernate.connection.password: {{ index . "password" }}
+                  hibernate.connection.url: jdbc:postgresql://{{ .host }}:5432/{{ .dbname }}
+                  hibernate.connection.username: {{ .user }}
+                  hibernate.connection.password: {{ password }}
                 probes:
                   liveness:
                     enabled: true
@@ -206,10 +206,10 @@ spec:
     template:
       engineVersion: v2
       data:
-        PGHOST: '{{ index . "host" }}'
-        PGUSER: '{{ index . "user" }}'
-        PGPASSWORD: '{{ index . "password" }}'
-        PGDATABASE: '{{ index . "dbname" }}'
+        PGHOST: '{{ .host }}'
+        PGUSER: '{{ .user }}'
+        PGPASSWORD: '{{ .password }}'
+        PGDATABASE: '{{ .dbname }}'
   dataFrom:
     - extract:
         key: iped-db-secret
