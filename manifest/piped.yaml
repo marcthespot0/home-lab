@@ -50,7 +50,7 @@ spec:
                   PROXY_PART: https://piped-proxy.<path:stringreplacesecret#domain>
                   SENTRY_DSN:
                   hibernate.connection.driver_class: org.postgresql.Driver
-                  hibernate.connection.url: jdbc:postgresql://postgres:5432/piped
+                  hibernate.connection.url:jdbc:postgresql://postgres:5432/piped
                   hibernate.connection.username: pguser
                   hibernate.connection.password: password
                 # probes:
