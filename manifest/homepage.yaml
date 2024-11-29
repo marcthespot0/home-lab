@@ -180,7 +180,7 @@ data:
         - Transmission:
             - icon: transmission.png
               href: https://transmission.marcthespot.com
-        - Plex
+        - Plex:
             - icon: plex.png
               href: https://plex.marcthespot.com
     - Infrastructure:
