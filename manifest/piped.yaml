@@ -50,9 +50,9 @@ spec:
                   PROXY_PART: https://piped-proxy.<path:stringreplacesecret#domain>
                   SENTRY_DSN:
                   hibernate.connection.driver_class: org.postgresql.Driver
-                  hibernate.connection.url: jdbc:postgresql://{{ .host }}:5432/{{ .dbname }}
-                  hibernate.connection.username: {{ .user }}
-                  hibernate.connection.password: {{ password }}
+                  hibernate.connection.url: jdbc:postgresql://postgres:5432/piped
+                  hibernate.connection.username: pguser
+                  hibernate.connection.password: password
                 probes:
                   liveness:
                     enabled: true
@@ -187,47 +187,47 @@ spec:
       prune: true
       selfHeal: true
 ---
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: piped-db-secret
-  namespace: piped
-  labels:
-    app.kubernetes.io/part-of: gpiped
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        PGHOST: '{{ .host }}'
-        PGUSER: '{{ .user }}'
-        PGPASSWORD: '{{ .password }}'
-        PGDATABASE: '{{ .dbname }}'
-  dataFrom:
-    - extract:
-        key: iped-db-secret
+# apiVersion: external-secrets.io/v1beta1
+# kind: ExternalSecret
+# metadata:
+#   name: piped-db-secret
+#   namespace: piped
+#   labels:
+#     app.kubernetes.io/part-of: gpiped
+#   annotations:
+#     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+# spec:
+#   refreshInterval: "5m"
+#   secretStoreRef:
+#     kind: ClusterSecretStore
+#     name: 1password
+#   target:
+#     creationPolicy: Owner
+#     template:
+#       engineVersion: v2
+#       data:
+#         PGHOST: '{{ .host }}'
+#         PGUSER: '{{ .user }}'
+#         PGPASSWORD: '{{ .password }}'
+#         PGDATABASE: '{{ .dbname }}'
+#   dataFrom:
+#     - extract:
+#         key: iped-db-secret
 
-  # data:
-  #   - secretKey: index . "host" 
-  #     remoteRef:
-  #       key: piped-db-secret
-  #       property: PGHOST
-  #   - secretKey: index . "user"
-  #     remoteRef:
-  #       key: piped-db-secret
-  #       property: PGUSER
-  #   - secretKey: index . "password"
-  #     remoteRef:
-  #       key: piped-db-secret
-  #       property: PGPASSWORD
-  #   - secretKey: index . "dbname"
-  #     remoteRef:
-  #       key: piped-db-secret
-  #       property: PGDATABASE
+#   # data:
+#   #   - secretKey: index . "host" 
+#   #     remoteRef:
+#   #       key: piped-db-secret
+#   #       property: PGHOST
+#   #   - secretKey: index . "user"
+#   #     remoteRef:
+#   #       key: piped-db-secret
+#   #       property: PGUSER
+#   #   - secretKey: index . "password"
+#   #     remoteRef:
+#   #       key: piped-db-secret
+#   #       property: PGPASSWORD
+#   #   - secretKey: index . "dbname"
+#   #     remoteRef:
+#   #       key: piped-db-secret
+#   #       property: PGDATABASE
