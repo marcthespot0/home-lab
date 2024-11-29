@@ -194,7 +194,7 @@ data:
               href: https://immich.marcthespot.com
         - Home Assistant:
             - icon: homeassistant.png
-              href: hass.marcthespot.com
+              href: https://hass.marcthespot.com
     - Media:
         - Sonarr:
             - icon: sonarr.png
