@@ -210,20 +210,24 @@ spec:
         PGUSER: '{{ index . "user" }}'
         PGPASSWORD: '{{ index . "password" }}'
         PGDATABASE: '{{ index . "dbname" }}'
-  data:
-    - secretKey: index . "host" 
-      remoteRef:
-        key: piped-db-secret
-        property: PGHOST
-    - secretKey: index . "user"
-      remoteRef:
-        key: piped-db-secret
-        property: PGUSER
-    - secretKey: index . "password"
-      remoteRef:
-        key: piped-db-secret
-        property: PGPASSWORD
-    - secretKey: index . "dbname"
-      remoteRef:
-        key: piped-db-secret
-        property: PGDATABASE
+  dataFrom:
+    - extract:
+        key: iped-db-secret
+
+  # data:
+  #   - secretKey: index . "host" 
+  #     remoteRef:
+  #       key: piped-db-secret
+  #       property: PGHOST
+  #   - secretKey: index . "user"
+  #     remoteRef:
+  #       key: piped-db-secret
+  #       property: PGUSER
+  #   - secretKey: index . "password"
+  #     remoteRef:
+  #       key: piped-db-secret
+  #       property: PGPASSWORD
+  #   - secretKey: index . "dbname"
+  #     remoteRef:
+  #       key: piped-db-secret
+  #       property: PGDATABASE
