@@ -238,6 +238,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: piped-backend
+  namespace: piped
   labels:
     app.kubernetes.io/instance: release-name
     app.kubernetes.io/managed-by: Helm
@@ -267,6 +268,7 @@ spec:
       containers:
         - name: piped-backend
           image: "1337kavin/piped:latest@sha256:18e77857414236edc7245bebb3fb8ab3ac49c44bd76701bfce24f6ba0170d4b8"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
@@ -276,10 +278,31 @@ spec:
               mountPath: /app/config.properties
               subPath: config.properties
               readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 3
+            timeoutSeconds: 1
+            periodSeconds: 10
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 0
+            failureThreshold: 30
+            timeoutSeconds: 1
+            periodSeconds: 5
       volumes:
         - name: config-volume
           configMap:
-          name: piped-backend-config
+           name: piped-backend-config
 ---
 # Source: piped/templates/frontend/deployment.yaml
 apiVersion: apps/v1
