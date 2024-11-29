@@ -176,7 +176,7 @@ data:
         - X:
             - icon: x.png
               href: https://x.com
-    - Cloud:
+    - Self Hosted:
         - Ollama:
             - icon: ollama.png
               href: https://ollama.marcthespot.com
@@ -224,7 +224,7 @@ data:
         - Unifi:
             - icon: unifi.png
               href: https://unifi.ui.com
-    - Cloud:
+    - Internet:
         - home-cluster:
             - icon: github.png
               description: marcthespot0
