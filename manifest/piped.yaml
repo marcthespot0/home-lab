@@ -19,13 +19,13 @@ spec:
     targetRevision: 3.5.1
     helm:
       values: |
-        defaultPodOptions:
-        automountServiceAccountToken: false
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          fsGroup: 1000
-          fsGroupChangePolicy: "OnRootMismatch"
+        # defaultPodOptions:
+        # automountServiceAccountToken: false
+        # securityContext:
+        #   runAsUser: 1000
+        #   runAsGroup: 1000
+        #   fsGroup: 1000
+        #   fsGroupChangePolicy: "OnRootMismatch"
 
         controllers:
           backend:
