@@ -193,8 +193,8 @@ data:
             - icon: immich.png
               href: https://immich.marcthespot.com
         - Home Assistant:
-            - icon: homeassistant.png
-              href: https://homeassistant.marcthespot.com
+            - icon: home-assistant.svg
+              href: https://syeignofh4utgal9rbijfdp7rhtbzvke.ui.nabu.casa/
     - Media:
         - Sonarr:
             - icon: sonarr.png
