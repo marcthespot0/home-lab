@@ -213,7 +213,7 @@ data:
               href: https://plex.marcthespot.com
     - Infrastructure:
         - Hubble:
-            - icon: web.png
+            - icon: satellite.png
               href: https://hubble.marcthespot.com
         - ArgoCD:
             - icon: argocd.png
