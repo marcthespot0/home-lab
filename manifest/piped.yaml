@@ -29,9 +29,9 @@ spec:
 
         controllers:
           backend:
-            # strategy: RollingUpdate
-            # # annotations:
-            # #   secret.reloader.stakater.com/reload: piped-secret
+            strategy: RollingUpdate
+            annotations:
+              secret.reloader.stakater.com/reload: piped-secret
 
             containers:
               app:
@@ -186,7 +186,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
----
 # apiVersion: external-secrets.io/v1beta1
 # kind: ExternalSecret
 # metadata:
