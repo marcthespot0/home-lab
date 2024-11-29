@@ -30,8 +30,8 @@ spec:
         controllers:
           backend:
             strategy: RollingUpdate
-            annotations:
-              secret.reloader.stakater.com/reload: piped-secret
+            # annotations:
+            #   secret.reloader.stakater.com/reload: piped-secret
 
             containers:
               app:
