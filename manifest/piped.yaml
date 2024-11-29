@@ -50,20 +50,20 @@ spec:
                   PROXY_PART: https://piped-proxy.<path:stringreplacesecret#domain>
                   SENTRY_DSN:
                   hibernate.connection.driver_class: org.postgresql.Driver
-                  hibernate.connection.url: jdbc:postgresql://localhost:5432/piped
+                  hibernate.connection.url: jdbc:postgresql://postgres:5432/piped
                   hibernate.connection.username: pguser
                   hibernate.connection.password: password
-                probes:
-                  liveness:
-                    enabled: true
-                  readiness:
-                    enabled: true
-                resources:
-                  requests:
-                    cpu: 10m
-                    memory: 500Mi
-                  limits:
-                    memory: 2000Mi
+                # probes:
+                #   liveness:
+                #     enabled: true
+                #   readiness:
+                #     enabled: true
+                # resources:
+                #   requests:
+                #     cpu: 10m
+                #     memory: 500Mi
+                #   limits:
+                #     memory: 2000Mi
                 securityContext:
                   allowPrivilegeEscalation: false
                   capabilities:
