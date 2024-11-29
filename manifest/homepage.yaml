@@ -189,6 +189,12 @@ data:
         - Searxng:
             - icon: searxng.png
               href: https://search.marcthespot.com
+        - Immich:
+            - icon: immich.png
+              href: https://immich.marcthespot.com
+        - Home Assistant:
+            - icon: homeassistant.png
+            href: hass.marcthespot.com
     - Media:
         - Sonarr:
             - icon: sonarr.png
