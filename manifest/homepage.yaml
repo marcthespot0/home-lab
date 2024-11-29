@@ -143,9 +143,6 @@ data:
         - Facebook:
             - icon: facebook.png
               href: https://facebook.com
-        - Gmail:
-            - icon: gmail.png
-              href: https://gmail.com
         - Reddit:
             - icon: reddit.png
               href: https://reddit.com
@@ -158,13 +155,62 @@ data:
         - X:
             - icon: x.png
               href: https://x.com
-    - AI: 
+    - Self Hosted: 
         - Ollama:
             - icon: ollama.png
               href: https://ollama.marcthespot.com
-        - ChatGPT:
-            - icon: chatgpt.png
-              href: https://chat.openai.com
+        - Guacamole:
+            - icon: guacamole.png
+              href: https://guac.marcthespot.com
+        - Authentik:
+            - icon: authentik.png
+              href: https://auth.marcthespot.com
+        - Searxng:
+            - icon: searxng.png
+              href: https://search.marcthespot.com
+        - Sonarr
+            - icon: sonarr.png
+              href: https://sonarr.marcthespot.com
+        - Radarr
+            - icon: radarr.png
+              href: https://radarr.marcthespot.com
+        - Jellyfin
+            - icon: jellyfin.png
+              href: https://jellyfin.marcthespot.com
+        - Transmission
+            - icon: transmission.png
+              href: https://transmission.marcthespot.com
+        - Plex
+            - icon: plex.png
+              href: https://plex.marcthespot.com
+    - Infrastructure:
+        - Hubble:
+            - icon: hubble.png
+              href: https://hubble.marcthespot.com
+        - ArgoCD:
+            - icon: argocd.png
+              href: https://argocd.marcthespot.com
+        - Longhorn:
+            - icon: longhorn.png
+              href: https://lh.marcthespot.com
+        - Proxmox:
+            - icon: proxmox.png
+              href: http://192.168.1.5:8006
+        - TrueNAS:
+            - icon: truenas.png
+              href: https://truenas.marcthespot.com
+        - Unifi
+            - icon: unifi.png
+              href: https://unifi.ui.com
+
+
+
+
+
+
+
+
+
     - Git:
         - home-cluster:
             - icon: github.png
@@ -177,88 +223,88 @@ data:
             - icon: argocd.png
               href: https://argocd.marcthespot.com
   services.yaml: |
-    - Calendar:
-        - Agenda:
-            widget:
-              type: calendar
-              firstDayInWeek: sunday
-              view: monthly 
-              maxEvents: 10 
-              showTime: true
-              timezone: America/New_York 
-              integrations: 
-                - type: ical 
-                  url: https://calendar.google.com/calendar/ical/mp2281%40gmail.com/public/basic.ics #https://calendar.google.com/calendar/ical/mp2281%40gmail.com/public/basic.ics
-                  name: My Events
-                  color: zinc
-                  params:
-                    showName: true
-    - Self-hosted:
-        # - Immich:
-        #     href: https://immich.<path:stringreplacesecret#domain>
-        #     icon: immich.svg
-        #     widget:
-        #       type: immich
-        #       url: https://immich.<path:stringreplacesecret#domain>
-        #       key: irM1wksYSPI6BwWPK16p3pxHMCe5pwzQ5ohlAupn94
-        - Radarr:
-            href: https://radarr.<path:stringreplacesecret#domain>
-            icon: radarr.svg
-            widget:
-              type: radarr
-              url: https://radarr.<path:stringreplacesecret#domain>
-              key: 1520c66e60964a53be40e7bb73bce985
-              enableQueue: true
-        - Plex:
-            href: https://plex.<path:stringreplacesecret#domain>
-            icon: plex.svg
-            widget:
-              type: plex
-              url: https://plex.<path:stringreplacesecret#domain>
-              key: xDsJb9xYJRtp7Sr2mBKc
-        - Transmission:
-            href: https://transmission.<path:stringreplacesecret#domain>
-            icon: transmission.svg
-            widget:
-              type: transmission
-              url: https://transmission.<path:stringreplacesecret#domain>
-              username: {{HOMEPAGE_VAR_TR_USERNAME}}
-              password: {{HOMEPAGE_VAR_TR_PASSWORD}}
-    - Infrastructure:
-        - Unifi:
-            href: https://unifi.<path:stringreplacesecret#domain>
-            icon: unifi.png
-            description: Unifi Dashboard
-            widget:
-              type: unifi
-              url: https://unifi.<path:stringreplacesecret#domain>
-              username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
-              password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
-        - Home Assistant:
-            href: http://hass.<path:stringreplacesecret#domain>:8123
-            icon: home-assistant.svg
-            widget:
-              type: homeassistant
-              url: http://hass.<path:stringreplacesecret#domain>:8123
-              key: {{HOMEPAGE_VAR_HASS_TOKEN}}
-        - TrueNAS:
-            href: https://truenas.<path:stringreplacesecret#domain>
-            icon: truenas.png
-            description: NAS
-            widget:
-              type: truenas
-              url: https://truenas.<path:stringreplacesecret#domain>
-              key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
-              enablePools: true
-        - Proxmox:
-            href: https://proxmox01.<path:stringreplacesecret#domain>:8006
-            icon: proxmox.png
-            description: Hypervisor
-            widget:
-              type: proxmox
-              url: https://proxmox01.<path:stringreplacesecret#domain>:8006
-              username: {{HOMEPAGE_VAR_PROXMOX_TOKEN_ID}}
-              password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
+    # - Calendar:
+    #     - Agenda:
+    #         widget:
+    #           type: calendar
+    #           firstDayInWeek: sunday
+    #           view: monthly 
+    #           maxEvents: 10 
+    #           showTime: true
+    #           timezone: America/New_York 
+    #           integrations: 
+    #             - type: ical 
+    #               url: https://calendar.google.com/calendar/ical/mp2281%40gmail.com/public/basic.ics #https://calendar.google.com/calendar/ical/mp2281%40gmail.com/public/basic.ics
+    #               name: My Events
+    #               color: zinc
+    #               params:
+    #                 showName: true
+    # - Self-hosted:
+    #     # - Immich:
+    #     #     href: https://immich.<path:stringreplacesecret#domain>
+    #     #     icon: immich.svg
+    #     #     widget:
+    #     #       type: immich
+    #     #       url: https://immich.<path:stringreplacesecret#domain>
+    #     #       key: irM1wksYSPI6BwWPK16p3pxHMCe5pwzQ5ohlAupn94
+    #     - Radarr:
+    #         href: https://radarr.<path:stringreplacesecret#domain>
+    #         icon: radarr.svg
+    #         widget:
+    #           type: radarr
+    #           url: https://radarr.<path:stringreplacesecret#domain>
+    #           key: 1520c66e60964a53be40e7bb73bce985
+    #           enableQueue: true
+    #     - Plex:
+    #         href: https://plex.<path:stringreplacesecret#domain>
+    #         icon: plex.svg
+    #         widget:
+    #           type: plex
+    #           url: https://plex.<path:stringreplacesecret#domain>
+    #           key: xDsJb9xYJRtp7Sr2mBKc
+    #     - Transmission:
+    #         href: https://transmission.<path:stringreplacesecret#domain>
+    #         icon: transmission.svg
+    #         widget:
+    #           type: transmission
+    #           url: https://transmission.<path:stringreplacesecret#domain>
+    #           username: {{HOMEPAGE_VAR_TR_USERNAME}}
+    #           password: {{HOMEPAGE_VAR_TR_PASSWORD}}
+    # - Infrastructure:
+    #     - Unifi:
+    #         href: https://unifi.<path:stringreplacesecret#domain>
+    #         icon: unifi.png
+    #         description: Unifi Dashboard
+    #         widget:
+    #           type: unifi
+    #           url: https://unifi.<path:stringreplacesecret#domain>
+    #           username: {{HOMEPAGE_VAR_UNIFI_USERNAME}}
+    #           password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+    #     - Home Assistant:
+    #         href: http://hass.<path:stringreplacesecret#domain>:8123
+    #         icon: home-assistant.svg
+    #         widget:
+    #           type: homeassistant
+    #           url: http://hass.<path:stringreplacesecret#domain>:8123
+    #           key: {{HOMEPAGE_VAR_HASS_TOKEN}}
+    #     - TrueNAS:
+    #         href: https://truenas.<path:stringreplacesecret#domain>
+    #         icon: truenas.png
+    #         description: NAS
+    #         widget:
+    #           type: truenas
+    #           url: https://truenas.<path:stringreplacesecret#domain>
+    #           key: {{HOMEPAGE_VAR_TRUENAS_TOKEN}}
+    #           enablePools: true
+    #     - Proxmox:
+    #         href: https://proxmox01.<path:stringreplacesecret#domain>:8006
+    #         icon: proxmox.png
+    #         description: Hypervisor
+    #         widget:
+    #           type: proxmox
+    #           url: https://proxmox01.<path:stringreplacesecret#domain>:8006
+    #           username: {{HOMEPAGE_VAR_PROXMOX_TOKEN_ID}}
+    #           password: {{HOMEPAGE_VAR_PROXMOX_PASSWORD}}
   widgets.yaml: |
     - kubernetes:  
         cluster:
