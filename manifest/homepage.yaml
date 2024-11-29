@@ -136,10 +136,31 @@ data:
       saturate: 50 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
       brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
       opacity: 50 # 0-100
+    settings:
+      color: neutral
+      hideVersion: true
+      iconStyle: theme
+      layout:
+      - Cloud:
+          icon: mdi-cloud
+      - Organization:
+          icon: mdi-file-document-multiple-outline
+      - Smart Home:
+          icon: mdi-home-outline
+      - Social Media:
+          icon: mdi-lan
+      - Media:
+          icon: mdi-filmstrip-box
+      - Indexer:
+          icon: mdi-download-multiple
+      - Downloader:
+          icon: mdi-download-outline
+      - Server:
+          icon: mdi-server
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
-    - Social:
+    - Social Media:
         - Facebook:
             - icon: facebook.png
               href: https://facebook.com
@@ -155,7 +176,7 @@ data:
         - X:
             - icon: x.png
               href: https://x.com
-    - Self Hosted: 
+    - Cloud:
         - Ollama:
             - icon: ollama.png
               href: https://ollama.marcthespot.com
@@ -168,6 +189,7 @@ data:
         - Searxng:
             - icon: searxng.png
               href: https://search.marcthespot.com
+    - Media:
         - Sonarr:
             - icon: sonarr.png
               href: https://sonarr.marcthespot.com
@@ -202,16 +224,7 @@ data:
         - Unifi:
             - icon: unifi.png
               href: https://unifi.ui.com
-
-
-
-
-
-
-
-
-
-    - Git:
+    - Cloud:
         - home-cluster:
             - icon: github.png
               description: marcthespot0
@@ -219,9 +232,9 @@ data:
         - CloudFlare:
             - icon: cloudflare.png
               href: https://dash.cloudflare.com
-        - ArgoCD: 
-            - icon: argocd.png
-              href: https://argocd.marcthespot.com
+        - Gmail: 
+            - icon: gmail.png
+              href: https://gmail.com
   services.yaml: |
     # - Calendar:
     #     - Agenda:
