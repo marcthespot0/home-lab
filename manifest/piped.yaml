@@ -267,7 +267,6 @@ spec:
       containers:
         - name: piped-backend
           image: "1337kavin/piped:latest@sha256:18e77857414236edc7245bebb3fb8ab3ac49c44bd76701bfce24f6ba0170d4b8"
-          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
