@@ -277,31 +277,10 @@ spec:
               mountPath: /app/config.properties
               subPath: config.properties
               readOnly: true
-          livenessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 0
-            failureThreshold: 3
-            timeoutSeconds: 1
-            periodSeconds: 10
-          readinessProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 0
-            failureThreshold: 3
-            timeoutSeconds: 1
-            periodSeconds: 10
-          startupProbe:
-            tcpSocket:
-              port: 8080
-            initialDelaySeconds: 0
-            failureThreshold: 30
-            timeoutSeconds: 1
-            periodSeconds: 5
       volumes:
         - name: config-volume
           configMap:
-           name: piped-backend-config
+          name: piped-backend-config
 ---
 # Source: piped/templates/frontend/deployment.yaml
 apiVersion: apps/v1
