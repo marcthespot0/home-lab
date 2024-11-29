@@ -185,7 +185,7 @@ data:
               href: https://plex.marcthespot.com
     - Infrastructure:
         - Hubble:
-            - icon: hubble.png
+            - icon: web.png
               href: https://hubble.marcthespot.com
         - ArgoCD:
             - icon: argocd.png
@@ -195,7 +195,7 @@ data:
               href: https://lh.marcthespot.com
         - Proxmox:
             - icon: proxmox.png
-              href: http://192.168.1.5:8006
+              href: http://promox01.marcthespot.com:8006
         - TrueNAS:
             - icon: truenas.png
               href: https://truenas.marcthespot.com
