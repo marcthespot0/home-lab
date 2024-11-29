@@ -168,16 +168,16 @@ data:
         - Searxng:
             - icon: searxng.png
               href: https://search.marcthespot.com
-        - Sonarr
+        - Sonarr:
             - icon: sonarr.png
               href: https://sonarr.marcthespot.com
-        - Radarr
+        - Radarr:
             - icon: radarr.png
               href: https://radarr.marcthespot.com
-        - Jellyfin
+        - Jellyfin:
             - icon: jellyfin.png
               href: https://jellyfin.marcthespot.com
-        - Transmission
+        - Transmission:
             - icon: transmission.png
               href: https://transmission.marcthespot.com
         - Plex
@@ -199,7 +199,7 @@ data:
         - TrueNAS:
             - icon: truenas.png
               href: https://truenas.marcthespot.com
-        - Unifi
+        - Unifi:
             - icon: unifi.png
               href: https://unifi.ui.com
 
