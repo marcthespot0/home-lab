@@ -181,7 +181,7 @@ spec:
                 port: 8080
   destination:
     server: https://kubernetes.default.svc
-    namespace: ollama
+    namespace: piped
   syncPolicy:
     automated:
       prune: true
