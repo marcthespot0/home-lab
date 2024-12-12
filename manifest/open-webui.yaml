@@ -38,6 +38,16 @@ spec:
           value: "http://192.168.1.164:7860"
         - name: ENABLE_IMAGE_GENERATION
           value: "true"
+        - name: ENABLE_RAG_WEB_SEARCH
+          value: "true"
+        - name: RAG_WEB_SEARCH_ENGINE
+          value: "searxng"
+        - name: RAG_WEB_SEARCH_RESULT_COUNT
+          value: "3"
+        - name: RAG_WEB_SEARCH_CONCURRENT_REQUESTS
+          value: 10
+        - name: SEARXNG_QUERY_URL
+          value: "https://search.marcthespot.com/search?q=<query>"
         tty: true
         volumeMounts:
         - name: webui-volume
