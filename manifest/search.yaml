@@ -23,6 +23,8 @@ spec:
           searxng:
             annotations:
               reloader.stakater.com/auto: "true"
+              argocd.argoproj.io/sync-wave: "-1"
+                argocd.argoproj.io/configMapPolicy: "create"
             containers:
               searxng:
                 image:
@@ -33,29 +35,6 @@ spec:
                   SEARXNG_BASE_URL: https://search.<path:stringreplacesecret#domain>
                   SEARXNG_URL: https://search.<path:stringreplacesecret#domain>
                   SEARXNG_PORT: 8080
-                # envFrom:
-                #   - secretRef:
-                #       name: searxng-secret
-                # probes:
-                #   liveness: &probes
-                #     enabled: true
-                #     custom: true
-                #     spec:
-                #       port: 8080
-                #       # # httpGet:
-                #       # #   path: /stats
-                #       # #   port: 8080
-                #       # initialDelaySeconds: 0
-                #       # periodSeconds: 10
-                #       # timeoutSeconds: 1
-                #       # failureThreshold: 3
-                #   readiness: *probes
-                # securityContext:
-                #   allowPrivilegeEscalation: false
-                #   readOnlyRootFilesystem: true
-                #   capabilities:
-                #     add: ["CHOWN", "SETGID" ,"SETUID", "DAC_OVERRIDE"]
-                #     drop: ["ALL"]
                 resources:
                   requests:
                     cpu: 10m
