@@ -23,8 +23,6 @@ spec:
           searxng:
             annotations:
               reloader.stakater.com/auto: "true"
-              argocd.argoproj.io/sync-wave: "-1"
-                argocd.argoproj.io/configMapPolicy: "create"
             containers:
               searxng:
                 image:
@@ -54,11 +52,7 @@ spec:
             type: configMap
             name: searxng-configmap
             globalMounts:
-              - path: /etc/searxng/settings.yml
-                subPath: settings.yml
-                readOnly: true
-              - path: /etc/searxng/limiter.toml
-                subPath: limiter.toml
+              - path: /etc/searxng/
                 readOnly: true
 
           tmpfs:
