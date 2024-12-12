@@ -55,6 +55,7 @@ spec:
             advancedMounts:
               searxng:
                 app:
+                  - path: /etc/searxng
                   - path: /etc/searxng/settings.yml
                   - path: /etc/searxng/limiter.toml
   destination:
