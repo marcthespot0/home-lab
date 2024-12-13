@@ -57,6 +57,11 @@ spec:
                 app:
                   - path: /etc/searxng
                     subPath: .
+          tmpfs:
+            enabled: true
+            type: emptyDir
+            globalMounts:
+              - path: /etc/searxng
   destination:
     server: https://kubernetes.default.svc
     namespace: searxng
