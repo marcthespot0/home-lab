@@ -18,45 +18,49 @@ spec:
     chart: app-template
     repoURL: http://bjw-s.github.io/helm-charts/
     targetRevision: 3.5.1
-  helm:
-    values: |
-      controllers:
-        searxng:
-          annotations:
-            reloader.stakater.com/auto: "true"
-          containers:
-            searxng:
-              image:
-                repository: docker.io/searxng/searxng
-                tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
-              env:
-                TZ: America/New_York
-                SEARXNG_BASE_URL: https://search.<path:stringreplacesecret#domain>
-                SEARXNG_URL: https://search.<path:stringreplacesecret#domain>
-                SEARXNG_PORT: 8080
-              resources:
-                requests:
-                  cpu: 10m
-                memory: 256Mi
-              limits:
-                memory: 2000Mi
-              service:
+    helm:
+      values: |
+        controllers:
+          searxng:
+            annotations:
+              reloader.stakater.com/auto: "true"
+            containers:
+              searxng:
+                image:
+                  repository: docker.io/searxng/searxng
+                  tag: 2024.6.30-39aaac40d@sha256:149477f50e9fd7a90bd1455009b332433d65a9beeb0e0a6f9a4bdc11a860c0b6
+                env:
+                  TZ: America/New_York
+                  SEARXNG_BASE_URL: https://search.<path:stringreplacesecret#domain>
+                  SEARXNG_URL: https://search.<path:stringreplacesecret#domain>
+                  SEARXNG_PORT: 8080
+                resources:
+                  requests:
+                    cpu: 10m
+                    memory: 256Mi
+                  limits:
+                    memory: 2000Mi
+        service:
+            app:
+              controller: searxng
+              type: LoadBalancer
+              ports:
+                http:
+                  port: 8080
+
+        persistence:
+          config: 
+            enabled: true
+            existingClaim: searxng-configmap
+            advancedMounts:
+              searxng:
                 app:
-                  controller: searxng
-                  type: LoadBalancer
-                ports:
-                  http:
-                    port: 8080
-          persistence:
-            config:
-              enabled: true
-              existingClaim: searxng-configmap
-              advancedMounts:
-                searxng:
-                  type: ConfigMap
+                  - path: /etc/searxng
+                  - path: /etc/searxng/settings.yml
+                  - path: /etc/searxng/limiter.toml
   destination:
-      server: https://kubernetes.default.svc
-      namespace: searxng
+    server: https://kubernetes.default.svc
+    namespace: searxng
   syncPolicy:
     automated:
       prune: true
