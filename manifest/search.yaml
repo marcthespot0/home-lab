@@ -47,21 +47,18 @@ spec:
               ports:
                 http:
                   port: 8080
-
         persistence:
-          config: 
+          config:
             enabled: true
             existingClaim: searxng-configmap
             advancedMounts:
               searxng:
                 app:
-                  - path: /etc/searxng
-                    subPath: .
-          tmpfs:
-            enabled: true
-            type: emptyDir
-            globalMounts:
-              - path: /etc/searxng
+                - path: /etc/searxng
+                  subPath: .
+                tmpfs:
+                  enabled: false
+                type: ConfigMap
   destination:
     server: https://kubernetes.default.svc
     namespace: searxng
