@@ -57,8 +57,7 @@ spec:
               searxng:
                 app:
                   - path: /etc/searxng
-                  - sourcePath: /etc/searxng/ 
-                    targetPath: /
+                              subPath: .
   destination:
     server: https://kubernetes.default.svc
     namespace: searxng
