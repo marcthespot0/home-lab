@@ -53,12 +53,11 @@ spec:
             existingClaim: searxng-configmap
             advancedMounts:
               searxng:
-                app:
-                - path: /etc/searxng
-                  subPath: .
-                tmpfs:
-                  enabled: false
                 type: ConfigMap
+    persistence:
+      config:
+        enabled: true
+        existingClaim: searxng-configmap
   destination:
     server: https://kubernetes.default.svc
     namespace: searxng
