@@ -54,17 +54,13 @@ spec:
               advancedMounts:
                 searxng:
                   type: ConfigMap
-    persistence:
-      config:
-        enabled: true
-        existingClaim: searxng-configmap
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: searxng
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+  destination:
+      server: https://kubernetes.default.svc
+      namespace: searxng
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
