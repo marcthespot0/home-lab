@@ -40,6 +40,19 @@ spec:
                     memory: 256Mi
                   limits:
                     memory: 2000Mi
+                config:
+        settings:
+          enabled: true
+          data: |-
+            use_default_settings: true
+
+            search:
+              safe_search: 0
+              autocomplete: ""
+              default_lang: ""
+              formats:
+                - html
+                - json
         service:
             app:
               controller: searxng
