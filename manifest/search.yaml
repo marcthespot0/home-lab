@@ -131,26 +131,26 @@ data:
     static-gzip-all = True
     offload-threads = 4
 ---
-# Source: searxng/templates/004-service.yaml
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: searxng
-#   labels:
-#     app.kubernetes.io/name: "searxng"
-#     app.kubernetes.io/instance: "searxng"
-#     app.kubernetes.io/version: "1.0.0"
-#     app.kubernetes.io/managed-by: "Helm"
-# spec:
-#   type: ClusterIP
-#   ports:
-#     - port: 8080
-#       targetPort: http
-#       protocol: TCP
-#       name: http
-#   selector:
-#     app.kubernetes.io/name: "searxng"
-#     app.kubernetes.io/instance: "searxng"
+Source: searxng/templates/004-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: searxng
+  labels:
+    app.kubernetes.io/name: "searxng"
+    app.kubernetes.io/instance: "searxng"
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/managed-by: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: "searxng"
+    app.kubernetes.io/instance: "searxng"
 ---
 # Source: searxng/templates/001-deployment.yaml
 apiVersion: apps/v1
