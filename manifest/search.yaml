@@ -119,6 +119,8 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+  selector:
+    app.kubernetes.io/name: "searxng"
 ---
 apiVersion: apps/v1
 kind: Deployment
