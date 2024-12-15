@@ -9,8 +9,6 @@ kind: ServiceAccount
 metadata:
   name: searxng
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 automountServiceAccountToken: true
 ---
 apiVersion: v1
@@ -18,8 +16,6 @@ kind: ConfigMap
 metadata:
   name: searxng-settings
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 data:
   settings.yml: |
     use_default_settings: true
@@ -42,14 +38,11 @@ data:
         - html
         - json
 ---
-# Source: searxng/templates/006-configmap.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: searxng-limiter
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 data:
   limiter.toml: |
     [botdetection.ip_limit]
@@ -61,8 +54,6 @@ kind: ConfigMap
 metadata:
   name: searxng-uwsgi
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 data:
   uwsgi.ini: |
     [uwsgi]
@@ -121,8 +112,6 @@ kind: Service
 metadata:
   name: searxng
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 spec:
   type: ClusterIP
   ports:
@@ -130,25 +119,15 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
-  selector:
-    app.kubernetes.io/name: "searxng"
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: searxng
   namespace: searxng
-  labels:
-    app.kubernetes.io/name: "searxng"
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: "searxng"
   template:
-    metadata:
-      labels:
-        app.kubernetes.io/name: "searxng"
     spec:
       serviceAccountName: searxng
       securityContext:
