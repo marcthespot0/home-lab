@@ -29,14 +29,14 @@ metadata:
     app: comfyui
 spec:
   runtimeClassName: nvidia
-  tolerations:
-  - key: restriction
-    operator: "Equal"
-    value: "CUDAonly"
-    effect: "NoSchedule"
+  # tolerations:
+  # - key: restriction
+  #   operator: "Equal"
+  #   value: "CUDAonly"
+  #   effect: "NoSchedule"
   containers:
   - name: comfyui
-    image: registry.svc.snowgoons.ro/snowgoons/comfyui:latest
+    image: registry.svc.snowgoons.ro/snowgoons/comfyui:2024-07-02
     args: [ "--listen", "0.0.0.0" ]
     imagePullPolicy: Always
     ports:
