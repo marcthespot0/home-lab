@@ -49,8 +49,6 @@ spec:
   - name: model-volume
     persistentVolumeClaim:
       claimName: comfyui
-    hostPath:
-      path: /usr/local/ai/models/comfyui
   nodeSelector:
     kubernetes.io/hostname: talos-03
 ---
