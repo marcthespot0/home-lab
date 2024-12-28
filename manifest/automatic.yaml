@@ -30,8 +30,8 @@ spec:
         - name: WEBUI_ARGS
           value: "--api --no-gradio-queue"
           # --always-batch-cond-uncond --opt-split-attention
-        - name: WEBUI_URL
-          value:  "http://192.168.1.164:7860/"
+        # - name: WEBUI_URL
+        #   value:  "http://192.168.1.164:7860/"
         volumeMounts:
         - name: models-volume
           mountPath: /opt/stable-diffusion-webui/models
