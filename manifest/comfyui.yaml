@@ -44,9 +44,9 @@ spec:
       name: comfyui
     volumeMounts:
     - mountPath: /usr/local/ComfyUI/models
-      name: model-folder
+      name: model-volume
   volumes:
-  - name: model-folder
+  - name: model-volume
     persistentVolumeClaim:
       claimName: comfyui
     hostPath:
