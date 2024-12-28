@@ -39,9 +39,6 @@ spec:
     image: registry.svc.snowgoons.ro/snowgoons/comfyui:latest
     args: [ "--listen", "0.0.0.0" ]
     imagePullPolicy: Always
-    resources:
-      limits:
-        nvidia.com/gpu: 1
     ports:
     - containerPort: 8188
       name: comfyui
@@ -54,6 +51,8 @@ spec:
       claimName: comfyui
     hostPath:
       path: /usr/local/ai/models/comfyui
+  nodeSelector:
+    kubernetes.io/hostname: talos-03
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
