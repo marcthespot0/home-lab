@@ -67,18 +67,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-consume
-  namespace: paperless
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: paperless-data
   namespace: paperless
 spec:
@@ -117,7 +105,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 2Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
