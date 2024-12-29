@@ -166,6 +166,8 @@ spec:
               value: "0.0.0.0"
             - name: PAPERLESS_PORT
               value: "8000"
+            - name: PAPERLESS_CONSUMER_POLLING
+              value: "10" 
 ---
 kind: Service
 apiVersion: v1
