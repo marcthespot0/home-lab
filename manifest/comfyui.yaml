@@ -34,10 +34,6 @@ spec:
               type: statefulset
               annotations:
                 reloader.stakater.com/auto: "true"
-              pod:
-                runtimeClassName: nvidia
-                nodeSelector:
-                  kubernetes.io/hostname: talos-03
               containers:
                 app:
                   image:
@@ -54,6 +50,10 @@ spec:
                     limits:
                       memory: 6Gi
                       # nvidia.com/gpu: 1 # requesting 1 GPU
+              pod:
+                runtimeClassName: nvidia
+                nodeSelector:
+                  kubernetes.io/hostname: talos-03
 
           service:
             app:
