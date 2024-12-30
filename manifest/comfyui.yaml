@@ -32,15 +32,12 @@ spec:
           controllers:
             comfyui:
               type: statefulset
-
               annotations:
                 reloader.stakater.com/auto: "true"
-
               pod:
                 runtimeClassName: nvidia
                 nodeSelector:
                   kubernetes.io/hostname: talos-03
-
               containers:
                 app:
                   image:
