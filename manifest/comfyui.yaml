@@ -20,17 +20,16 @@ spec:
     targetRevision: 3.6.0
     helm:
       values: |
-        install:
-          remediation:
-            retries: 3
-        upgrade:
-          cleanupOnFail: true
-          remediation:
-            retries: 3
-            strategy: rollback
+        # install:
+        #   remediation:
+        #     retries: 3
+        # upgrade:
+        #   cleanupOnFail: true
+        #   remediation:
+        #     retries: 3
+        #     strategy: rollback
           controllers:
             comfyui:
-              type: statefulset
               annotations:
                 reloader.stakater.com/auto: "true"
               containers:
