@@ -75,8 +75,7 @@ spec:
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  existingClaim: comfyui-workspace-pvc
-  name: 
+  name: comfyui-workspace-pvc
   namespace: comfyui
   annotations:
     volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
