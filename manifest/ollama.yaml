@@ -16,7 +16,7 @@ spec:
   source:
     chart: app-template
     repoURL: http://bjw-s.github.io/helm-charts/
-    targetRevision: 3.6.0
+    targetRevision: 3.5.1
     helm:
       values: |
         replicaCount: 1
