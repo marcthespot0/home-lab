@@ -67,6 +67,11 @@ spec:
               existingClaim: comfyui-workspace-pvc
               globalMounts:
                 - path: /workspace
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
