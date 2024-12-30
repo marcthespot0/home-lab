@@ -41,22 +41,22 @@ spec:
                 nodeSelector:
                   kubernetes.io/hostname: talos-03
 
-              containers:
-                app:
-                  image:
-                    repository: ghcr.io/ai-dock/comfyui
-                    tag: v2-cuda-12.1.1-base-22.04-v0.2.0@sha256:eacd7b9281383b13b53d86cacc283f856417c79a1312634e8a9cc6308cbe60f6
-                  env:
-                    TZ: America/New_York
-                    PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/flux.sh"
-                  resources:
-                    requests:
-                      # nvidia.com/gpu: 1 # requesting 1 GPU
-                      cpu: 500m
-                      memory: 6Gi
-                    limits:
-                      memory: 6Gi
-                      # nvidia.com/gpu: 1 # requesting 1 GPU
+          containers:
+            app:
+              image:
+                repository: ghcr.io/ai-dock/comfyui
+                tag: v2-cuda-12.1.1-base-22.04-v0.2.0@sha256:eacd7b9281383b13b53d86cacc283f856417c79a1312634e8a9cc6308cbe60f6
+              env:
+                TZ: America/New_York
+                PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/flux.sh"
+              resources:
+                requests:
+                  # nvidia.com/gpu: 1 # requesting 1 GPU
+                  cpu: 500m
+                  memory: 6Gi
+                limits:
+                  memory: 6Gi
+                  # nvidia.com/gpu: 1 # requesting 1 GPU
 
           service:
             app:
