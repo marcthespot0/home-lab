@@ -31,7 +31,7 @@ spec:
                     tag: v2-cuda-12.1.1-base-22.04-v0.2.0@sha256:eacd7b9281383b13b53d86cacc283f856417c79a1312634e8a9cc6308cbe60f6
                   env:
                     TZ: America/New_York
-                    PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/default.sh"
+                    PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/flux.sh"
                   resources:
                     requests:
                       cpu: 500m
@@ -56,7 +56,7 @@ spec:
               enabled: true
               existingClaim: comfyui-workspace-pvc
               globalMounts:
-                - path: /opt/storage
+                - path: /opt
   syncPolicy:
     automated:
       allowEmpty: true
