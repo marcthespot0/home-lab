@@ -56,7 +56,7 @@ spec:
               enabled: true
               existingClaim: comfyui-workspace-pvc
               globalMounts:
-                - path: /opt
+                - path: /opt/ComfyUI
   syncPolicy:
     automated:
       allowEmpty: true
