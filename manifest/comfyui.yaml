@@ -20,14 +20,6 @@ spec:
     targetRevision: 3.6.0
     helm:
       values: |
-        # install:
-        #   remediation:
-        #     retries: 3
-        # upgrade:
-        #   cleanupOnFail: true
-        #   remediation:
-        #     retries: 3
-        #     strategy: rollback
           controllers:
             comfyui:
               annotations:
@@ -42,12 +34,10 @@ spec:
                     PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/flux.sh"
                   resources:
                     requests:
-                      # nvidia.com/gpu: 1 # requesting 1 GPU
                       cpu: 500m
                       memory: 6Gi
                     limits:
                       memory: 6Gi
-                      # nvidia.com/gpu: 1 # requesting 1 GPU
               pod:
                 runtimeClassName: nvidia
                 nodeSelector:
@@ -56,10 +46,11 @@ spec:
           service:
             app:
               controller: comfyui
+              type: LoadBalancer
               ports:
                 http:
                   port: 18188
-              type: LoadBalancer
+              
 
           persistence:
             workspace:
@@ -87,3 +78,61 @@ spec:
   resources:
     requests:
       storage: 300G
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: comfyui-ingress
+  namespace: comfyui
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: comfyui.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: comfyui
+            port:
+              number: 18188
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: comfyui-http
+  namespace: comfyui
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "comfyui.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: comfyui
+      port: 18188
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: comfyui
+  namespace: comfyui
+  annotations:
+    external-dns.custom/type: private
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: comfyui.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
