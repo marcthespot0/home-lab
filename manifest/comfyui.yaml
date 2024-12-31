@@ -46,7 +46,6 @@ spec:
           service:
             app:
               controller: comfyui
-              type: LoadBalancer
               ports:
                 http:
                   port: 18188
