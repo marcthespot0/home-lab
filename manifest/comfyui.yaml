@@ -71,7 +71,7 @@ metadata:
   # annotations:
   #   volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
 spec:
-  storageClassName: freenas-nfs-csi
+  # storageClassName: freenas-nfs-csi
   accessModes:
   - ReadWriteOnce
   resources:
