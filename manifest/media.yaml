@@ -205,7 +205,7 @@ spec:
           claimName: jellyfin-downloads
       containers:
       - name: radarr
-        image: binhex/arch-radarr:5.16.3.9541-1-01
+        image: binhex/arch-radarr:5.17.2.9580-1-01
         resources:
           requests:
             memory: "4G"
