@@ -47,6 +47,7 @@ spec:
                       memory: 6Gi
               pod:
                 runtimeClassName: nvidia
+                hostUsers: true
                 nodeSelector:
                   kubernetes.io/hostname: talos-03
 
