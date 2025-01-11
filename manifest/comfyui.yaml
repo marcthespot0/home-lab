@@ -30,6 +30,13 @@ spec:
                     repository: ghcr.io/ai-dock/comfyui
                     tag: latest-cuda
                   env:
+                    AUTO_UPDATE: "false"
+                    DIRECT_ADDRESS_GET_WAN: "true"
+                    SERVICEPORTAL_URL: "comfyui.<path:stringreplacesecret#domain>"
+                    WEB_ENABLE_AUTH: "false"
+                    WORKSPACE: "/workspace"
+                    CF_QUICK_TUNNELS: "false"
+                    SERVERLESS: "false"
                     TZ: America/New_York
                     PROVISIONING_SCRIPT: "https://raw.githubusercontent.com/ai-dock/comfyui/main/config/provisioning/flux.sh"
                   resources:
@@ -48,7 +55,7 @@ spec:
               controller: comfyui
               ports:
                 http:
-                  port: 18188
+                  port: 8188
               
 
           persistence:
@@ -97,7 +104,7 @@ spec:
           service:
             name: comfyui
             port:
-              number: 18188
+              number: 8188
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
@@ -116,7 +123,7 @@ spec:
   rules:
   - backendRefs:
     - name: comfyui
-      port: 18188
+      port: 80
 ---
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
