@@ -25,6 +25,11 @@ Fresh install with Talos, I found I had to approve the csr's for each of my talo
 kubectl get csr
 #Approve all pending csr's
 kubectl certificate approve csr-8j8gw
+
+remove flannel and kube-proxy
+kubectl delete daemonset -n kube-system kube-flannel
+kubectl delete daemonset -n kube-system kube-proxy
+kubectl delete cm kube-flannel-cfg -n kube-system
 ```
 
 
