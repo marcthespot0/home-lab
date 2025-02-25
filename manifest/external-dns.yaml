@@ -9,8 +9,6 @@ kind: ExternalSecret
 metadata:
   name: external-dns
   namespace: external-dns
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
   secretStoreRef:
@@ -19,10 +17,10 @@ spec:
   target:
     creationPolicy: Owner
   data:
-    - secretKey: cloudflare_api_token
+    - secretKey: cloudflare-api-key
       remoteRef:
         key: external-dns
-        property: token
+        property: cloudflare-token
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
