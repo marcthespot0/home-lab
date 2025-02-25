@@ -40,20 +40,24 @@ spec:
     targetRevision: 1.15.2
     helm:
       valuesObject:
+        provider:
+          name: cloudflare
         fullnameOverride: external-dns
         policy: sync
-        txtSuffix: .external-dns
+        registry: txt
         txtOwnerId: kubernetes
-        crd:
-          create: true
         sources:
           - service
           - ingress
           - crd
-        provider: cloudflare
-        cloudflare:
-          secretName: external-dns
-        annotationFilter: "external-dns.custom/type in (public)"
+        env:
+          - name: CF_API_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: external-dns
+                key: cloudflare-api-key
+        extraArgs:
+          - "--annotation-filter=external-dns.custom/type in (public)"
   syncPolicy:
     automated:
       allowEmpty: true
