@@ -888,7 +888,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: expressvpn-transmission   # Corrected label selector to match the Deployment
+    app: expressvpn-transmission-sonarr   # Corrected label selector to match the Deployment
   ports:
     - protocol: TCP
       port: 80
@@ -933,7 +933,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: transmission
+  name: transmission-sonarr
   namespace: media
   annotations:
     # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
