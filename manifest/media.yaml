@@ -744,9 +744,6 @@ spec:
         - name: tmp
           emptyDir:
             medium: Memory
-        - name: shows
-          persistentVolumeClaim:
-            claimName: sonarr-shows
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
