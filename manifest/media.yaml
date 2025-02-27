@@ -835,6 +835,130 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: expressvpn-transmission-sonarr
+  namespace: media
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: expressvpn-transmission-sonarr
+  template:
+    metadata:
+      labels:
+        app: expressvpn-transmission-sonarr
+    spec:
+      containers:
+      - name: expressvpn-transmission-sonarr
+        image: polkaned/expressvpn-transmission
+        volumeMounts:
+        - name: transmission-data-sonarr
+          mountPath: /var/lib/transmission-daemon/downloads
+        env:
+        - name: ACTIVATION_CODE
+          valueFrom:
+            secretKeyRef:
+              name: transmission
+              key: TRANSMISSION_VAR_VPNCODE
+        - name: T_ALLOWED
+          value: 127.0.0.1,192.168.*.*,10.*.*.*
+        - name: T_USERNAME
+          valueFrom:  
+            secretKeyRef:
+              name: transmission
+              key: TRANSMISSION_VAR_USERNAME
+        - name: T_PASSWORD
+          valueFrom:  
+            secretKeyRef:
+              name: transmission
+              key: TRANSMISSION_VAR_PASSWORD
+        securityContext:
+          privileged: true
+          capabilities:
+            add:
+              - NET_ADMIN
+        ports:
+        - containerPort: 9091 
+      volumes:
+      - name: transmission-data-sonarr
+        persistentVolumeClaim:
+          claimName: transmission-data-sonarr
+--- 
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: transmission-data-sonarr
+  namespace: media
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "freenas-nfs-csi"
+spec:
+  storageClassName: freenas-nfs-csi
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 500Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: transmission-sonarr
+  namespace: media
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: transmission-sonarr.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: transmission-sonarr
+            port:
+              number: 9091
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: transmission
+  namespace: media
+  annotations:
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "transmission-sonarr.<path:stringreplacesecret#domain>"
+  rules:
+  - backendRefs:
+    - name: transmission-sonarr
+      port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: transmission-sonarr
+  namespace: media
+  annotations:
+    external-dns.custom/type: private
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  endpoints:
+    - dnsName: transmission-sonarr.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: sonarr-deployment
   namespace: media
 spec:
@@ -853,7 +977,7 @@ spec:
           claimName: sonarr-config
       - name: appdata
         persistentVolumeClaim:
-          claimName: transmission-data
+          claimName: transmission-data-sonarr
       - name: shows
         persistentVolumeClaim:
           claimName: sonarr-shows
@@ -1001,7 +1125,7 @@ spec:
         app: unpackerr-sonarr
     spec:
       volumes:
-      - name: transmission-downloads
+      - name: transmission-downloads-sonarr
         persistentVolumeClaim:
           claimName: transmission-data
       containers:
@@ -1015,10 +1139,10 @@ spec:
         - name: UN_SONARR_0_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
         - name: UN_SONARR_0_API_KEY
-          value: "238b9c3221904e518ebcaa3aa4fa404f"
+          value: "33bb15af37fd4e79b90040e774f4d171"
         ports:
         - containerPort: 8080
           protocol: TCP
         volumeMounts:
-        - name: transmission-downloads
+        - name: transmission-downloads-sonarr
           mountPath: "/var/lib/transmission-daemon/downloads"
