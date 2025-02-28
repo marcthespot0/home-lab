@@ -994,7 +994,7 @@ spec:
           claimName: sonarr-shows
       containers:
       - name: sonarr
-        image: binhex/arch-sonarr:4.0.10.2544-6-01
+        image: binhex/arch-sonarr:4.0.13.2932
         resources:
           requests:
             memory: "4G"
