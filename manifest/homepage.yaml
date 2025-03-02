@@ -205,9 +205,12 @@ data:
         - Jellyfin:
             - icon: jellyfin.png
               href: https://jellyfin.marcthespot.com
-        - Transmission:
+        - Transmission Radarr:
             - icon: transmission.png
               href: https://transmission.marcthespot.com
+        - Transmission Sonarr:
+            - icon: transmission.png
+              href: https://transmission-sonarr.marcthespot.com
         - Plex:
             - icon: plex.png
               href: https://plex.marcthespot.com
@@ -223,7 +226,7 @@ data:
               href: https://lh.marcthespot.com
         - Proxmox:
             - icon: proxmox.png
-              href: http://promox01.marcthespot.com:8006
+              href: http://192.168.1.5:8006
         - TrueNAS:
             - icon: truenas.png
               href: https://truenas.marcthespot.com
