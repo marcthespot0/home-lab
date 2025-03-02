@@ -127,9 +127,9 @@ data:
   kubernetes.yaml: |
     mode: cluster
   settings.yaml: |
-    providers:
-      longhorn:
-        url: https://lh.<path:stringreplacesecret#domain>
+    # providers:
+    #   longhorn:
+    #     url: https://lh.<path:stringreplacesecret#domain>
     background:
       image: https://github.com/aynp/dracula-wallpapers/blob/main/Art/Kraken.png
       blur: sm # sm, "", md, xl... see https://tailwindcss.com/docs/backdrop-blur
