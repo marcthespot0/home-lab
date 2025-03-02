@@ -329,11 +329,11 @@ data:
           memory: true
           showLabel: true
           label: "Kubernetes"
-        nodes:
-          show: true
-          cpu: true
-          memory: true
-          showLabel: true
+        # nodes:
+        #   show: true
+        #   cpu: true
+        #   memory: true
+        #   showLabel: true
     # - longhorn:
     #     expanded: true
     #     total: true
