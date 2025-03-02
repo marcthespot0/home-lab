@@ -344,7 +344,7 @@ data:
         expanded: true
         total: true
         labels: true
-        nodes: false
+        nodes: true
     - search:
         provider: duckduckgo
         target: _blank
