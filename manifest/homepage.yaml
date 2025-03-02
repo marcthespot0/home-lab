@@ -339,6 +339,8 @@ data:
         total: true
         labels: true
         nodes: false
+        include:
+          -talos-03
     - search:
         provider: duckduckgo
         target: _blank
