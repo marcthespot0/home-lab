@@ -601,21 +601,12 @@ spec:
         env:
         - name: TZ
           value: America/New_York
-        - name: UN_SONARR_1_URL
-          value: "http://192.168.1.169:8989"
-        - name: UN_SONARR_1_PATHS_1
-          value: "/var/lib/transmission-daemon/downloads"
-        - name: UN_SONARR_1_API_KEY
-          value: "238b9c3221904e518ebcaa3aa4fa404f"
         - name: UN_RADARR_0_URL
           value: "http://192.168.1.167:7878"
         - name: UN_RADARR_0_PATHS_0
           value: "/var/lib/transmission-daemon/downloads"
         - name: UN_RADARR_0_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: media-configsecrets
-              key: MEDIA_VAR_RADARR_API
+          value: "2f2626282f0b4c54913113d7a012e954"
         ports:
         - containerPort: 8080
           protocol: TCP
