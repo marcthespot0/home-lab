@@ -670,8 +670,6 @@ spec:
       labels:
         app: plex
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: talos-03
       runtimeClassName: nvidia
       securityContext:
         runAsNonRoot: true
@@ -713,8 +711,8 @@ spec:
               mountPath: /config
             - name: media
               mountPath: /mnt/media
-            - name: transcode
-              mountPath: /transcode
+            # - name: transcode
+            #   mountPath: /transcode
             - name: tmp
               mountPath: /tmp
             - mountPath: "/shows"
