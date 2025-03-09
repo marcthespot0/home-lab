@@ -81,7 +81,7 @@ spec:
             name: glance-config
 destination:
   server: https://kubernetes.default.svc
-  namespace: ollama
+  namespace: glance
 syncPolicy:
   automated:
     prune: true
