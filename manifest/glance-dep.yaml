@@ -79,3 +79,11 @@ spec:
           config:
             type: configMap
             name: glance-config
+destination:
+  server: https://kubernetes.default.svc
+  namespace: ollama
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
+
