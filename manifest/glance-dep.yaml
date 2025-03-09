@@ -68,11 +68,11 @@ spec:
           config:
             type: configMap
             name: glance-config
-destination:
-  server: https://kubernetes.default.svc
-  namespace: glance
-syncPolicy:
-  automated:
-    prune: true
-    selfHeal: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: glance
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 
