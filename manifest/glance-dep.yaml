@@ -85,7 +85,7 @@ kind: PersistentVolumeClaim
 metadata:
   labels:
     app: glance
-  name: glance
+  name: glance-pvc
   namespace: glance
 spec:
   accessModes: ["ReadWriteOnce"]
