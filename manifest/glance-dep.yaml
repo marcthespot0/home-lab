@@ -67,7 +67,7 @@ spec:
         persistence:
           config:
             enabled: true
-            existingClaim glance-pvc
+            existingClaim: glance-pvc
             advancedMounts:
               glance:
                 app:
