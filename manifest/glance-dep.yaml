@@ -19,16 +19,16 @@ spec:
     targetRevision: 3.7.2
     helm:
       values: |
-        fullnameOverride: *name
-        defaultPodOptions:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1022
-            runAsGroup: 1022
-            fsGroup: 1022
-            fsGroupChangePolicy: OnRootMismatch
-            seccompProfile:
-              type: RuntimeDefault
+        # fullnameOverride: *name
+        # defaultPodOptions:
+        #   securityContext:
+        #     runAsNonRoot: true
+        #     runAsUser: 1022
+        #     runAsGroup: 1022
+        #     fsGroup: 1022
+        #     fsGroupChangePolicy: OnRootMismatch
+        #     seccompProfile:
+        #       type: RuntimeDefault
         controllers:
           glance:
             strategy: RollingUpdate
