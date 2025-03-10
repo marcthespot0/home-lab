@@ -71,7 +71,7 @@ spec:
             advancedMounts:
               glance:
                 app:
-                  - path: /config/glance.yaml
+                  - path: /config
   destination:
     server: https://kubernetes.default.svc
     namespace: glance
