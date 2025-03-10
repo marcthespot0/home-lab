@@ -79,4 +79,16 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: glance
+  name: glance
+  namespace: glance
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
