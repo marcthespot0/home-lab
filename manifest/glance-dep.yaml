@@ -66,8 +66,12 @@ spec:
         #           - *host
         persistence:
           config:
-            type: configMap
-            name: glance-config
+            enabled: true
+            existingClain: glance-pvc
+            advancedMounts:
+              glance:
+                app:
+                  - path: /config
   destination:
     server: https://kubernetes.default.svc
     namespace: glance
