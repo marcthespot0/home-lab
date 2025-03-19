@@ -983,7 +983,7 @@ spec:
           claimName: sonarr-shows
       containers:
       - name: sonarr
-        image: binhex/arch-sonarr:4.0.13.2932-1-01
+        image: binhex/arch-sonarr:4.0.14.2939-1-01
         resources:
           requests:
             memory: "4G"
