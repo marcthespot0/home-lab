@@ -100,78 +100,61 @@ data:
         columns:
           - size: small
             widgets:
+              - type: calendar
+
+              - type: rss
+                limit: 10
+                collapse-after: 3
+                cache: 3h
+                feeds:
+                  - url: https://ciechanow.ski/atom.xml
+                  - url: https://www.joshwcomeau.com/rss.xml
+                    title: Josh Comeau
+                  - url: https://samwho.dev/rss.xml
+                  - url: https://awesomekling.github.io/feed.xml
+                  - url: https://ishadeed.com/feed.xml
+                    title: Ahmad Shadeed
+
+              - type: twitch-channels
+                channels:
+                  - ferretsoftware
+                  - theprimeagen
+                  - cohhcarnage
+                  - christitustech
+                  - blurbs
+                  - asmongold
+                  - jembawls
+
+          - size: full
+            widgets:
+              - type: hacker-news
+
+              - type: videos
+                channels:
+                  - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+                  - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
+                  - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
+
+              - type: reddit
+                subreddit: selfhosted
+
+          - size: small
+            widgets:
               - type: weather
-                units: imperial
-                location: New York, New York
-
-              - type: bookmarks
-                groups:
-                  - links:
-                      - title: Home Operations
-                        url: https://github.com/marcthespot0/home-lab
-                        icon: si:gitlab
-                      - title: Github
-                        url: https://github.com/
-                        icon: si:github
-                      - title: Reddit
-                        url: https://www.reddit.com/
-                        icon: si:reddit
-                      - title: NixOs Search
-                        url: https://search.nixos.org/packages/
-                        icon: si:nixos
-                  
-                  - title: Entertainment
-                    color: 10 70 50
-                    links:
-                      - title: YouTube
-                        url: https://www.youtube.com/
-                        icon: si:youtube
-                      - title: YouTube Music
-                        url: https://music.youtube.com/
-                        icon: si:youtubemusic
-                      - title: Netflix
-                        url: https://www.netflix.com/
-                        icon: si:netflix
-                      - title: Prime Video
-                        url: https://www.primevideo.com/
-                        icon: si:prime
-
-              - type: releases
-                show-source-icon: true
-                repositories:
-                  - glanceapp/glance
+                location: Eugene, Oregon, United States
 
               - type: monitor
                 cache: 1m
                 title: Services
                 sites:
-                  - title: Gatus
-                    url: https://status.${DOMAIN}
-                    icon: di:gatus
+                  - title: Home Assistant
+                    url: https://hass.ok8.sh
                   - title: Grafana
-                    url: https://grafana.${DOMAIN}
-                    icon: di:grafana
-
-          - size: full
-            widgets:
-              - type: search
-                search-engine: duckduckgo
-                bangs:
-                  - title: YouTube
-                    shortcut: "!yt"
-                    url: https://www.youtube.com/results?search_query={QUERY}
-
-              - type: rss
-                style: horizontal-cards
-                feeds:
-                  - url: https://selfh.st/rss/
-                    title: selfh.st
-
-              - type: reddit
-                subreddit: selfhosted
-
-              - type: reddit
-                subreddit: unixporn
+                    url: https://grafana.ok8.sh
+                  - title: ID
+                    url: https://id.ok8.sh
+                  - title: DynMC
+                    url: https://dynmc.ok8.sh
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
