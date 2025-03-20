@@ -67,11 +67,11 @@ spec:
               glance:
                 app:
                   - path: /config/glance.yaml
-           config-storage:
-             enabled: true
-             type: emptyDir
-             globalMounts:
-               - path: /config
+          #  config-storage:
+          #    enabled: true
+          #    type: emptyDir
+          #    globalMounts:
+          #      - path: /config
   destination:
     server: https://kubernetes.default.svc
     namespace: glance
