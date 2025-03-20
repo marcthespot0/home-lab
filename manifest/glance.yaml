@@ -141,7 +141,7 @@ data:
           - size: small
             widgets:
               - type: weather
-                location: Eugene, Oregon, United States
+                location: New York, New York, United States
 
               - type: monitor
                 cache: 1m
