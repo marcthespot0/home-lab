@@ -156,3 +156,16 @@ data:
                   - title: DynMC
                     url: https://dynmc.ok8.sh
 ---
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: glance
+  name: glance
+  namespace: glance
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 2Gi
