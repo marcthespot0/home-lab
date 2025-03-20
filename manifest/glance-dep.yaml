@@ -48,27 +48,31 @@ spec:
                   allowPrivilegeEscalation: false
                   readOnlyRootFilesystem: true
                   capabilities: { drop: ["ALL"] }
-        # service:
-        #   glance:
-        #     controller: *name
-        #     ports:
-        #       http:
-        #         port: 8080
-        #     hosts:
-        #       - host: &host "glance.${SECRET_DEFAULT_DOMAIN}"
-        #         paths:
-        #           - path: /
-        #             service:
-        #               identifier: glance
-        #               port: http
-        #     tls:
-        #       - hosts:
-        #           - *host
+        service:
+          app:
+            controller: glance
+            type: ClusterIP
+            ports:
+              http:
+                port: 8080
         persistence:
-          config:
+           config:
+             enabled: true
+             type: configMap
+             name: glance-configmap
+           data:
             enabled: true
-            type: configMap
-            name: glance-configmap
+            existingClaim: glance
+            advancedMounts:
+              glance:
+                app:
+                  - path: /config/glance.yaml
+           config-storage:
+             enabled: true
+             type: emptyDir
+             globalMounts:
+               - path: /config
+---
   destination:
     server: https://kubernetes.default.svc
     namespace: glance
@@ -152,3 +156,4 @@ data:
                     url: https://id.ok8.sh
                   - title: DynMC
                     url: https://dynmc.ok8.sh
+---
