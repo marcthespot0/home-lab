@@ -156,7 +156,6 @@ data:
                   - title: DynMC
                     url: https://dynmc.ok8.sh
 ---
----
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -169,3 +168,78 @@ spec:
   resources:
     requests:
       storage: 2Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: glance-ingress
+  namespace: glance
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: glance.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: glance
+            port:
+              number: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: glance-http
+  namespace: glance
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  parentRefs:
+    - name: internal
+      namespace: gateway
+      sectionName: https
+    - name: external
+      namespace: gateway
+      sectionName: https
+  hostnames:
+  - "glance.<path:stringreplacesecret#domain>"
+  rules:
+    - backendRefs:
+      - name: glance
+        port: 80
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: glance-external
+  namespace: glance
+  annotations:
+    external-dns.custom/type: public
+spec:
+  endpoints:
+    - dnsName: glance.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - ingress.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "true"
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: glance
+  namespace: glance
+  annotations:
+    external-dns.custom/type: private
+spec:
+  endpoints:
+    - dnsName: glance.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
