@@ -19,16 +19,6 @@ spec:
     targetRevision: 3.7.3
     helm:
       values: |
-        # fullnameOverride: *name
-        # defaultPodOptions:
-        #   securityContext:
-        #     runAsNonRoot: true
-        #     runAsUser: 1022
-        #     runAsGroup: 1022
-        #     fsGroup: 1022
-        #     fsGroupChangePolicy: OnRootMismatch
-        #     seccompProfile:
-        #       type: RuntimeDefault
         controllers:
           glance:
             strategy: RollingUpdate
@@ -67,11 +57,6 @@ spec:
               glance:
                 app:
                   - path: /config/glance.yaml
-          #  config-storage:
-          #    enabled: true
-          #    type: emptyDir
-          #    globalMounts:
-          #      - path: /config
   destination:
     server: https://kubernetes.default.svc
     namespace: glance
