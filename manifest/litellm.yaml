@@ -40,7 +40,7 @@ spec:
           mountPath: /app
       volumes:
       - name: litellm-volume
-        persistentVollumeClaim:
+        persistentVolumeClaim:
           claimName: litellm-pvc
 ---
 apiVersion: v1
