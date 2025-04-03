@@ -37,7 +37,7 @@ spec:
         #       key: api-base
         volumeMounts:
         - name: litellm-volume
-          mountPath: /app
+          mountPath: /app/config.yaml
       volumes:
       - name: litellm-volume
         persistentVolumeClaim:
