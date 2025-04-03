@@ -79,7 +79,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: "litellm.<path:stringreplacesecret#domain>"
+  - host: litellm.<path:stringreplacesecret#domain>
     http:
       paths:.
       - path: /
