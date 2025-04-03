@@ -81,7 +81,7 @@ spec:
   rules:
   - host: litellm.<path:stringreplacesecret#domain>
     http:
-      paths:.
+      paths:
       - path: /
         pathType: Prefix
         backend:
