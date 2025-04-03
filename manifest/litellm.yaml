@@ -103,7 +103,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "search.<path:stringreplacesecret#domain>"
+  - "litellm.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: litellm
