@@ -79,9 +79,9 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: search.<path:stringreplacesecret#domain>
+  - host: litellm.<path:stringreplacesecret#domain>
     http:
-      paths:
+      paths:.
       - path: /
         pathType: Prefix
         backend:
