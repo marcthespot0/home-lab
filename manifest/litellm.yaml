@@ -4,6 +4,38 @@ apiVersion: v1
 metadata:
   name: litellm
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: Litellm-secret
+  namespace: litellm
+  labels:
+    app.kubernetes.io/part-of: litellm
+  annotations:
+    # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        LITELLM_MASTER_KEY: "{{ .MASTER_KEY }}"
+        LITELLM_SALT_KEY: "{{ .SALT_KEY }}"
+
+  data:
+    - secretKey: MASTER_KEY
+      remoteRef:
+        key: litellm-secrets
+        property: master_key
+    - secretKey: SALT_KEY
+      remoteRef:
+        key: litellm-secrets
+        property: salt_key
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,17 +56,17 @@ spec:
         image: ghcr.io/berriai/litellm:main-latest
         ports:
         - containerPort: 4000
-        # env:
-        # - name: AZURE_API_KEY
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: azure-secrets
-        #       key: api-key
-        # - name: AZURE_API_BASE
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: azure-secrets
-        #       key: api-base
+        env:
+        - name: MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: litellm-secrets
+              key: LITELLM_MASTER_KEY
+        - name: SALT_KEY
+          valueFrom:
+            secretKeyRef:
+              name: litellm-secrets
+              key: LITELLM_SALT_KEY
         volumeMounts:
         - name: litellm-volume
           mountPath: /app/config.yaml
