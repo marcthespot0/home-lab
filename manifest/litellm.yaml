@@ -68,7 +68,7 @@ spec:
               name: litellm-secrets
               key: LITELLM_SALT_KEY
           STORE_MODEL_IN_DB: True
-          DATABASE_URL: postgres://{{ .username }}:{{ .password }}@postgres.cluster01.litellm.owner:5432/litellm
+          DATABASE_URL: postgres://litellm_owner_user:izZ8cSENEFMRjJ4Xh0mjEL2q6CuDZ0ZsTXC0b7sEgwNy1C3OS4ScorByA4cSRi1x@postgres.cluster01.litellm.owner:5432/litellm
         volumeMounts:
         - name: litellm-volume
           mountPath: /app/config.yaml
