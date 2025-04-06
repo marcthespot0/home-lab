@@ -7,7 +7,7 @@ metadata:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: Litellm-secret
+  name: litellm-secrets
   namespace: litellm
   labels:
     app.kubernetes.io/part-of: litellm
@@ -15,7 +15,7 @@ metadata:
     # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
-  secretStoreRef:
+  secretStoreRef:s
     kind: ClusterSecretStore
     name: 1password
   target:
