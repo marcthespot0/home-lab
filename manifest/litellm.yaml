@@ -23,8 +23,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        LITELLM_MASTER_KEY: "{{ .MASTER_KEY }}"
-        LITELLM_SALT_KEY: "{{ .SALT_KEY }}"
+        LITELLM_MASTER_KEY: "{{ .LITELLM_MASTER_KEY }}"
+        LITELLM_SALT_KEY: "{{ .LITELLM_SALT_KEY }}"
 
   data:
     - secretKey: MASTER_KEY
@@ -57,12 +57,12 @@ spec:
         ports:
         - containerPort: 4000
         env:
-        - name: MASTER_KEY
+        - name: LITELLM_MASTER_KEY
           valueFrom:
             secretKeyRef:
               name: litellm-secrets
               key: LITELLM_MASTER_KEY
-        - name: SALT_KEY
+        - name: LITELLM_SALT_KEY
           valueFrom:
             secretKeyRef:
               name: litellm-secrets
