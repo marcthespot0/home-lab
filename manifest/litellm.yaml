@@ -1,9 +1,9 @@
-
+---
  kind: Namespace
  apiVersion: v1
  metadata:
    name: litellm
- ---
+---
  apiVersion: external-secrets.io/v1beta1
  kind: ExternalSecret
  metadata:
@@ -35,7 +35,7 @@
        remoteRef:
          key: litellm-secrets
          property: salt_key
- ---
+---
  apiVersion: apps/v1
  kind: Deployment
  metadata:
@@ -78,7 +78,7 @@
        - name: litellm-volume
          persistentVolumeClaim:
            claimName: litellm-pvc
- ---
+---
  apiVersion: v1
  kind: PersistentVolumeClaim
  metadata:
@@ -91,7 +91,7 @@
    resources:
      requests:
        storage: 2Gi
- ---
+---
  apiVersion: v1
  kind: Service
  metadata:
@@ -104,7 +104,7 @@
      targetPort: 4000
    selector:
      app: litellm
- ---
+---
  apiVersion: networking.k8s.io/v1
  kind: Ingress
  metadata:
@@ -125,7 +125,7 @@
              name: litellm
              port:
                number: 4000
- ---
+---
  apiVersion: gateway.networking.k8s.io/v1
  kind: HTTPRoute
  metadata:
@@ -144,7 +144,7 @@
    - backendRefs:
      - name: litellm
        port: 4000
- ---
+---
  apiVersion: externaldns.k8s.io/v1alpha1
  kind: DNSEndpoint
  metadata:
