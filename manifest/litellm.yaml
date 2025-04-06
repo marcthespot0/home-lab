@@ -15,7 +15,7 @@ metadata:
     # argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   refreshInterval: "5m"
-  secretStoreRef:s
+  secretStoreRef:
     kind: ClusterSecretStore
     name: 1password
   target:
