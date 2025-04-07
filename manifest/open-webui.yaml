@@ -94,7 +94,7 @@ metadata:
 spec:
   ingressClassName: ingress-nginx-internal
   rules:
-  - host: ollama.<path:stringreplacesecret#domain>
+  - host: webui.<path:stringreplacesecret#domain>
     http:
       paths:
       - path: /
@@ -118,7 +118,7 @@ spec:
     namespace: gateway
     sectionName: https
   hostnames:
-  - "ollama.<path:stringreplacesecret#domain>"
+  - "webui.<path:stringreplacesecret#domain>"
   rules:
   - backendRefs:
     - name: open-webui
@@ -134,7 +134,7 @@ metadata:
     argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
 spec:
   endpoints:
-    - dnsName: ollama.<path:stringreplacesecret#domain>
+    - dnsName: webui.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
         - intgw.<path:stringreplacesecret#domain>
