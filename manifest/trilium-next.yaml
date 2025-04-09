@@ -29,10 +29,9 @@ spec:
     chart: app-template
     repoURL: http://bjw-s.github.io/helm-charts/
     targetRevision: 3.7.3
-    securityContext: 
-        fsGroup: 2000 
     helm:
       values: |
+
         controllers:
           triliumnxt:
             type: statefulset
@@ -45,10 +44,8 @@ spec:
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
-                securityContext:
-                  runAsUser: 1001  
-                  fsGroup: 2000
-
+                command: ['sh', '-c']
+                args: ['chown -R root:2000 /trilium-data]
         service:
           app :
             controller: triliumnxt
