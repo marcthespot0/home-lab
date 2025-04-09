@@ -60,13 +60,17 @@ spec:
               http:
                 port: 8080
         persistence:
-          config:
-            enabled: true
+          trilium-data:
             existingClaim: triliumnxt-pvc
-            advancedMounts:
-              triliumnxt:
-                app:
-                  - path: /trilium-data              
+            globalMounts:
+              - path: /trilium-data
+          # config:
+          #   enabled: true
+          #   existingClaim: triliumnxt-pvc
+          #   advancedMounts:
+          #     triliumnxt:
+          #       app:
+          #         - path: /trilium-data              
   destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
