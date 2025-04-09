@@ -48,6 +48,7 @@ spec:
               app:
                 image:
                   repository: ghcr.io/triliumnext/notes
+                  pullPolicy: IfNotPresent
                   tag: v0.92.4
                 env:
                   TZ: America/New_York
