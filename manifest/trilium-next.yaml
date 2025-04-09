@@ -45,7 +45,7 @@ spec:
             type: deployment
             strategy: Recreate
             containers:
-              app :
+              app:
                 image:
                   repository: ghcr.io/triliumnext/notes
                   tag: v0.92.4
