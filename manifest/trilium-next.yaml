@@ -43,7 +43,7 @@ spec:
                 command:
                   - "/bin/sh"
                   - "-c"
-                  - "chown -R root:2000 /trilium-data"
+                  - "chmod -R 777 /trilium-data"
             containers:
               app:
                 image:
