@@ -40,10 +40,7 @@ spec:
           idleTimeoutSeconds: 300
         controllers:
           triliumnxt:
-            annotations:
-              reloader.stakater.com/auto: "true"
             type: statefulset
-            strategy: Recreate
             containers:
               app:
                 image:
