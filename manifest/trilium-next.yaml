@@ -89,7 +89,7 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: triliumnxt-service
+            name: triliumnxt
             port:
               number: 8080
 ---
