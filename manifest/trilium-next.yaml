@@ -44,8 +44,8 @@ spec:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
                 securityContext:
-                  uid: 1000
-                  gid: 1000
+                  uid: 0
+                  gid: 0
         service:
           app :
             controller: triliumnxt
@@ -57,14 +57,6 @@ spec:
             existingClaim: triliumnxt-pvc
             globalMounts:
               - path: *datadir 
-          # config:
-          #   enabled: true
-          #   existingClaim: triliumnxt-pvc
-          #   advancedMounts:
-          #     triliumnxt:
-          #       app:
-          #         - path: /trilium-data              
-  destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
   syncPolicy:
