@@ -43,6 +43,9 @@ spec:
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
+                securityContext:
+                  uid: 1000
+                  gid: 1000
         service:
           app :
             controller: triliumnxt
