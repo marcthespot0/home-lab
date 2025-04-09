@@ -67,6 +67,13 @@ spec:
             globalMounts:
               - path: *datadir
                 mountPath: *datadir
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ollama
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 # ---
 
 
