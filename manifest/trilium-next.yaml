@@ -69,7 +69,7 @@ spec:
                 mountPath: *datadir
   destination:
     server: https://kubernetes.default.svc
-    namespace: ollama
+    namespace: triliumnxt
   syncPolicy:
     automated:
       prune: true
