@@ -42,7 +42,7 @@ spec:
           triliumnxt:
             annotations:
               reloader.stakater.com/auto: "true"
-            type: deployment
+            type: statefulset
             strategy: Recreate
             containers:
               app:
