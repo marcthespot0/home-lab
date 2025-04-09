@@ -46,9 +46,6 @@ spec:
             strategy: Recreate
             containers:
               app:
-                securityContext:
-                  uid: 1000
-                  gid: 1000
                 image:
                   repository: ghcr.io/triliumnext/notes
                   pullPolicy: IfNotPresent
@@ -56,6 +53,9 @@ spec:
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: /trilium-data
+                securityContext:
+                  uid: 1000
+                  gid: 1000
         service:
           app :
             controller: triliumnxt
