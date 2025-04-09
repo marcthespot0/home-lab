@@ -57,6 +57,7 @@ spec:
             existingClaim: triliumnxt-pvc
             globalMounts:
               - path: *datadir 
+  destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
   syncPolicy:
