@@ -43,6 +43,10 @@ spec:
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
+                SecurityContext:
+                  runAsUser: 1001  
+                  fsGroup: 2000
+
         service:
           app :
             controller: triliumnxt
