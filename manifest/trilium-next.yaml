@@ -7,7 +7,7 @@ metadata:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: triliumnxt
+  name: triliumnxt-pvc
   namespace: triliumnxt
 spec:
   accessModes:
@@ -62,7 +62,7 @@ spec:
         persistence:
           config:
             enabled: true
-            existingClaim: triliumnxt
+            existingClaim: triliumnxt-pvc
             advancedMounts:
               triliumnxt:
                 app:
