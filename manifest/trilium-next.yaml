@@ -38,14 +38,15 @@ spec:
             containers:
               app:
                 image:
+                command: ['sh', '-c']
+                args: ['chown -R root:2000 /trilium-data]
                   repository: ghcr.io/triliumnext/notes
                   pullPolicy: IfNotPresent
                   tag: v0.92.6
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
-                command: ['sh', '-c']
-                args: ['chown -R root:2000 /trilium-data]
+
         service:
           app :
             controller: triliumnxt
