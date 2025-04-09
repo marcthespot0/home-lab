@@ -46,6 +46,9 @@ spec:
             strategy: Recreate
             containers:
               app:
+                securityContext:
+                  uid: 1000
+                  gid: 1000
                 image:
                   repository: ghcr.io/triliumnext/notes
                   pullPolicy: IfNotPresent
