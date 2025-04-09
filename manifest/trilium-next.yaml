@@ -39,13 +39,10 @@ spec:
                 image:
                   repository: ghcr.io/triliumnext/notes
                   pullPolicy: IfNotPresent
-                  tag: v0.92.4
+                  tag: v0.92.6
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
-                securityContext:
-                  uid: 0
-                  gid: 0
         service:
           app :
             controller: triliumnxt
