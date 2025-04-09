@@ -1,0 +1,147 @@
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: triliumnxt
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  project: default
+  source:
+    chart: app-template
+    repoURL: http://bjw-s.github.io/helm-charts/
+    targetRevision: 3.7.3
+    helm:
+      values: |
+        controllers:
+          *app :
+            type: statefulset
+
+            containers:
+              *app :
+                image:
+                  repository: ghcr.io/triliumnext/notes
+                  tag: v0.92.4
+
+                env:
+                  TZ: ${TIMEZONE}
+                  TRILIUM_DATA_DIR: &datadir /trilium-data
+
+                probes:
+                  liveness:
+                    enabled: true
+                  readiness:
+                    enabled: true
+                  startup:
+                    enabled: false
+
+        service:
+          *app :
+            controller: *app
+            ports:
+              http:
+                port: &port 8080
+
+
+        persistence:
+          trilium-data:
+            existingClaim: *app
+            globalMounts:
+              - path: *datadir
+                mountPath: *datadir
+# ---
+
+
+
+
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: triliumnxt-service
+#   namespace: triliumnxt
+#   labels:
+#     app: triliumnxt
+# spec:
+#   selector:
+#     app: triliumnxt
+#   ports:
+#     - protocol: TCP
+#       port: 8080
+#   type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  ingressClassName: ingress-nginx-internal
+  rules:
+  - host: triliumnxt.<path:stringreplacesecret#domain>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: triliumnxt-service
+            port:
+              number: 8080
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+spec:
+  parentRefs:
+  - name: internal
+    namespace: gateway
+    sectionName: https
+  hostnames:
+  - "triliumnxt.<path:stringreplacesecret#domain>"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: triliumnxt
+      port: 8080
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+  annotations:
+    external-dns.custom/type: private
+spec:
+  endpoints:
+    - dnsName: triliumnxt.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
+        - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
+          value: "false"
