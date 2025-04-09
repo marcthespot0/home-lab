@@ -62,9 +62,10 @@ spec:
         persistence:
           trilium-data:
             existingClaim: triliumnxt
-            globalMounts:
-              - path: /trilium-data
-                mountPath: /trilium-data
+            advancedMounts:
+              triliumnxt:
+                app:
+                  - path: /trilium-data              
   destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
