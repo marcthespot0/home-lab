@@ -67,7 +67,7 @@ spec:
               triliumnxt:
                 app:
                   - path: /trilium-data              
-    destination:
+  destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
   syncPolicy:
