@@ -49,27 +49,15 @@ spec:
                 image:
                   repository: ghcr.io/triliumnext/notes
                   tag: v0.92.4
-
                 env:
-                  TZ: ${TIMEZONE}
+                  TZ: America/New_York
                   TRILIUM_DATA_DIR: /trilium-data
-
-                probes:
-                  liveness:
-                    enabled: true
-                  readiness:
-                    enabled: true
-                  startup:
-                    enabled: false
-
         service:
           app :
             controller: triliumnxt
             ports:
               http:
                 port: 8080
-
-
         persistence:
           trilium-data:
             existingClaim: triliumnxt
@@ -83,25 +71,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
-# ---
-
-
-
-
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: triliumnxt-service
-#   namespace: triliumnxt
-#   labels:
-#     app: triliumnxt
-# spec:
-#   selector:
-#     app: triliumnxt
-#   ports:
-#     - protocol: TCP
-#       port: 8080
-#   type: ClusterIP
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
