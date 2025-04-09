@@ -42,10 +42,7 @@ spec:
                   tag: v0.92.4
                 env:
                   TZ: America/New_York
-                  TRILIUM_DATA_DIR: /trilium-data
-                securityContext:
-                  uid: 1000
-                  gid: 1000
+                  TRILIUM_DATA_DIR: &datadir /trilium-data
         service:
           app :
             controller: triliumnxt
@@ -56,7 +53,7 @@ spec:
           trilium-data:
             existingClaim: triliumnxt-pvc
             globalMounts:
-              - path: /trilium-data
+              - path: *datadir 
           # config:
           #   enabled: true
           #   existingClaim: triliumnxt-pvc
