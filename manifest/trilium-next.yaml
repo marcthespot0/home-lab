@@ -33,8 +33,10 @@ spec:
       values: |
         controllers:
           triliumnxt:
-            type: statefulset
-
+            annotations:
+              reloader.stakater.com/auto: "true"
+            type: deployment
+            strategy: Recreate
             containers:
               app :
                 image:
@@ -43,7 +45,7 @@ spec:
 
                 env:
                   TZ: ${TIMEZONE}
-                  TRILIUM_DATA_DIR: &datadir /trilium-data
+                  TRILIUM_DATA_DIR: /trilium-data
 
                 probes:
                   liveness:
@@ -65,8 +67,8 @@ spec:
           trilium-data:
             existingClaim: triliumnxt
             globalMounts:
-              - path: *datadir
-                mountPath: *datadir
+              - path: /trilium-data
+                mountPath: /trilium-data
   destination:
     server: https://kubernetes.default.svc
     namespace: triliumnxt
