@@ -32,11 +32,11 @@ spec:
     helm:
       values: |
         controllers:
-          *app :
+          triliumnxt:
             type: statefulset
 
             containers:
-              *app :
+              app :
                 image:
                   repository: ghcr.io/triliumnext/notes
                   tag: v0.92.4
@@ -54,7 +54,7 @@ spec:
                     enabled: false
 
         service:
-          *app :
+          app :
             controller: *app
             ports:
               http:
@@ -63,7 +63,7 @@ spec:
 
         persistence:
           trilium-data:
-            existingClaim: *app
+            existingClaim: triliumnxt
             globalMounts:
               - path: *datadir
                 mountPath: *datadir
