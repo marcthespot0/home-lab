@@ -31,13 +31,6 @@ spec:
     targetRevision: 3.7.3
     helm:
       values: |
-        replicaCount: 1
-        knative:
-          enabled: false
-          containerConcurrency: 1
-          timeoutSeconds: 300
-          responseStartTimeoutSeconds: 300
-          idleTimeoutSeconds: 300
         controllers:
           triliumnxt:
             type: statefulset
