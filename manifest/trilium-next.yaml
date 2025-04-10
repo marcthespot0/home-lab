@@ -102,6 +102,9 @@ spec:
   parentRefs:
   - name: internal
     namespace: gateway
+    sectionName: https    
+  - name: external
+    namespace: gateway
     sectionName: https
   hostnames:
   - "triliumnxt.<path:stringreplacesecret#domain>"
@@ -120,13 +123,13 @@ metadata:
   name: triliumnxt
   namespace: triliumnxt
   annotations:
-    external-dns.custom/type: private
+    external-dns.custom/type: public
 spec:
   endpoints:
     - dnsName: triliumnxt.<path:stringreplacesecret#domain>
       recordType: CNAME
       targets:
-        - intgw.<path:stringreplacesecret#domain>
+        - ingress.<path:stringreplacesecret#domain>
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
-          value: "false"
+          value: "true"
