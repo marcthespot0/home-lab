@@ -133,3 +133,18 @@ spec:
       providerSpecific:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "true"
+---
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: triliumnxt
+  namespace: triliumnxt
+  annotations:
+    external-dns.custom/type: private
+spec:
+  endpoints:
+    - dnsName: triliumnxt.<path:stringreplacesecret#domain>
+      recordType: CNAME
+      targets:
+        - intgw.<path:stringreplacesecret#domain>
+      providerSpecific:
