@@ -37,7 +37,7 @@ spec:
                 image:
                   repository: ollama/ollama
                   pullPolicy: IfNotPresent
-                  tag: "0.6.4"
+                  tag: "0.6.5"
                 env:
                   OLLAMA_MODELS: /models
                   OLLAMA_DEBUG: 1
