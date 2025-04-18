@@ -41,6 +41,8 @@ spec:
                 env:
                   OLLAMA_MODELS: /models
                   OLLAMA_DEBUG: 1
+                  ENABLE_RAG_HYBRID_SEARCH: "true"
+                  DATA_DIR: /models
             pod:
               runtimeClassName: nvidia
         persistence:
