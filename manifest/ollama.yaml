@@ -43,8 +43,6 @@ spec:
                   OLLAMA_DEBUG: 1
             pod:
               runtimeClassName: nvidia
-              nodeSelector:
-                kubernetes.io/hostname: talos-03
         persistence:
           config:
             enabled: true
