@@ -15,8 +15,8 @@ spec:
   project: default
   source:
     chart: app-template
-    repoURL: http://bjw-s.github.io/helm-charts/
-    targetRevision: 3.7.3
+    repoURL: https://bjw-s-labs.github.io/helm-charts
+    targetRevision: 4.0.1
     helm:
       values: |
         controllers:
