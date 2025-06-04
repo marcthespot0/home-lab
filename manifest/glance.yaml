@@ -70,8 +70,8 @@ kind: ConfigMap
 metadata:
   name: glance-configmap
   namespace: glance
-  # labels:
-  #   app.kubernetes.io/name: glance
+  labels:
+    app.kubernetes.io/name: glance
 data:
   glance.yaml: |
     theme:
