@@ -33,7 +33,7 @@ spec:
       values: |
         controllers:
           triliumnxt:
-            type: statefulset
+            # type: statefulset
             initContainers:
               init-config:
                 image:
