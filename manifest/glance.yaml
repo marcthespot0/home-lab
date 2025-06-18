@@ -295,7 +295,7 @@ data:
             - size: small
               widgets:
                 - type: weather
-                  location: Huntington, New York, United States
+                  location: San Francisco, California, United States
                   units: metric
                   hour-format: 24h
       
