@@ -90,46 +90,21 @@ data:
                 title: Services
                 sites:
                   - title: Jellyfin
-                      url: https://jellyfin.marcthespot.com/
-                      icon: si:jellyfin
-                    - title: Radarr
-                      url: https://radarr.marcthespot.com/
-                      icon: si:radarr
-                    - title: Sonarr
-                      url: https://Sonarr.marcthespot.com/
-                      icon: si:sonarr      
-                    - title: Homeassistant
-                      url: http://192.168.1.210:8123
-                      icon: si:homeassistant
-                    - title: Truenas
-                      url: http://1
-                    - title: General
-                      links:
-                        - title: Gmail
-                          url: https://mail.google.com/mail/u/0/
-                        - title: Amazon
-                          url: https://www.amazon.com/
-                        - title: Github
-                          url: https://github.com/
-                    - title: Entertainment
-                      links:
-                        - title: YouTube
-                          url: https://youtube.com/
-                        - title: Netflix
-                          url: https://netflix.com/
-                    - title: Social
-                      links:
-                        - title: Reddit
-                          url: https://reddit.com/
-                        - title: X
-                          url: https://x.com/
-                        - title: Facebook
-                          url: https://facebook.com
-                        - title: Instagram
-                          url: https://instagram.com92.168.1.235
-                      icon: si:truenas                   
+                    url: https://jellyfin.marcthespot.com/
+                    icon: si:jellyfin
+                  - title: Radarr
+                    url: https://radarr.marcthespot.com/
+                    icon: si:radarr
+                  - title: Sonarr
+                    url: https://Sonarr.marcthespot.com/
+                    icon: si:sonarr      
+                  - title: Homeassistant
+                    url: http://192.168.1.210:8123
+                    icon: si:homeassistant
+                  - title: Truenas
+                    url: http://192.168.1.235
               - type: bookmarks
-                groups:
+                groups:      
                   - title: General
                     links:
                       - title: Gmail
@@ -153,7 +128,7 @@ data:
                       - title: Facebook
                         url: https://facebook.com
                       - title: Instagram
-                        url: https://instagram.com
+                        url: https://instagram.com92.168.1.235                  
       - name: Markets
         columns:
           - size: small
