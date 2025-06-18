@@ -109,7 +109,7 @@ data:
                       icon: si:truenas
                     
                       
-               - type: bookmarks
+                - type: bookmarks
                   groups:
                     - title: General
                       links:
