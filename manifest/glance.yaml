@@ -102,7 +102,7 @@ data:
                       url: http://192.168.1.210:8123
                       icon: si:homeassistant
                     - title: Truenas
-                      url: http://192.168.1.235
+                      url: http://1
                     - title: General
                       links:
                         - title: Gmail
