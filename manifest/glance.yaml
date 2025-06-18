@@ -166,9 +166,6 @@ data:
     	      - title: Transmission
                     url: https://transmission.marcthespot.com
                     icon: assets/transmission-logo.png
-    
-              - type: repository
-                repository: glanceapp/glance
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
