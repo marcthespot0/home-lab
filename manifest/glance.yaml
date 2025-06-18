@@ -250,65 +250,89 @@ data:
                   limit: 7
                   style: vertical-cards
       
-        - name: Home
-          columns:
-            - size: small
-              widgets:
-                - type: calendar
-      
-      
-                - type: videos
-                  channels:
-                    - UChIs72whgZI9w6d6FhwGGHA # Gamers Nexus
-                    - UC4w1YQAJMWOz4qtxinq55LQ # Level1Techs
-                    - UCI8iQa1hv7oV_Z8D35vVuSg # Hardware Unboxed
-                    - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
-                    - UC1LpsuAUaKoMzzJSEt5WImw # Asianometry
-                    - UC9PBzalIcEQCsiIkq36PyUA # Digital Foundry
-                    - UCSNsJvvc3LarXVkJ2H6e2zQ # Michael Hendriks
-                    - UCD80bzqJh1N7lOqn7n0vKTg # Nilaus
-                    - UCMb0O2CdPBNi-QqPk5T3gsQ # James Hoffmann
-                    - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
-      
-                - type: group
-                  widgets:
-                    - type: reddit
-                      subreddit: hyprland
-                      show-thumbnails: true
-                    - type: reddit
-                      subreddit: unixporn
-                      show-thumbnails: true    
-          colums:
-            - size: small
-              widgets:
-                - type: weather
-                  location: San Francisco, California, United States
-                  units: metric
-                  hour-format: 24h
-      
-                - type: markets
-                  markets:
-                    - symbol: SPY
-                      name: S&P 500
-                    - symbol: NVDA
-                      name: NVIDIA
-                    - symbol: AAPL
-                      name: Apple
-                    - symbol: MSFT
-                      name: Microsoft
-                    - symbol: GOOGL
-                      name: Google
-                    - symbol: AMD
-                      name: AMD
-      
-                - type: releases
-                  cache: 1d
-                  # Without authentication the Github API allows for up to 60 requests per hour. You can create a
-                  # read-only token from your Github account settings and use it here to increase the limit.
-                  # token: ...
-                  repositories:
-                    - glanceapp/glance
-                    - siderolabs/talos
+  - name: Home
+    columns:
+      - size: small
+        widgets:
+          - type: calendar
+
+          - type: rss
+            limit: 10
+            collapse-after: 3
+            cache: 10m
+            feeds:
+              - url: http://feeds.macrumors.com/MacRumors-All
+                title: MacRumors
+              - url: https://www.phoronix.com/rss.php
+                title: Phoronix
+              - url: https://www.gamingonlinux.com/article_rss.php
+              - url: https://chipsandcheese.com/feed/
+              - url: https://www.home-assistant.io/atom.xml
+
+          - type: twitch-channels
+            channels:
+              - gamesdonequick
+              - teammacintyre
+              - nilaus
+              - nefrums
+              - raxxanterax
+
+      - size: full
+        widgets:
+          - type: hacker-news
+
+          - type: videos
+            channels:
+              - UChIs72whgZI9w6d6FhwGGHA # Gamers Nexus
+              - UC4w1YQAJMWOz4qtxinq55LQ # Level1Techs
+              - UCI8iQa1hv7oV_Z8D35vVuSg # Hardware Unboxed
+              - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
+              - UC1LpsuAUaKoMzzJSEt5WImw # Asianometry
+              - UC9PBzalIcEQCsiIkq36PyUA # Digital Foundry
+              - UCSNsJvvc3LarXVkJ2H6e2zQ # Michael Hendriks
+              - UCD80bzqJh1N7lOqn7n0vKTg # Nilaus
+              - UCMb0O2CdPBNi-QqPk5T3gsQ # James Hoffmann
+              - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
+
+          - type: group
+            widgets:
+              - type: reddit
+                subreddit: factorio
+                show-thumbnails: true
+              - type: reddit
+                subreddit: selfhosted
+                show-thumbnails: true
+
+      - size: small
+        widgets:
+          - type: weather
+            location: San Francisco, California, United States
+            units: metric
+            hour-format: 24h
+
+          - type: markets
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                name: Apple
+              - symbol: MSFT
+                name: Microsoft
+              - symbol: GOOGL
+                name: Google
+              - symbol: AMD
+                name: AMD
+
+          - type: releases
+            cache: 1d
+            # Without authentication the Github API allows for up to 60 requests per hour. You can create a
+            # read-only token from your Github account settings and use it here to increase the limit.
+            # token: ...
+            repositories:
+              - glanceapp/glance
+              - siderolabs/talos
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
