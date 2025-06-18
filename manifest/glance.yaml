@@ -90,36 +90,70 @@ data:
                 title: Services
                 sites:
                   - title: Plex
-                    url: http://plex.default.svc:32400
-                    icon: si:plex
-                  - title: qBittorrent
-                    url: https://qbit.kantai.xyz/
-                    icon: si:qbittorrent
+                      url: https://plex.marcthespot.com/web
+                      icon: si:plex
+                    - title: Radarr
+                      url: https://radarr.marcthespot.com/
+                      icon: si:radarr
+                    - title: Sonarr
+                      url: https://Sonarr.marcthespot.com/
+                      icon: si:sonarr      
+                    - title: Homeassistant
+                      url: http://192.168.1.210:8123
+                      icon: si:homeassistant
+                    - title: Truenas
+                      url: http://1
+                    - title: General
+                      links:
+                        - title: Gmail
+                          url: https://mail.google.com/mail/u/0/
+                        - title: Amazon
+                          url: https://www.amazon.com/
+                        - title: Github
+                          url: https://github.com/
+                    - title: Entertainment
+                      links:
+                        - title: YouTube
+                          url: https://youtube.com/
+                        - title: Netflix
+                          url: https://netflix.com/
+                    - title: Social
+                      links:
+                        - title: Reddit
+                          url: https://reddit.com/
+                        - title: X
+                          url: https://x.com/
+                        - title: Facebook
+                          url: https://facebook.com
+                        - title: Instagram
+                          url: https://instagram.com92.168.1.235
+                      icon: si:truenas                   
               - type: bookmarks
                 groups:
                   - title: General
                     links:
-                      - title: Gmail
-                        url: https://mail.google.com/mail/u/0/
-                      - title: Amazon
-                        url: https://www.amazon.com/
-                      - title: Github
-                        url: https://github.com/
-                  - title: Entertainment
-                    links:
-                      - title: YouTube
-                        url: https://youtube.com/
-                      - title: Netflix
-                        url: https://netflix.com/
-                      - title: Crunchyroll
-                        url: https://crunchyroll.com/
-                      - title: Prime Video
-                        url: https://primevideo.com/
-                  - title: Social
-                    links:
-                      - title: Reddit
-                        url: https://reddit.com/
-
+                        - title: Gmail
+                          url: https://mail.google.com/mail/u/0/
+                        - title: Amazon
+                          url: https://www.amazon.com/
+                        - title: Github
+                          url: https://github.com/
+                    - title: Entertainment
+                      links:
+                        - title: YouTube
+                          url: https://youtube.com/
+                        - title: Netflix
+                          url: https://netflix.com/
+                    - title: Social
+                      links:
+                        - title: Reddit
+                          url: https://reddit.com/
+                        - title: X
+                          url: https://x.com/
+                        - title: Facebook
+                          url: https://facebook.com
+                        - title: Instagram
+                          url: https://instagram.com
       - name: Markets
         columns:
           - size: small
