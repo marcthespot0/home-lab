@@ -291,6 +291,7 @@ data:
                     - type: reddit
                       subreddit: unixporn
                       show-thumbnails: true    
+                      
             - size: small
               widgets:
                 - type: weather
