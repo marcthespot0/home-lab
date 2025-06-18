@@ -100,15 +100,13 @@ data:
                       icon: si:sonarr      
                     - title: Transmission
                       url: https://transmission.marcthespot.com
-                      title: Transmission
+                      icon: transmission
                     - title: Homeassistant
                       url: http://192.168.1.210:8123
                       icon: si:homeassistant
                     - title: Truenas
                       url: http://192.168.1.235
-                      icon: si:truenas
-                    
-                      
+                      icon: si:truenas                   
                 - type: bookmarks
                   groups:
                     - title: General
