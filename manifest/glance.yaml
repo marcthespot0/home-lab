@@ -87,20 +87,10 @@ data:
             widgets:
               - type: search
                 search-engine: duckduckgo
-                bangs:
-                  - title: YouTube
-                    shortcut: "!yt"
-                    url: https://www.youtube.com/results?search_query={QUERY}
-                  - title: GitHub
-                    shortcut: "!gh"
-                    url: https://github.com/search?q={QUERY}
-    
+
               - type: calendar
     
               - type: hacker-news
-    
-              - type: repository
-                repository: OWNER/REPO
     
           - size: full
             widgets:
