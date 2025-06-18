@@ -290,10 +290,7 @@ data:
                       show-thumbnails: true
                     - type: reddit
                       subreddit: unixporn
-                      show-thumbnails: true
-                  - type: reddit
-                      subreddit: bambulab
-                      show-thumbnails: true      
+                      show-thumbnails: true    
             - size: small
               widgets:
                 - type: weather
