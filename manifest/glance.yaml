@@ -132,28 +132,28 @@ data:
                 groups:
                   - title: General
                     links:
-                        - title: Gmail
-                          url: https://mail.google.com/mail/u/0/
-                        - title: Amazon
-                          url: https://www.amazon.com/
-                        - title: Github
-                          url: https://github.com/
-                    - title: Entertainment
-                      links:
-                        - title: YouTube
-                          url: https://youtube.com/
-                        - title: Netflix
-                          url: https://netflix.com/
-                    - title: Social
-                      links:
-                        - title: Reddit
-                          url: https://reddit.com/
-                        - title: X
-                          url: https://x.com/
-                        - title: Facebook
-                          url: https://facebook.com
-                        - title: Instagram
-                          url: https://instagram.com
+                      - title: Gmail
+                        url: https://mail.google.com/mail/u/0/
+                      - title: Amazon
+                        url: https://www.amazon.com/
+                      - title: Github
+                        url: https://github.com/
+                  - title: Entertainment
+                    links:
+                      - title: YouTube
+                        url: https://youtube.com/
+                      - title: Netflix
+                        url: https://netflix.com/
+                  - title: Social
+                    links:
+                      - title: Reddit
+                        url: https://reddit.com/
+                      - title: X
+                        url: https://x.com/
+                      - title: Facebook
+                        url: https://facebook.com
+                      - title: Instagram
+                        url: https://instagram.com
       - name: Markets
         columns:
           - size: small
