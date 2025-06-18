@@ -89,9 +89,9 @@ data:
                 cache: 1m
                 title: Services
                 sites:
-                  - title: Plex
-                      url: https://plex.marcthespot.com/web
-                      icon: si:plex
+                  - title: Jellyfin
+                      url: https://jellyfin.marcthespot.com/
+                      icon: si:jellyfin
                     - title: Radarr
                       url: https://radarr.marcthespot.com/
                       icon: si:radarr
