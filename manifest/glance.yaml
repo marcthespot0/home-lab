@@ -256,19 +256,6 @@ data:
               widgets:
                 - type: calendar
       
-                - type: rss
-                  limit: 10
-                  collapse-after: 3
-                  cache: 10m
-                  feeds:
-                    - url: http://feeds.macrumors.com/MacRumors-All
-                      title: MacRumors
-                    - url: https://www.phoronix.com/rss.php
-                      title: Phoronix
-                    - url: https://www.gamingonlinux.com/article_rss.php
-                    - url: https://chipsandcheese.com/feed/
-                    - url: https://www.home-assistant.io/atom.xml
-      
       
                 - type: videos
                   channels:
