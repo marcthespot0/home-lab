@@ -28,7 +28,7 @@ spec:
               glance:
                 image:
                   repository: glanceapp/glance
-                  tag: v0.7.9@sha256:6e14662ffe83d4bf4e09314d27ee233d51f3ed2dc7322c4d4b18c929177c4117
+                  tag: v0.8.4@sha256:6df86a7e8868d1eda21f35205134b1962c422957e42a0c44d4717c8e8f741b1a
                 args:
                   - --config
                   - /config/glance.yaml
