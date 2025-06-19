@@ -117,6 +117,8 @@ data:
                         url: https://www.amazon.com/
                       - title: Github
                         url: https://github.com/
+                      - title: Chase 
+                        url: https://chase.com/
                   - title: Entertainment
                     links:
                       - title: YouTube
@@ -157,6 +159,21 @@ data:
                     show-thumbnails: true
                   - type: reddit
                     subreddit: wallpaperengine
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: longisland
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: homeassistant
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: selfhosted 
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: ufos
+                    show-thumbnails: true
+                  - type: reddit
+                    subreddit: linux_gaming
                     show-thumbnails: true
 
               - type: videos
