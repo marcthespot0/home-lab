@@ -134,7 +134,7 @@ data:
                       - title: Instagram
                         url: https://instagram.com92.168.1.235                  
 
-      - name: Reddit YouTube
+      - name: Reddit_YouTube
         columns:
           - size: full
             widgets:
