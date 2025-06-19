@@ -77,7 +77,7 @@ data:
     pages:
       - name: Start
         width: slim
-        hide-desktop-navigation: true
+        hide-desktop-navigation: false
         center-vertically: true
         columns:
           - size: full
