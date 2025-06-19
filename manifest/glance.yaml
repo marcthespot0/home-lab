@@ -83,7 +83,7 @@ data:
           - size: full
             widgets:
               - type: search
-                search-engine: https://search.marcthespot.com/search?q=<query>
+                search-engine: https://search.marcthespot.com/search?q=
                 autofocus: true
 
               - type: monitor
@@ -104,6 +104,9 @@ data:
                     icon: si:homeassistant
                   - title: Truenas
                     url: http://192.168.1.235
+                  - title: Argocd
+                    url: https://argocd.marcthespot.com/
+                    icon: si:argocd
               - type: bookmarks
                 groups:      
                   - title: General
