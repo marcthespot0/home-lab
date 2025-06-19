@@ -125,6 +125,8 @@ data:
                         url: https://youtube.com/
                       - title: Netflix
                         url: https://netflix.com/
+                      - title: NHL
+                        url: https://www.nhl.com/
                   - title: Social
                     links:
                       - title: Reddit
