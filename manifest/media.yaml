@@ -393,8 +393,8 @@ spec:
             secretKeyRef:
               name: transmission
               key: TRANSMISSION_VAR_VPNCODE
-        - name: T_ALLOWED
-          value: "192.168.1.7"
+        # - name: T_ALLOWED
+        #   value: "192.168.1.7"
         - name: T_USERNAME
           valueFrom:  
             secretKeyRef:
