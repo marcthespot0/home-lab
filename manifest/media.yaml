@@ -394,7 +394,7 @@ spec:
               name: transmission
               key: TRANSMISSION_VAR_VPNCODE
         - name: T_ALLOWED
-          value: 127.0.0.1,192.168.1.7,10.*.*.*
+          value: 192.168.1.7
         - name: T_USERNAME
           valueFrom:  
             secretKeyRef:
