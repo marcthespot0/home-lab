@@ -83,7 +83,7 @@ data:
           - size: full
             widgets:
               - type: search
-                search-engine: https://search.marcthespot.com/search?q={query}
+                search-engine: https://search.marcthespot.com/search?q={QUERY}
                 autofocus: true
 
               - type: monitor
