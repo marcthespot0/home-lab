@@ -80,18 +80,6 @@ data:
         hide-desktop-navigation: false
         center-vertically: true
         columns:
-          head-widgets:
-          - type: markets
-            hide-header: true
-            markets:
-              - symbol: SPY
-                name: S&P 500
-              - symbol: BTC-USD
-                name: Bitcoin
-              - symbol: NVDA
-                name: NVIDIA
-              - symbol: AAPL
-                name: Apple
           - size: full
             widgets:
               - type: search
