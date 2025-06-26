@@ -80,15 +80,18 @@ data:
         hide-desktop-navigation: false
         center-vertically: true
         columns:
+          -size: small
+           widgets:
+              - type: calendar
+              - type: weather
+                location: "South Huntington, NY"
+                units: imperial
           - size: full
             widgets:
               - type: search
                 search-engine: https://search.marcthespot.com/search?q={QUERY}
                 autofocus: true
 
-
-          - size: full
-            widgets:
               - type: monitor
                 cache: 1m
                 title: Services
