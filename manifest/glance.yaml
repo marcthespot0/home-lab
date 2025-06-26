@@ -100,7 +100,9 @@ data:
                 name: Apple
               - symbol: MSFT
                 name: Microsoft
-
+        columns:
+          - size: full
+            widgets:
               - type: monitor
                 cache: 1m
                 title: Services
