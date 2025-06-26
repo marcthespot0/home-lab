@@ -98,7 +98,7 @@ data:
           - size: small
             widgets:
               - type: weather
-                location: New York, NY
+                location: South Huntington, New York, United States
                 units: imperial
                 show-forecast: true
                 show-wind: true
