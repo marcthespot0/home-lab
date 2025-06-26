@@ -211,6 +211,9 @@ data:
             widgets:
               - type: weather
                 location: South Huntington, New York, United States
+                units: imperial
+                show-forecast: true
+                show-wind: true 
               - type: custom-api
                 title: NHL Today
                 cache: 5s
