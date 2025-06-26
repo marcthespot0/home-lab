@@ -93,6 +93,11 @@ data:
                 name: Ethereum
               - symbol: SOL-USD
                 name: Solana
+              - symbol: LTC-USD
+                name: Litecoin
+              - symbol: DOGE-USD
+                name: Dogecoin
+              - symbol: XMR-USD
               - symbol: SPY
                 name: S&P 500
               - symbol: NVDA
