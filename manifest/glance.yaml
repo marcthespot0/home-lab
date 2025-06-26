@@ -149,9 +149,9 @@ data:
                   - title: Immich
                     url: https://immich.marcthespot.com/
                     icon: si:immich
-                  - title: Transmission
-                    url: https://transmission.marcthespot.com/
-                    icon: si:transmission
+                  - title: Plex
+                    url: https://192.168.1.165:32400/
+                    icon: si:plex
                   - title: Longhorn
                     url: https://lh.marcthespot.com/
                     icon: si:longhorn
