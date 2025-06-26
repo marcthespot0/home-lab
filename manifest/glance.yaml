@@ -79,7 +79,9 @@ data:
         width: slim
         hide-desktop-navigation: false
         center-vertically: true
-        head-widgets:
+        columns:
+          - size: full
+          head-widgets:
           - type: markets
             hide-header: true
             markets:
@@ -91,9 +93,6 @@ data:
                 name: NVIDIA
               - symbol: AAPL
                 name: Apple
-
-        columns:
-          - size: full
             widgets:
               - type: search
                 search-engine: https://search.marcthespot.com/search?q={QUERY}
