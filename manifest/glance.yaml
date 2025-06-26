@@ -98,7 +98,7 @@ data:
           - size: small
             widgets:
               - type: weather
-                location: Huntington, NY
+                location: New York, NY
                 units: imperial
                 show-forecast: true
                 show-wind: true
