@@ -119,10 +119,10 @@ data:
                     icon: si:longhorn
                   - title: Paperless
                     url: https://paperless.marcthespot.com/
-                    icon: si:paperless
+                    icon: si:paperless-ngx
                   - title: OpenWebUi
                     url: https://webui.marcthespot.com/
-                    icon: si:openwebui
+                    icon: si:ollama
               - type: bookmarks
                 groups:      
                   - title: General
