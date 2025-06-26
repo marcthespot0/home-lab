@@ -107,6 +107,21 @@ data:
                   - title: Argocd
                     url: https://argocd.marcthespot.com/
                     icon: si:argocd
+                  - title: Immich
+                    url: https://immich.marcthespot.com/
+                    icon: si:immich
+                  - title: Transmission
+                    url: http://transmission.marcthespot.com/
+                    icon: si:transmission
+                  - title: title: Longhorn
+                    url: https://lh.marcthespot.com/
+                    icon: si:longhorn
+                  - title: Paperless
+                    url: https://paperless.marcthespot.com/
+                    icon: si:paperless
+                  - title: OpenWebUi
+                    url: https://webui.marcthespot.com/
+                    icon: si:openwebui
               - type: bookmarks
                 groups:      
                   - title: General
@@ -153,7 +168,11 @@ data:
                         url: https://www.myminifactory.com/
                       - title: Cults3D
                         url: https://cults3d.com/en
-
+                  - title: School
+                    links:
+                      - title: WGU
+                        url: https://my.wgu.edu/
+                      
       - name: Reddit_YouTube
         columns:
           - size: full
