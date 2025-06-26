@@ -104,6 +104,7 @@ data:
                     icon: si:homeassistant
                   - title: Truenas
                     url: http://192.168.1.235
+                    icon: si:truenas
                   - title: Argocd
                     url: https://argocd.marcthespot.com/
                     icon: si:argocd
@@ -111,7 +112,7 @@ data:
                     url: https://immich.marcthespot.com/
                     icon: si:immich
                   - title: Transmission
-                    url: http://transmission.marcthespot.com/
+                    url: https://transmission.marcthespot.com/
                     icon: si:transmission
                   - title: Longhorn
                     url: https://lh.marcthespot.com/
