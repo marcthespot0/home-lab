@@ -80,12 +80,12 @@ data:
         hide-desktop-navigation: false
         center-vertically: true
         columns:
-          -size: small
-           widgets:
-              - type: calendar
-              - type: weather
-                location: "South Huntington, NY"
-                units: imperial
+          # -size: small
+          #  widgets:
+          #     - type: calendar
+          #     - type: weather
+          #       location: "South Huntington, NY"
+          #       units: imperial
           - size: full
             widgets:
               - type: search
