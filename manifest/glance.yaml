@@ -74,6 +74,10 @@ metadata:
     app.kubernetes.io/name: glance
 data:
   glance.yaml: |
+    theme:
+      background-color: 225 14 15
+      primary-color: 157 47 65
+      contrast-multiplier: 1.1
     pages:
       - name: Startpage
         # width: slim
