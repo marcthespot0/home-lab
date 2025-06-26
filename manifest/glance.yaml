@@ -85,6 +85,17 @@ data:
               - type: search
                 search-engine: https://search.marcthespot.com/search?q={QUERY}
                 autofocus: true
+          - size: small
+            widgets:
+              - type: calendar
+          - size: full
+            widgets:
+              - type: hacker-news
+          - size: small
+            widgets:
+              - type: weather
+                location: South Huntington, NY
+                units: imperial
         head-widgets:
           - type: markets
             hide-header: true
@@ -99,18 +110,6 @@ data:
                 name: Apple
               - symbol: MSFT
                 name: Microsoft
-        columns:
-          - size: small
-            widgets:
-              - type: calendar
-          - size: full
-            widgets:
-              - type: hacker-news
-          - size: small
-            widgets:
-              - type: weather
-                location: South Huntington, NY
-                units: imperial
 
               - type: monitor
                 cache: 1m
