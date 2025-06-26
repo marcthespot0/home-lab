@@ -113,7 +113,7 @@ data:
                   - title: Transmission
                     url: http://transmission.marcthespot.com/
                     icon: si:transmission
-                  - title: title: Longhorn
+                  - title: Longhorn
                     url: https://lh.marcthespot.com/
                     icon: si:longhorn
                   - title: Paperless
