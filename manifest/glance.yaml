@@ -76,9 +76,9 @@ data:
   glance.yaml: |
     pages:
       - name: Startpage
-        width: slim
-        hide-desktop-navigation: false
-        center-vertically: true
+        # width: slim
+        # hide-desktop-navigation: false
+        # center-vertically: true
         columns:
           # -size: small
           #  widgets:
