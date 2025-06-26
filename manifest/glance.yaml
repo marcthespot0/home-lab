@@ -150,7 +150,7 @@ data:
                     url: https://immich.marcthespot.com/
                     icon: si:immich
                   - title: Plex
-                    url: https://192.168.1.165:32400/
+                    url: http://192.168.1.165:32400/
                     icon: si:plex
                   - title: Longhorn
                     url: https://lh.marcthespot.com/
