@@ -87,14 +87,20 @@ data:
           - type: markets
             hide-header: true
             markets:
-              - symbol: SPY
-                name: S&P 500
               - symbol: BTC-USD
                 name: Bitcoin
+              - symbol: ETH-USD
+                name: Ethereum
+              - symbol: SOL-USD
+                name: Solana
+              - symbol: SPY
+                name: S&P 500
               - symbol: NVDA
                 name: NVIDIA
               - symbol: AAPL
                 name: Apple
+              - symbol: TSLA
+                name: Tesla
         columns:
           - size: small
             widgets:
