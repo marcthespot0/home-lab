@@ -92,7 +92,7 @@ data:
                 name: NVIDIA
               - symbol: AAPL
                 name: Apple
-        - size: full
+          - size: full
             widgets:
               - type: search
                 search-engine: https://search.marcthespot.com/search?q={QUERY}
