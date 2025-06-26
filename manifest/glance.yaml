@@ -155,6 +155,19 @@ data:
                         url: https://github.com/
                       - title: Chase 
                         url: https://chase.com/
+                      - title: Bambu Lab
+                        url: https://makerworld.com/
+                      - title: Thangs
+                        url: https://www.thangs.com
+                      - title: Thingiverse
+                        url: https://www.thingiverse.com/
+                      - title: Printables
+                        url: https://www.printables.com/    
+                      - title: MyMiniFactory
+                        url: https://www.myminifactory.com/
+                      - title: Cults3D
+                        url: https://cults3d.com/en
+
                   - title: Entertainment
                     links:
                       - title: YouTube
@@ -175,24 +188,7 @@ data:
                         url: https://facebook.com
                       - title: Instagram
                         url: https://instagram.com
-                  - title: 3D Printing
-                    links:
-                      - title: Bambu Lab
-                        url: https://makerworld.com/
-                      - title: Thangs
-                        url: https://www.thangs.com
-                      - title: Thingiverse
-                        url: https://www.thingiverse.com/
-                      - title: Printables
-                        url: https://www.printables.com/    
-                      - title: MyMiniFactory
-                        url: https://www.myminifactory.com/
-                      - title: Cults3D
-                        url: https://cults3d.com/en
-                  - title: School
-                    links:
-                      - title: WGU
-                        url: https://my.wgu.edu/
+
           - size: small
             widgets:
               - type: weather
