@@ -76,16 +76,6 @@ data:
   glance.yaml: |
     pages:
       - name: Startpage
-        width: slim
-        hide-desktop-navigation: false
-        center-vertically: true
-        columns:
-          - size: full
-            widgets:
-              - type: search
-                search-engine: https://search.marcthespot.com/search?q={QUERY}
-                autofocus: true
-
         head-widgets:
           - type: markets
             hide-header: true
@@ -100,7 +90,17 @@ data:
                 name: Apple
               - symbol: MSFT
                 name: Microsoft
+        width: slim
+        hide-desktop-navigation: false
+        center-vertically: true
         columns:
+          - size: full
+            widgets:
+              - type: search
+                search-engine: https://search.marcthespot.com/search?q={QUERY}
+                autofocus: true
+
+
           - size: full
             widgets:
               - type: monitor
