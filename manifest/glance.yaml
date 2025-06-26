@@ -95,6 +95,13 @@ data:
           - size: small
             widgets:
               - type: calendar
+          - size: small
+            widgets:
+              - type: weather
+                location: South Huntington, NY
+                units: imperial
+                show-forecast: true
+                show-wind: true
           - size: full
             widgets:
               - type: search
