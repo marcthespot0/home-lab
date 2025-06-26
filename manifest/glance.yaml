@@ -79,13 +79,19 @@ data:
         # width: slim
         # hide-desktop-navigation: false
         # center-vertically: true
+        head-widgets:
+          - type: markets
+            hide-header: true
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                name: Apple
         columns:
-          -size: small
-           widgets:
-              - type: calendar
-              - type: weather
-                location: "South Huntington, NY"
-                units: imperial
           - size: full
             widgets:
               - type: search
