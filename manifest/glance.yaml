@@ -76,6 +76,15 @@ data:
   glance.yaml: |
     pages:
       - name: Startpage
+        width: slim
+        hide-desktop-navigation: false
+        center-vertically: true
+        columns:
+          - size: full
+            widgets:
+              - type: search
+                search-engine: https://search.marcthespot.com/search?q={QUERY}
+                autofocus: true
         head-widgets:
           - type: markets
             hide-header: true
@@ -90,15 +99,18 @@ data:
                 name: Apple
               - symbol: MSFT
                 name: Microsoft
-        width: slim
-        hide-desktop-navigation: false
-        center-vertically: true
         columns:
+          - size: small
+            widgets:
+              - type: calendar
           - size: full
             widgets:
-              - type: search
-                search-engine: https://search.marcthespot.com/search?q={QUERY}
-                autofocus: true
+              - type: hacker-news
+          - size: small
+            widgets:
+              - type: weather
+                location: South Huntington, NY
+                units: imperial
 
               - type: monitor
                 cache: 1m
