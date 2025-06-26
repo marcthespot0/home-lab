@@ -76,7 +76,7 @@ data:
   glance.yaml: |
     pages:
       - name: Startpage
-        # width: slim
+        width: slim
         hide-desktop-navigation: false
         center-vertically: true
         columns:
@@ -85,17 +85,7 @@ data:
               - type: search
                 search-engine: https://search.marcthespot.com/search?q={QUERY}
                 autofocus: true
-          - size: small
-            widgets:
-              - type: calendar
-          - size: full
-            widgets:
-              - type: hacker-news
-          - size: small
-            widgets:
-              - type: weather
-                location: South Huntington, NY
-                units: imperial
+
         head-widgets:
           - type: markets
             hide-header: true
