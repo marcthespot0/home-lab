@@ -95,13 +95,7 @@ data:
           - size: small
             widgets:
               - type: calendar
-          - size: small
-            widgets:
-              - type: weather
-                location: South Huntington, New York, United States
-                units: imperial
-                show-forecast: true
-                show-wind: true
+
           - size: full
             widgets:
               - type: search
@@ -195,6 +189,13 @@ data:
                     links:
                       - title: WGU
                         url: https://my.wgu.edu/
+          - size: small
+            widgets:
+              - type: weather
+                location: South Huntington, New York, United States
+                units: imperial
+                show-forecast: true
+                show-wind: true            
                       
       - name: Resources
         columns:
