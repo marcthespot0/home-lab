@@ -75,7 +75,21 @@ metadata:
 data:
   glance.yaml: |
     pages:
-      - name: Start
+      - name: Startpage
+        head-widgets:
+          - type: markets
+            hide-header: true
+            markets:
+              - symbol: SPY
+                name: S&P 500
+              - symbol: BTC-USD
+                name: Bitcoin
+              - symbol: NVDA
+                name: NVIDIA
+              - symbol: AAPL
+                name: Apple
+              - symbol: MSFT
+                name: Microsoft
         width: slim
         hide-desktop-navigation: false
         center-vertically: true
@@ -174,7 +188,7 @@ data:
                       - title: WGU
                         url: https://my.wgu.edu/
                       
-      - name: Reddit_YouTube
+      - name: Resources
         columns:
           - size: full
             widgets:
