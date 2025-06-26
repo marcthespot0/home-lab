@@ -127,6 +127,8 @@ data:
                         url: https://netflix.com/
                       - title: NHL
                         url: https://www.nhl.com/
+                      - title: Peacock
+                        url: https://www.peacocktv.com/
                   - title: Social
                     links:
                       - title: Reddit
@@ -136,7 +138,21 @@ data:
                       - title: Facebook
                         url: https://facebook.com
                       - title: Instagram
-                        url: https://instagram.com92.168.1.235                  
+                        url: https://instagram.com
+                  - title: 3D Printing
+                    links:
+                      - title: Bambu Lab
+                        url: https://makerworld.com/
+                      - title: Thangs
+                        url: https://www.thangs.com
+                      - title: Thingiverse
+                        url: https://www.thingiverse.com/
+                      - title: Printables
+                        url: https://www.printables.com/    
+                      - title: MyMiniFactory
+                        url: https://www.myminifactory.com/
+                      - title: Cults3D
+                        url: https://cults3d.com/en
 
       - name: Reddit_YouTube
         columns:
