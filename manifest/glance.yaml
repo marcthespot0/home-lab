@@ -92,6 +92,9 @@ data:
               - symbol: AAPL
                 name: Apple
         columns:
+          - size: small
+            widgets:
+              - type: calendar
           - size: full
             widgets:
               - type: search
