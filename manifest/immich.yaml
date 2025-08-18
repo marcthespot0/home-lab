@@ -392,7 +392,7 @@ spec:
       enableServiceLinks: true
       containers:
         - name: immich-machine-learning
-          image: ghcr.io/immich-app/immich-machine-learning:v1.138.0
+          image: ghcr.io/immich-app/immich-machine-learning:v1.138.1
           imagePullPolicy: IfNotPresent
           env:
             - name: DB_DATABASE_NAME
