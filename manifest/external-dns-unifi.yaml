@@ -17,7 +17,7 @@ apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: external-dns-unifi
-  namespace: external-dns-unifi
+  namespace: external-dns
 spec:
   refreshInterval: "5m"
   secretStoreRef:
