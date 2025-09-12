@@ -13,6 +13,24 @@ metadata:
     app.kubernetes.io/managed-by: Helm
 automountServiceAccountToken:
 ---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: external-dns-unifi
+  namespace: external-dns-unifi
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+  data:
+    - secretKey: UNIFI_API_KEY
+      remoteRef:
+        key: external-dns-unifi
+        property: UNIFI_API_KEY
+---
 # Source: external-dns/templates/clusterrole.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
