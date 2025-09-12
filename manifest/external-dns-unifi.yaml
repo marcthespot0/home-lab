@@ -169,9 +169,10 @@ spec:
             - name: UNIFI_HOST
               value: https://192.168.1.1
             - name: UNIFI_API_KEY
-              value: externaldns
-            # - name: UNIFI_PASSWORD
-            #   value: Externaldns123
+              valueFrom:
+              secretKeyRef:
+                name: external-dns-unifi
+                key: UNIFI_API_KEY
             - name: LOG_LEVEL
               value: debug
           ports:
