@@ -161,7 +161,7 @@ spec:
           resources:
             {}
           volumeMounts:
-            - mountPath: /etc/searxng/settings.yml
+            - mountPath: /etc/searxng/settings.yml.new
               name: searxng-settings
               subPath: settings.yml
               readOnly: true
