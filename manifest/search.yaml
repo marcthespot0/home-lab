@@ -159,7 +159,7 @@ spec:
 
       containers:
         - name: searxng
-          image: "searxng/searxng:2025.09.19"   # pin a known-good tag if possible
+          image: "searxng/searxng:latest"
           ports:
             - name: http
               containerPort: 8080
