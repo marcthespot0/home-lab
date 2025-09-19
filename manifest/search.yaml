@@ -138,51 +138,128 @@ spec:
         app.kubernetes.io/name: "searxng"
     spec:
       serviceAccountName: searxng
-      securityContext:
-        {}
+
+      # 1) Init container copies CM -> RW dir
+      initContainers:
+        - name: bootstrap-config
+          image: alpine:3.20
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -euo pipefail
+              mkdir -p /etc-searxng
+              # copy all provided config files from CM into the writable dir
+              cp -av /config-src/* /etc-searxng/ || true
+          volumeMounts:
+            - name: searxng-config-ro
+              mountPath: /config-src
+              readOnly: true
+            - name: searxng-config-rw
+              mountPath: /etc-searxng
+
       containers:
         - name: searxng
-          securityContext:
-            {}
-          image: "searxng/searxng:latest"
-          imagePullPolicy: 
+          image: "searxng/searxng:2025.09.19"   # pin a known-good tag if possible
           ports:
             - name: http
               containerPort: 8080
-              protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            httpGet: { path: "/", port: http }
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {}
+            httpGet: { path: "/", port: http }
+
+          # 2) Mount the writable dir (no subPath mounts)
           volumeMounts:
-            - mountPath: /etc/searxng/settings.yml
-              name: searxng-settings
-              subPath: settings.yml
-              readOnly: true
-            - mountPath: /etc/searxng/limiter.toml
-              name: searxng-limiter
-              subPath: limiter.toml
-              readOnly: true
-            - mountPath: /etc/searxng/uwsgi.ini
-              name: searxng-uwsgi
-              subPath: uwsgi.ini
-              readOnly: true
+            - name: searxng-config-rw
+              mountPath: /etc/searxng
+
       volumes:
-        - name: searxng-settings
-          configMap:
-            name: searxng-settings
-        - name: searxng-limiter
-          configMap:
-            name: searxng-limiter
-        - name: searxng-uwsgi
-          configMap:
-            name: searxng-uwsgi
+        # CM projected as read-only source for init container
+        - name: searxng-config-ro
+          projected:
+            sources:
+              - configMap:
+                  name: searxng-settings
+                  items:
+                    - key: settings.yml
+                      path: settings.yml
+              - configMap:
+                  name: searxng-limiter
+                  items:
+                    - key: limiter.toml
+                      path: limiter.toml
+              # You can keep uwsgi.ini here if you want, but it’s unused by Granian.
+              - configMap:
+                  name: searxng-uwsgi
+                  items:
+                    - key: uwsgi.ini
+                      path: uwsgi.ini
+
+        # Writable target that SearXNG can chown/write into
+        - name: searxng-config-rw
+          emptyDir: {}
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: searxng
+#   namespace: searxng
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/name: "searxng"
+#   template:
+#     metadata:
+#       labels:
+#         app.kubernetes.io/name: "searxng"
+#     spec:
+#       serviceAccountName: searxng
+#       securityContext:
+#         {}
+#       containers:
+#         - name: searxng
+#           securityContext:
+#             {}
+#           image: "searxng/searxng:latest"
+#           imagePullPolicy: 
+#           ports:
+#             - name: http
+#               containerPort: 8080
+#               protocol: TCP
+#           livenessProbe:
+#             httpGet:
+#               path: /
+#               port: http
+#           readinessProbe:
+#             httpGet:
+#               path: /
+#               port: http
+#           resources:
+#             {}
+#           volumeMounts:
+#             - mountPath: /etc/searxng/settings.yml
+#               name: searxng-settings
+#               subPath: settings.yml
+#               readOnly: true
+#             - mountPath: /etc/searxng/limiter.toml
+#               name: searxng-limiter
+#               subPath: limiter.toml
+#               readOnly: true
+#             - mountPath: /etc/searxng/uwsgi.ini
+#               name: searxng-uwsgi
+#               subPath: uwsgi.ini
+#               readOnly: true
+#       volumes:
+#         - name: searxng-settings
+#           configMap:
+#             name: searxng-settings
+#         - name: searxng-limiter
+#           configMap:
+#             name: searxng-limiter
+#         - name: searxng-uwsgi
+#           configMap:
+#             name: searxng-uwsgi
 ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
