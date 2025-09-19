@@ -144,7 +144,7 @@ spec:
         - name: searxng
           securityContext:
             {}
-          image: "searxng/searxng:latest"
+          image: "searxng/searxng:2025.9.19-0ce0d95"
           imagePullPolicy: 
           ports:
             - name: http
