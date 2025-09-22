@@ -61,7 +61,8 @@ spec:
     spec:
       containers:
       - name: guacd
-        image: linuxserver/guacd:latest
+       # image: linuxserver/guacd:latest
+        image: docker.io/guacamole/guacd:latest
         volumeMounts:
         - name: guac-drive
           mountPath: /drive
@@ -138,7 +139,8 @@ spec:
     spec:
       containers:
       - name: guacamole
-        image: jwetzell/guacamole:latest
+        #image: jwetzell/guacamole:latest
+        image: docker.io/guacamole/guacamole:latest
         env:
         - name: EXTENSIONS
           value: auth-totp
