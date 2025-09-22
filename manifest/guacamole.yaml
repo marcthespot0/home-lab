@@ -108,20 +108,20 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: open-webui
-  namespace: open-webui
+  name: guacamole
+  namespace: guacamole
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: open-webui
+      app: guacamole
   template:
     metadata:
       labels:
-        app: open-webui
+        app: guacamole
     spec:
       containers:
-      - name: open-webui
+      - name: guacamole
         image: ghcr.io/flcontainers/guacamole/:v1.6.0
         ports:
         - containerPort: 8080
