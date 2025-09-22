@@ -152,6 +152,8 @@ spec:
       data:
         POSTGRESQL_USER: "{{ .user }}"
         POSTGRESQL_PASSWORD: "{{ .pass }}"
+        POSTGRESQL_HOSTNAME: "{{ .hostname }}"
+        POSTGRESQL_DATABASE: "{{ .database }}"
   data:
     - secretKey: user
       remoteRef:
@@ -161,6 +163,15 @@ spec:
       remoteRef:
         key: guacamole-configsecrets
         property: POSTGRESQL_PASSWORD
+    - secretKey: hostname
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_HOSTNAME
+    - secretKey: database
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_DATABASE
+---
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
