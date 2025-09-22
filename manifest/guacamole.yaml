@@ -149,9 +149,9 @@ spec:
         persistentVolumeClaim:
           claimName: guac-config
       - name: localtime
-        hostPath:
-          path: /etc/localtime
-          type: File
+        persistentVolumeClaim:
+          claimName: guac-init
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
