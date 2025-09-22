@@ -122,7 +122,7 @@ spec:
     spec:
       containers:
       - name: guacamole
-        image: ghcr.io/flcontainers/guacamole:v1.6.0
+        image: flcontainers/guacamole:1.6.0
         ports:
         - containerPort: 8080
         resources:
@@ -137,7 +137,6 @@ spec:
           value: auth-duo
         - name: TZ
           value: "America/New_York"
-
         tty: true
         volumeMounts:
         - name: guac-config
