@@ -141,10 +141,17 @@ spec:
         volumeMounts:
         - name: guac-config
           mountPath: /config
+        - name: localtime
+          mountPath: /etc/localtime
+          readOnly: true
       volumes:
       - name: guac-config
         persistentVolumeClaim:
           claimName: guac-config
+      - name: localtime
+        hostPath:
+          path: /etc/localtime
+          type: File
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
