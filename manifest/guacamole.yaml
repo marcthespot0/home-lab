@@ -150,7 +150,7 @@ spec:
           value: guacamole_db
         - name: POSTGRESSQL_HOSTNAME
           value: postgres
-        - name: POSTGRESSQL_PASSWORD
+        - name: POSTGRESQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
