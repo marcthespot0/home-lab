@@ -194,8 +194,8 @@ spec:
     template:
       engineVersion: v2
       data:
-        POSTGRES_USER: "{{ .user }}"
-        POSTGRES_PASSWORD: "{{ .pass }}"
+        POSTGRESQL_USER: "{{ .user }}"
+        POSTGRESQL_PASSWORD: "{{ .pass }}"
   data:
     - secretKey: user
       remoteRef:
