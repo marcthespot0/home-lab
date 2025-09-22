@@ -146,11 +146,11 @@ spec:
           value: auth-totp
         - name: GUACD_HOSTNAME
           value: guacd
-        - name: POSTGRES_DATABASE
+        - name: POSTGRESQL_DATABASE
           value: guacamole_db
-        - name: POSTGRES_HOSTNAME
+        - name: POSTGRESSQL_HOSTNAME
           value: postgres
-        - name: POSTGRES_PASSWORD
+        - name: POSTGRESSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
