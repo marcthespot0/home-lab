@@ -3,6 +3,47 @@ kind: Namespace
 metadata:
   name: guacamole
 ---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: guacamole-configsecrets
+  namespace: guacamole
+  labels:
+    app.kubernetes.io/part-of: guacamole
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: "5m"
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: 1password
+  target:
+    creationPolicy: Owner
+    template:
+      engineVersion: v2
+      data:
+        POSTGRESQL_USER: "{{ .user }}"
+        POSTGRESQL_PASSWORD: "{{ .pass }}"
+        POSTGRESQL_HOSTNAME: "{{ .hostname }}"
+        POSTGRESQL_DATABASE: "{{ .database }}"
+  data:
+    - secretKey: user
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_USER
+    - secretKey: pass
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_PASSWORD
+    - secretKey: hostname
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_HOSTNAME
+    - secretKey: database
+      remoteRef:
+        key: guacamole-configsecrets
+        property: POSTGRESQL_DATABASE
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -130,48 +171,6 @@ spec:
     automated:
       prune: true
       selfHeal: true
----
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: guacamole-configsecrets
-  namespace: guacamole
-  labels:
-    app.kubernetes.io/part-of: guacamole
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        POSTGRESQL_USER: "{{ .user }}"
-        POSTGRESQL_PASSWORD: "{{ .pass }}"
-        POSTGRESQL_HOSTNAME: "{{ .hostname }}"
-        POSTGRESQL_DATABASE: "{{ .database }}"
-  data:
-    - secretKey: user
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_USER
-    - secretKey: pass
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_PASSWORD
-    - secretKey: hostname
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_HOSTNAME
-    - secretKey: database
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_DATABASE
----
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
