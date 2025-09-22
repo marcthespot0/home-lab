@@ -123,6 +123,13 @@ spec:
                   - path: /migrations
                 02-init-db:
                   - path: /migrations    
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: guacamole
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
 ---
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
