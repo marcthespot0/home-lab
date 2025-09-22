@@ -141,6 +141,11 @@ spec:
                 memory: 128Mi
               limits:
                 memory: 2000Mi
+        persistence:
+          config:
+            existingClaim: *app
+            globalMounts:
+              - path: /config
   destination:
     server: https://kubernetes.default.svc
     namespace: guacamole
