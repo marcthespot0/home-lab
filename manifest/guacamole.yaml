@@ -20,11 +20,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgres
+  name: POSTGRESQL
   namespace: guacamole
 spec:
   selector:
-    app: postgres
+    app: POSTGRESQL
   ports:
     - protocol: TCP
       port: 5432
@@ -79,41 +79,41 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: POSTGRESQL
   namespace: guacamole
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: POSTGRESQL
   template:
     metadata:
       labels:
-        app: postgres
+        app: POSTGRESQL
     spec:
       containers:
-      - name: postgres
-        image: postgres:17.6
+      - name: POSTGRESQL
+        image: POSTGRESQL:17.6
         env:
         - name: PGDATA
-          value: /var/lib/postgresql/data/guacamole
-        - name: POSTGRES_DB
+          value: /var/lib/POSTGRESQLql/data/guacamole
+        - name: POSTGRESQL_DB
           value: guacamole_db
-        - name: POSTGRES_PASSWORD
+        - name: POSTGRESQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_USER
+              key: POSTGRESQL_PASSWORD
+        - name: POSTGRESQL_USER
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
-              key: POSTGRES_USER
+              key: POSTGRESQL_USER
         volumeMounts:
         - name: guac-init
           mountPath: /docker-entrypoint-initdb.d
         - name: guac-data
-          mountPath: /var/lib/postgresql/data
+          mountPath: /var/lib/POSTGRESQLql/data
       volumes:
       - name: guac-init
         persistentVolumeClaim:
@@ -146,21 +146,21 @@ spec:
           value: auth-totp
         - name: GUACD_HOSTNAME
           value: guacd
-        - name: POSTGRESQL_DATABASE
+        - name: POSTGRESQLQL_DATABASE
           value: guacamole_db
-        - name: POSTGRESSQL_HOSTNAME
-          value: postgres
-        - name: POSTGRESSQL_PASSWORD
+        - name: POSTGRESQLSQL_HOSTNAME
+          value: POSTGRESQL
+        - name: POSTGRESQLSQL_PASSWORD
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
-              key: POSTGRES_PASSWORD
-        - name: POSTGRES_USER
+              key: POSTGRESQL_PASSWORD
+        - name: POSTGRESQL_USER
           valueFrom:
             secretKeyRef:
               name: guacamole-configsecrets
-              key: POSTGRES_USER
-        - name: POSTGRESQL_AUTO_CREATE_ACCOUNTS
+              key: POSTGRESQL_USER
+        - name: POSTGRESQLQL_AUTO_CREATE_ACCOUNTS
           value: "true"
         volumeMounts:
         - name: guac-drive
@@ -194,23 +194,23 @@ spec:
     template:
       engineVersion: v2
       data:
-        POSTGRES_USER: "{{ .user }}"
-        POSTGRES_PASSWORD: "{{ .pass }}"
+        POSTGRESQL_USER: "{{ .user }}"
+        POSTGRESQL_PASSWORD: "{{ .pass }}"
   data:
     - secretKey: user
       remoteRef:
         key: guacamole-configsecrets
-        property: POSTGRES_USER
+        property: POSTGRESQL_USER
     - secretKey: pass
       remoteRef:
         key: guacamole-configsecrets
-        property: POSTGRES_PASSWORD
+        property: POSTGRESQL_PASSWORD
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
+    app: POSTGRESQL
   name: guac-init
   namespace: guacamole
 spec:
@@ -223,7 +223,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    app: postgres
+    app: POSTGRESQL
   name: guac-data
   namespace: guacamole
 spec:
