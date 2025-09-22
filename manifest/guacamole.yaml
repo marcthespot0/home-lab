@@ -140,7 +140,7 @@ spec:
       containers:
       - name: guacamole
         #image: jwetzell/guacamole:latest
-        image: docker.io/guacamole/guacamole:latest
+        image: docker.io/guacamole/guacamole:1.6.0
         env:
         - name: EXTENSIONS
           value: auth-totp
