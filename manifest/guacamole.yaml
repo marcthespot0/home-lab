@@ -97,7 +97,7 @@ spec:
         env:
         - name: PGDATA
           value: /var/lib/postgresql/data/guacamole
-        - name: POSTGRES_DB
+        - name: POSTGRESQL_DB
           value: guacamole_db
         - name: POSTGRESQL_PASSWORD
           valueFrom:
