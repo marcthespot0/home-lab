@@ -3,95 +3,6 @@ kind: Namespace
 metadata:
   name: guacamole
 ---
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: guacamole-configsecrets
-  namespace: guacamole
-  labels:
-    app.kubernetes.io/part-of: guacamole
-  annotations:
-    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
-spec:
-  refreshInterval: "5m"
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: 1password
-  target:
-    creationPolicy: Owner
-    template:
-      engineVersion: v2
-      data:
-        POSTGRESQL_USER: "{{ .user }}"
-        POSTGRESQL_PASSWORD: "{{ .pass }}"
-        POSTGRESQL_HOSTNAME: "{{ .hostname }}"
-        POSTGRESQL_DATABASE: "{{ .database }}"
-        INIT_POSTGRESQL_USER: "{{ .init_user }}"
-        INIT_POSTGRESQL_PASSWORD: "{{ .init_pass }}"
-        INIT_POSTGRESQL_HOSTNAME: "{{ .init_hostname }}"
-        INIT_POSTGRESQL_DATABASE: "{{ .init_database }}"
-  data:
-    - secretKey: user
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_USER
-    - secretKey: pass
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_PASSWORD
-    - secretKey: hostname
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_HOSTNAME
-    - secretKey: database
-      remoteRef:
-        key: guacamole-configsecrets
-        property: POSTGRESQL_DATABASE
-    - secretKey: init_user
-      remoteRef:
-        key: guacamole-configsecrets
-        property: INIT_POSTGRESQL_USER
-    - secretKey: init_pass
-      remoteRef:
-        key: guacamole-configsecrets
-        property: INIT_POSTGRESQL_PASSWORD
-    - secretKey: init_hostname
-      remoteRef:
-        key: guacamole-configsecrets
-        property: INIT_POSTGRESQL_HOSTNAME
-    - secretKey: init_database
-      remoteRef:
-        key: guacamole-configsecrets
-        property: INIT_POSTGRESQL_DATABASE  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: guacd
-  namespace: guacamole
-spec:
-  selector:
-    app: guacd
-  ports:
-    - protocol: TCP
-      port: 4822
-      targetPort: 4822
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres
-  namespace: guacamole
-spec:
-  selector:
-    app: postgres
-  ports:
-    - protocol: TCP
-      port: 5432
-      targetPort: 5432
-  type: ClusterIP
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -125,13 +36,13 @@ spec:
         image: flcontainers/guacamole:1.6.0
         ports:
         - containerPort: 8080
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "1Gi"
-          limits:
-            cpu: "1000m"
-            memory: "4Gi"
+        # resources:
+        #   requests:
+        #     cpu: "500m"
+        #     memory: "1Gi"
+        #   limits:
+        #     cpu: "1000m"
+        #     memory: "4Gi"
         env:
         - name: EXTENSIONS
           value: "auth-jdbc-postgresql,auth-duo"
@@ -151,7 +62,6 @@ spec:
       - name: localtime
         persistentVolumeClaim:
           claimName: guac-init
-
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -165,45 +75,6 @@ spec:
   resources:
     requests:
       storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: postgres
-  name: guac-data
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: guacd
-  name: guac-drive
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteMany"]
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: guacamole
-  name: guac-record
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 5Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
