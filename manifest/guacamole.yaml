@@ -38,7 +38,7 @@ spec:
         - containerPort: 8080
         env:
         - name: EXTENSIONS
-          value: "auth-jdbc-postgresql,auth-duo"
+          value: "auth-jdbc-postgresql"
         - name: TZ
           value: "America/New_York"
         tty: true
