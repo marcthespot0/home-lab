@@ -316,7 +316,7 @@ spec:
         - name: external-dns.alpha.kubernetes.io/cloudflare-proxied
           value: "false"
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: transmission
@@ -627,7 +627,7 @@ spec:
     requests:
       storage: 1Gi
 ---
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: media-configsecrets
