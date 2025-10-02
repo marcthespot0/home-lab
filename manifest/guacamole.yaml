@@ -57,26 +57,14 @@ spec:
       # - name: localtime
       #   persistentVolumeClaim:
       #     claimName: guac-init
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  labels:
-    app: postgres
-  name: guac-init
-  namespace: guacamole
-spec:
-  accessModes: ["ReadWriteOnce"]
-  resources:
-    requests:
-      storage: 1Gi
+
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
     app: guacamole
-  name: guac-config
+  name: guacamole
   namespace: guacamole
 spec:
   accessModes: ["ReadWriteOnce"]
