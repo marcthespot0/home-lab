@@ -41,20 +41,22 @@ spec:
           value: "auth-jdbc-postgresql"
         - name: TZ
           value: "America/New_York"
+        - name: GUACD_LOG_LEVEL
+          value: debug
         tty: true
         volumeMounts:
-        - name: guac-config
+        - name: guacamole
           mountPath: /config
-        - name: localtime
-          mountPath: /etc/localtime
-          readOnly: true
+        # - name: localtime
+        #   mountPath: /etc/localtime
+        #   readOnly: true
       volumes:
-      - name: guac-config
+      - name: guacamole
         persistentVolumeClaim:
-          claimName: guac-config
-      - name: localtime
-        persistentVolumeClaim:
-          claimName: guac-init
+          claimName: guacamole
+      # - name: localtime
+      #   persistentVolumeClaim:
+      #     claimName: guac-init
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
