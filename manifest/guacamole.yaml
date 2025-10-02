@@ -38,7 +38,7 @@ spec:
         - containerPort: 8080
         env:
         - name: EXTENSIONS
-          value: "auth-jdbc-postgresql"
+          value: "auth-jdbc-postgresql,auth-duo"
         - name: TZ
           value: "America/New_York"
         - name: GUACD_LOG_LEVEL
