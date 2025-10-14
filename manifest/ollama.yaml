@@ -4,69 +4,70 @@ apiVersion: v1
 metadata:
   name: ollama
 ---
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: ollama
-  namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+  namespace: ollama
 spec:
-  project: default
-  source:
-    chart: app-template
-    repoURL: https://bjw-s-labs.github.io/helm-charts
-    targetRevision: 4.1.2
-    helm:
-      values: |
-        replicaCount: 1
-        knative:
-          enabled: false
-          containerConcurrency: 1
-          timeoutSeconds: 300
-          responseStartTimeoutSeconds: 300
-          idleTimeoutSeconds: 300
-        controllers:
-          ollama:
-            annotations:
-              reloader.stakater.com/auto: "true"
-            type: deployment
-            strategy: Recreate
-            containers:
-              app:
-                image:
-                  repository: ollama/ollama
-                  pullPolicy: IfNotPresent
-                  tag: "0.6.5"
-                env:
-                  OLLAMA_MODELS: /models
-                  OLLAMA_DEBUG: 1
-                  ENABLE_RAG_HYBRID_SEARCH: "true"
-                  DATA_DIR: /models
-            pod:
-              runtimeClassName: nvidia
-        persistence:
-          config:
-            enabled: true
-            existingClaim: ollama-pvc
-            advancedMounts:
-              ollama: 
-                app:
-                  - path: /models
-        service:
-          app:
-            controller: ollama
-            type: LoadBalancer
-            ports:
-              http:
-                port: 11434
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: ollama
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: docker.io/ollama/ollama:12.5
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OLLAMA_MODELS
+          value: "/models"
+        - name: OLLAMA_DEBUG
+          value: "1"
+        - name: ENABLE_RAG_HYBRID_SEARCH
+          value: "true"
+      runtimeClassName: nvidia
+      volumeMounts:
+      - name: ollama-pvc
+        mountPath: /models
+    volumes:
+    - name: ollama-pvc
+      persistentVolumeClaim:
+        claimName: ollama-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ollama
+  namespace: ollama
+spec:
+  type: LoadBalancer
+  selector:
+    app: ollama
+  ports:
+    - protocol: TCP
+      port: 11434 
+      targetPort: 11434
+# ---
+#         service:
+#           app:
+#             controller: ollama
+#             type: LoadBalancer
+#             ports:
+#               http:
+#                 port: 11434
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: ollama
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
