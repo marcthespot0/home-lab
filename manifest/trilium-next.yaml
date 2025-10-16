@@ -49,7 +49,7 @@ spec:
                 image:
                   repository: ghcr.io/triliumnext/notes
                   pullPolicy: IfNotPresent
-                  tag: v0.99.1
+                  tag: latest
                 env:
                   TZ: America/New_York
                   TRILIUM_DATA_DIR: &datadir /trilium-data
