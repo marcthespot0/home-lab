@@ -33,10 +33,10 @@ spec:
           value: "true"
       runtimeClassName: nvidia
       volumeMounts:
-      - name: ollama-pvc
-        mountPath: /models
+      - name: OLLAMA_MODELS
+        mountPath: "/models"
     volumes:
-    - name: ollama-pvc
+    - name: OLLAMA_MODELS
       persistentVolumeClaim:
         claimName: ollama-pvc
 ---
