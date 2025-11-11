@@ -26,7 +26,7 @@ spec:
         - containerPort: 8080
         env:
         - name: OLLAMA_MODELS
-          value: ".ollama/models"
+          value: "/root/.ollama/models"
         - name: OLLAMA_DEBUG
           value: "1"
         - name: ENABLE_RAG_HYBRID_SEARCH
@@ -34,7 +34,7 @@ spec:
       runtimeClassName: nvidia
       volumeMounts:
       - name: models
-        mountPath: ".ollama/models"
+        mountPath: "/root/.ollama/models"
     volumes:
     - name: models
       persistentVolumeClaim:
