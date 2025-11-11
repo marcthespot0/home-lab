@@ -34,7 +34,7 @@ spec:
       runtimeClassName: nvidia
       volumeMounts:
       - name: models
-        mountPath: .ollama/models
+        mountPath: ".ollama/models"
     volumes:
     - name: models
       persistentVolumeClaim:
