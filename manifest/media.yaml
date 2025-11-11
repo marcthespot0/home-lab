@@ -48,77 +48,77 @@ spec:
     requests:
       storage: 5Gi
 ---
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: jellyfin
-  namespace: media
-  labels:
-    app.kubernetes.io/name: jellyfin
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: jellyfin
-  strategy:
-    type: Recreate
-  revisionHistoryLimit: 1
-  template:
-    metadata:
-      namespace: media
-      labels:
-        app.kubernetes.io/name: jellyfin
-    spec:
-      restartPolicy: Always
-      runtimeClassName: nvidia
-      containers:
-        - name: jellyfin
-          image: jellyfin/jellyfin:10.11.2
-          resources:
-            requests:
-              memory: 4096Mi
-              cpu: 2000m
-            limits:
-              memory: 8192Mi
-              cpu: 4000m
-              # nvidia.com/gpu: 1
-          ports:
-            - containerPort: 8096
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8096
-            initialDelaySeconds: 10
-            periodSeconds: 60
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8096
-            initialDelaySeconds: 30
-            periodSeconds: 120
-          volumeMounts:
-            - name: jellyfin-config
-              mountPath: /config
-            - name: jellyfin-config
-              mountPath: /cache
-            - name: jellyfin-downloads
-              mountPath: /downloads
-            - mountPath: "/shows"
-              name: shows
-      volumes:
-        - name: jellyfin-config
-          persistentVolumeClaim:
-            claimName: jellyfin-config
-        - name: jellyfin-cache
-          emptyDir: {}
-        - name: jellyfin-downloads
-          persistentVolumeClaim:
-            claimName: jellyfin-downloads
-        - name: shows
-          persistentVolumeClaim:
-            claimName: sonarr-shows
-      nodeSelector:
-        kubernetes.io/hostname: talos-03
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: jellyfin
+#   namespace: media
+#   labels:
+#     app.kubernetes.io/name: jellyfin
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/name: jellyfin
+#   strategy:
+#     type: Recreate
+#   revisionHistoryLimit: 1
+#   template:
+#     metadata:
+#       namespace: media
+#       labels:
+#         app.kubernetes.io/name: jellyfin
+#     spec:
+#       restartPolicy: Always
+#       runtimeClassName: nvidia
+#       containers:
+#         - name: jellyfin
+#           image: jellyfin/jellyfin:10.11.2
+#           resources:
+#             requests:
+#               memory: 4096Mi
+#               cpu: 2000m
+#             limits:
+#               memory: 8192Mi
+#               cpu: 4000m
+#               # nvidia.com/gpu: 1
+#           ports:
+#             - containerPort: 8096
+#           readinessProbe:
+#             httpGet:
+#               path: /health
+#               port: 8096
+#             initialDelaySeconds: 10
+#             periodSeconds: 60
+#           livenessProbe:
+#             httpGet:
+#               path: /health
+#               port: 8096
+#             initialDelaySeconds: 30
+#             periodSeconds: 120
+#           volumeMounts:
+#             - name: jellyfin-config
+#               mountPath: /config
+#             - name: jellyfin-config
+#               mountPath: /cache
+#             - name: jellyfin-downloads
+#               mountPath: /downloads
+#             - mountPath: "/shows"
+#               name: shows
+#       volumes:
+#         - name: jellyfin-config
+#           persistentVolumeClaim:
+#             claimName: jellyfin-config
+#         - name: jellyfin-cache
+#           emptyDir: {}
+#         - name: jellyfin-downloads
+#           persistentVolumeClaim:
+#             claimName: jellyfin-downloads
+#         - name: shows
+#           persistentVolumeClaim:
+#             claimName: sonarr-shows
+#       nodeSelector:
+#         kubernetes.io/hostname: talos-03
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
