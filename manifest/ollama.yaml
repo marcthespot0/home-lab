@@ -19,6 +19,10 @@ spec:
       labels:
         app: ollama
     spec:
+      volumes:
+      - name: models
+        persistentVolumeClaim:
+          claimName: ollama-pvc
       containers:
       - name: ollama
         image: docker.io/ollama/ollama:latest
@@ -31,15 +35,12 @@ spec:
           value: "1"
         - name: ENABLE_RAG_HYBRID_SEARCH
           value: "true"
+        volumeMounts:
+        - mountPath: "/root/.ollama/models"
+          name: models    
       runtimeClassName: nvidia
-      volumeMounts:
-      - mountPath: "/root/.ollama/models"
-        name: models
-        
-    volumes:
-    - name: models
-      persistentVolumeClaim:
-        claimName: ollama-pvc
+      
+
 ---
 apiVersion: v1
 kind: Service
