@@ -33,7 +33,7 @@ spec:
   - group: ""
     kind: Secret
 ---
-apiVersion: external-secrets.io/v1
+apiVersion: external-secrets.io/v1beta1
 kind: PushSecret
 metadata:
   name: wildcard-production
